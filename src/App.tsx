@@ -6,6 +6,7 @@ import { PortalHome } from '@/features/portal-materiais/pages/PortalHome';
 import { PortalAcervo } from '@/features/portal-materiais/pages/PortalAcervo';
 import { PortalMaterial } from '@/features/portal-materiais/pages/PortalMaterial';
 import { PortalFavoritos } from '@/features/portal-materiais/pages/PortalFavoritos';
+import { PortalInstalar } from '@/features/portal-materiais/pages/PortalInstalar';
 import { PrivacyPolicy } from '@/pages/PrivacyPolicy';
 import { TermsOfUse } from '@/pages/TermsOfUse';
 import { NotFound } from '@/pages/NotFound';
@@ -26,6 +27,7 @@ export default function App() {
         <Route index element={<PortalHome />} />
         <Route path="acervo" element={<PortalAcervo />} />
         <Route path="favoritos" element={<PortalFavoritos />} />
+        <Route path="instalar" element={<PortalInstalar />} />
         <Route path="m/:id" element={<PortalMaterial />} />
       </Route>
 

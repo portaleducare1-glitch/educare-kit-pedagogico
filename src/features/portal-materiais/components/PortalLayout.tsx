@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Heart, Home, Search } from 'lucide-react';
+import { ArrowLeft, Heart, Home, Search, Smartphone, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import { useFavoritos, FavoritosProvider } from '../lib/useFavoritos';
 import { ToastProvider } from '@/lib/toast';
 import { InstallBanner } from './InstallBanner';
+import { InstallProvider, useInstall } from '../lib/useInstall';
 
 function PortalLayoutInner() {
   const location = useLocation();
@@ -74,9 +75,7 @@ function PortalLayoutInner() {
         <Outlet />
       </main>
 
-      <footer className="hidden sm:block border-t border-border py-4 text-center text-xs text-muted-foreground">
-        Educare Pedagogia &middot; Kit Pedagógico 5.0
-      </footer>
+      <PortalFooter />
 
       <InstallBanner />
 
@@ -134,12 +133,70 @@ function PortalLayoutInner() {
   );
 }
 
+function PortalFooter() {
+  const { platform, isStandalone } = useInstall();
+  const showInstallLink = !isStandalone && platform !== null;
+
+  return (
+    <footer
+      className="border-t border-border bg-card/50 px-4 pt-5 sm:pb-5 pb-[calc(5rem+env(safe-area-inset-bottom,0px))]"
+    >
+      <div className="mx-auto max-w-2xl space-y-3">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="space-y-0.5">
+            <p className="text-xs font-semibold text-foreground">Educare Pedagogia</p>
+            <p className="text-[11px] text-muted-foreground">CNPJ 28.719.923/0001-17</p>
+          </div>
+          {showInstallLink && (
+            <Link
+              to="/portal/instalar"
+              className="flex items-center gap-1.5 text-xs text-primary font-medium hover:underline"
+            >
+              <Smartphone className="size-3.5" aria-hidden="true" />
+              Instalar como app
+            </Link>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
+          <Link to="/privacidade" className="hover:text-foreground transition-colors">
+            Privacidade (LGPD)
+          </Link>
+          <Link to="/termos" className="hover:text-foreground transition-colors">
+            Termos de Uso
+          </Link>
+          <a
+            href="https://educarepedagogia.com.br/suporte-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 hover:text-foreground transition-colors"
+          >
+            <MessageCircle className="size-3" aria-hidden="true" />
+            Suporte
+          </a>
+          {!showInstallLink && (
+            <Link to="/portal/instalar" className="hover:text-foreground transition-colors">
+              Instalar como app
+            </Link>
+          )}
+        </div>
+
+        <p className="text-[10px] text-muted-foreground/50">
+          Kit Pedagogico 5.0 · v1.0.0
+        </p>
+      </div>
+    </footer>
+  );
+}
+
 export function PortalLayout() {
   return (
-    <FavoritosProvider>
-      <ToastProvider>
-        <PortalLayoutInner />
-      </ToastProvider>
-    </FavoritosProvider>
+    <InstallProvider>
+      <FavoritosProvider>
+        <ToastProvider>
+          <PortalLayoutInner />
+        </ToastProvider>
+      </FavoritosProvider>
+    </InstallProvider>
   );
 }

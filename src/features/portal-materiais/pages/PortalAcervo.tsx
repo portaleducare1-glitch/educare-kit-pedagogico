@@ -1,0 +1,216 @@
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { trackBusca, trackBuscaSemResultado } from '@/lib/analytics';
+import { Search, BookOpen, Sparkles, ClipboardList, X } from 'lucide-react';
+import { cn } from '@/lib/cn';
+import { materiais } from '../data/materiais';
+import { buscar } from '../lib/busca';
+import { MaterialCard } from '../components/MaterialCard';
+import type { Secao, Etapa, Situacao } from '../types';
+import { SECAO_LABELS, ETAPA_LABELS, SITUACAO_LABELS } from '../types';
+
+const SECAO_ICON: Record<Secao, React.ElementType> = {
+  apostilas: BookOpen,
+  atividades: Sparkles,
+  documentos: ClipboardList,
+};
+
+const SECAO_ATIVA: Record<Secao, string> = {
+  apostilas: 'bg-blue-50 text-brand-blue border-brand-blue/30 shadow-none',
+  atividades: 'bg-green-50 text-brand-green-600 border-brand-green/30 shadow-none',
+  documentos: 'bg-orange-50 text-brand-orange border-brand-orange/30 shadow-none',
+};
+
+const ETAPAS: Etapa[] = ['maternal', 'infantil', 'alfabetizacao', 'fund-iniciais', 'fund-finais'];
+
+export function PortalAcervo() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryInicial = searchParams.get('q') ?? '';
+  const secaoInicial = (searchParams.get('secao') as Secao) ?? undefined;
+  const situacaoInicial = (searchParams.get('situacao') as Situacao) ?? undefined;
+
+  const [query, setQuery] = useState(queryInicial);
+  const [secao, setSecao] = useState<Secao | undefined>(secaoInicial);
+  const [etapa, setEtapa] = useState<Etapa | undefined>();
+  const [situacao, setSituacao] = useState<Situacao | undefined>(situacaoInicial);
+  const [limite, setLimite] = useState(30);
+
+  const resultado = useMemo(
+    () =>
+      buscar(materiais, {
+        query: query || undefined,
+        secao,
+        etapa,
+        situacao,
+      }),
+    [query, secao, etapa, situacao],
+  );
+
+  // Reseta paginação e sobe ao topo ao trocar filtros
+  useEffect(() => {
+    setLimite(30);
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  }, [query, secao, etapa, situacao]);
+
+  // Sincroniza estado com URL (substituindo — sem criar entradas no histórico)
+  useEffect(() => {
+    const params: Record<string, string> = {};
+    if (query) params.q = query;
+    if (secao) params.secao = secao;
+    if (situacao) params.situacao = situacao;
+    setSearchParams(params, { replace: true });
+  }, [query, secao, situacao]); // etapa é filtro local apenas
+
+  function toggleSecao(s: Secao) {
+    setSecao((prev) => (prev === s ? undefined : s));
+  }
+
+  function toggleEtapa(e: Etapa) {
+    setEtapa((prev) => (prev === e ? undefined : e));
+  }
+
+  function limparSituacao() {
+    setSituacao(undefined);
+  }
+
+  // Debounce de 600ms para não disparar evento GA4 a cada tecla digitada
+  const trackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (trackTimer.current) clearTimeout(trackTimer.current);
+    trackTimer.current = setTimeout(() => {
+      const termo = query.trim();
+      if (termo.length <= 1) return;
+      if (resultado.length === 0) {
+        trackBuscaSemResultado(termo);
+      } else {
+        trackBusca(termo, resultado.length);
+      }
+    }, 600);
+    return () => { if (trackTimer.current) clearTimeout(trackTimer.current); };
+  }, [query, resultado.length]);
+
+  const titulo = situacao
+    ? SITUACAO_LABELS[situacao]
+    : secao
+      ? SECAO_LABELS[secao]
+      : 'Todos os materiais';
+
+  useEffect(() => {
+    document.title = `${titulo} · Educare`;
+    return () => { document.title = 'Educare · Assistente Pedagógico'; };
+  }, [titulo]);
+
+  return (
+    <div className="space-y-5">
+      {/* Titulo e contagem */}
+      <div className="flex items-baseline justify-between gap-2">
+        <h1 className="text-xl font-bold text-foreground truncate">{titulo}</h1>
+        <span className="text-sm text-muted-foreground shrink-0">{resultado.length} itens</span>
+      </div>
+
+      {/* Busca */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          aria-label="Buscar materiais pedagógicos"
+          placeholder="Buscar..."
+          className={cn(
+            'w-full h-10 pl-10 pr-4 rounded-xl border border-input bg-card',
+            'text-sm placeholder:text-muted-foreground',
+            'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background',
+          )}
+        />
+      </div>
+
+      {/* Filtros por secao */}
+      <div className="relative">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          {(Object.keys(SECAO_LABELS) as Secao[]).map((s) => {
+            const Icon = SECAO_ICON[s];
+            return (
+              <button
+                key={s}
+                onClick={() => toggleSecao(s)}
+                className={cn(
+                  'flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm whitespace-nowrap shrink-0',
+                  'transition-all cursor-pointer',
+                  secao === s
+                    ? SECAO_ATIVA[s] + ' font-semibold'
+                    : 'border-border bg-card text-muted-foreground shadow-sm hover:bg-secondary hover:shadow-none',
+                )}
+              >
+                <Icon className="size-3.5" />
+                {SECAO_LABELS[s]}
+              </button>
+            );
+          })}
+        </div>
+        <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent" />
+      </div>
+
+      {/* Badge de situacao ativa */}
+      {situacao && (
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">Filtrando por:</span>
+          <button
+            onClick={limparSituacao}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-lg border border-primary/40 bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors max-w-[260px]"
+          >
+            <span className="truncate">{SITUACAO_LABELS[situacao]}</span>
+            <X className="size-3 shrink-0" />
+          </button>
+        </div>
+      )}
+
+      {/* Filtros por etapa */}
+      <div className="relative">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          {ETAPAS.map((e) => (
+            <button
+              key={e}
+              onClick={() => toggleEtapa(e)}
+              className={cn(
+                'px-3 py-1.5 rounded-lg border text-xs whitespace-nowrap shrink-0',
+                'transition-all cursor-pointer',
+                etapa === e
+                  ? 'border-primary bg-primary/10 text-primary font-semibold shadow-none'
+                  : 'border-border bg-card text-muted-foreground shadow-sm hover:bg-secondary hover:shadow-none',
+              )}
+            >
+              {ETAPA_LABELS[e]}
+            </button>
+          ))}
+        </div>
+        <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent" />
+      </div>
+
+      {/* Grade de materiais */}
+      {resultado.length === 0 ? (
+        <div className="py-16 text-center space-y-2">
+          <p className="text-2xl">🔍</p>
+          <p className="text-muted-foreground text-sm">Nenhum material encontrado.</p>
+          <p className="text-xs text-muted-foreground">Tente palavras diferentes ou remova os filtros.</p>
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {resultado.slice(0, limite).map((m) => (
+              <MaterialCard key={m.id} material={m} />
+            ))}
+          </div>
+          {resultado.length > limite && (
+            <button
+              onClick={() => setLimite((l) => l + 30)}
+              className="w-full py-3 rounded-xl border border-border bg-card text-sm text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+            >
+              Mostrar mais ({resultado.length - limite} {resultado.length - limite === 1 ? 'material' : 'materiais'})
+            </button>
+          )}
+        </>
+      )}
+    </div>
+  );
+}

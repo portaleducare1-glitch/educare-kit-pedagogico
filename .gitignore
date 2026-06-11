@@ -1,0 +1,85 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build output
+dist
+dist-ssr
+*.local
+
+# Native (Capacitor) generated platforms
+android
+ios
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs
+*.log
+
+# Editor / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Test coverage
+coverage
+
+# Tesseract language models baixados em runtime/verificacao
+*.traineddata
+
+# Conteúdo pedagógico (PDFs hospedados no WordPress — não vão no repo)
+apostilas-educare/
+apostila-tecnologias-assistivas/
+certificados/
+kit-pedagogico-5/
+materiais-referencia/
+documentos/
+imagens/
+output/
+rascunhos/
+
+# Contexto de trabalho e histórico (não faz parte do deploy)
+Documentos\ IA/
+contexto-agentes/
+assistente-professora-mvp/
+emails/
+netlify-pediu-servico/
+tools/
+.claude/
+.nvm/
+.vite/
+.playwright-mcp/
+.antigravity-ide/
+
+# Arquivos duplicados da raiz
+package\ 2.json
+tsconfig\ 2.json
+vite.config\ 2.ts
+index\ 2.html
+*.zip
+
+# Script de ambiente local (caminhos hardcoded)
+start_educare.sh
+
+# Arquivo duplicado com espaço no nome
+public/\ logo-educare.webp
+
+# Imagens grandes na raiz (assets do portal ficam em public/)
+/*.jpeg
+/*.jpg
+/*.png

@@ -1,0 +1,53 @@
+# Educare — Portal Assistente Pedagógico
+# Apache / HostGator
+# Copiar este arquivo para a raiz do domínio no servidor junto com o conteúdo de dist/
+
+Options -MultiViews -Indexes
+
+# ─── SPA Routing ───────────────────────────────────────────────────────────────
+# Redireciona todas as rotas para index.html (necessário para React Router)
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [QSA,L]
+
+# ─── Segurança (equivalente ao netlify.toml) ───────────────────────────────────
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), camera=(), microphone=(), payment=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://educarepedagogia.com.br https://www.google-analytics.com; connect-src 'self' https://educarepedagogia.com.br https://www.google-analytics.com https://analytics.google.com; frame-src https://educarepedagogia.com.br; font-src 'self' data:; object-src 'none'; worker-src blob:; form-action 'self'; base-uri 'self';"
+</IfModule>
+
+# ─── Cache de assets estáticos ─────────────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # JS e CSS com hash no nome — cache longo
+  <FilesMatch "\.(js|css)$">
+    ExpiresDefault "access plus 1 year"
+    Header append Cache-Control "public, immutable"
+  </FilesMatch>
+  # Fontes
+  <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
+    ExpiresDefault "access plus 1 year"
+    Header append Cache-Control "public, immutable"
+  </FilesMatch>
+  # Imagens
+  <FilesMatch "\.(png|jpg|jpeg|gif|webp|svg|ico)$">
+    ExpiresDefault "access plus 30 days"
+  </FilesMatch>
+  # HTML — nunca cachear (SPA entry point)
+  <FilesMatch "\.html$">
+    ExpiresDefault "access plus 0 seconds"
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ─── Compressão Gzip ────────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json
+  AddOutputFilterByType DEFLATE font/woff font/woff2 image/svg+xml
+</IfModule>

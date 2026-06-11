@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<!--
+  ╔══════════════════════════════════════════════════════════╗
+  ║  TEMPLATE REUTILIZÁVEL — APOSTILA EDUCARE PEDAGOGIA      ║
+  ║  Para criar nova apostila:                               ║
+  ║  1. Defina as variáveis em [CONFIGURAR] abaixo           ║
+  ║  2. Preencha os [PLACEHOLDER] com o conteúdo real        ║
+  ║  3. Duplique os blocos de página conforme necessário     ║
+  ║  4. Gere o PDF via Chrome headless (não use Ctrl+P)      ║
+  ║                                                          ║
+  ║  COMANDO PDF:                                            ║
+  ║  chromium --headless --print-to-pdf="saida.pdf"          ║
+  ║    --print-to-pdf-no-header apostila.html                ║
+  ╚══════════════════════════════════════════════════════════╝
+
+  [CONFIGURAR] — altere apenas esta seção para cada apostila nova:
+  - TITULO_APOSTILA: título principal
+  - SUBTITULO_APOSTILA: frase de benefício
+  - TEMA_APOSTILA: ex. "Educação Inclusiva"
+  - CARGA_HORARIA: ex. "180h"
+  - NUM_CAPITULOS: ex. "7"
+  - PRECO: ex. "77,90"
+  - LINK_CHECKOUT: URL da Eduzz com UTM base
+  - ANO: ex. "2026"
+  - IMAGEM_CAPA: nome do arquivo de foto da capa
+  - IMAGEM_LOGO: nome do arquivo do logo
+  - IMAGEM_FUNDO_ROXO: nome do arquivo do fundo das páginas de oferta
+-->
+<title>[TITULO_APOSTILA] — Educare Pedagogia</title>
+<style>
+/* ─── DESIGN SYSTEM ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+:root{
+  --roxo:#4a1e8a;
+  --roxo-esc:#2d0f5e;
+  --rosa:#e91e8c;
+  --neutro:#f5f3fb;
+  --texto:#1e1e2e;
+  --leve:#5a5a7a;
+  --borda:#e0d7f5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#c8c8c8;color:var(--texto);}
+a{color:inherit;text-decoration:none;}
+
+/* ─── PÁGINA BASE ────────────────────────────────────────── */
+.pg{width:210mm;min-height:297mm;background:#fff;margin:8mm auto;box-shadow:0 4px 24px rgba(0,0,0,.2);position:relative;overflow:hidden;}
+.pg.capa{position:relative;overflow:hidden;color:#fff;background:url('[IMAGEM_CAPA]') center 30%/cover no-repeat;}
+.pg.contra{background:url('[IMAGEM_FUNDO_ROXO]') center/cover no-repeat;}
+
+/* Marca d'água + número de página nas páginas de texto */
+.pg.txt::after{content:'EDUCARE PEDAGOGIA';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-28deg);font-size:50px;font-weight:900;letter-spacing:12px;color:rgba(74,30,138,.04);white-space:nowrap;pointer-events:none;z-index:0;}
+.pg.txt::before{content:attr(data-page);position:absolute;right:18mm;bottom:8mm;font-size:9px;color:rgba(90,90,122,.55);z-index:2;}
+.pg.txt>*{position:relative;z-index:1;}
+
+/* ─── CAPA ───────────────────────────────────────────────── */
+.capa{position:relative;overflow:hidden;color:#fff;}
+.capa-ov{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(20,5,50,.22) 0%,rgba(20,5,50,.18) 25%,rgba(20,5,50,.58) 52%,rgba(20,5,50,.90) 70%,rgba(20,5,50,.97) 82%,rgba(20,5,50,1.00) 100%);z-index:1;}
+.capa>*{color:#fff;}
+.capa-logo-wrap{position:absolute;top:14mm;left:18mm;z-index:3;}
+.capa-logo-wrap img{height:32px;filter:brightness(0) invert(1);}
+.capa-label-wrap{position:absolute;top:14mm;right:18mm;z-index:3;text-align:right;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;opacity:.65;line-height:1.8;}
+.capa-content{position:absolute;bottom:22mm;left:18mm;right:18mm;z-index:3;}
+.capa-footer-bar{position:absolute;bottom:8mm;left:18mm;right:18mm;z-index:3;border-top:1px solid rgba(255,255,255,.18);padding-top:5px;display:flex;justify-content:space-between;align-items:center;font-size:9px;opacity:.6;}
+.capa-tag{background:var(--rosa);display:inline-block;padding:5px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:14px;}
+.capa h1{font-size:36px;font-weight:800;line-height:1.08;margin-bottom:10px;}
+.capa h2{font-size:12.5px;font-weight:400;opacity:.80;line-height:1.6;margin-bottom:18px;max-width:140mm;}
+.capa-badges{display:flex;gap:12px;flex-wrap:wrap;}
+.badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:7px 13px;font-size:10.5px;}
+.badge span{display:block;font-size:19px;font-weight:800;margin-bottom:1px;}
+
+/* ─── DIREITOS AUTORAIS ──────────────────────────────────── */
+.dir{padding:13mm 18mm;background:linear-gradient(135deg,#f7f4ff,#fff);}
+.dir img{height:38px;max-width:180px;width:auto;object-fit:contain;object-position:left;margin-bottom:28px;}
+.dir h2{font-size:24px;font-weight:700;color:var(--roxo);margin-bottom:14px;line-height:1.2;}
+.dir p{font-size:12px;line-height:1.9;color:var(--leve);margin-bottom:10px;}
+.legal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.legal-box{background:#fff;border:1px solid var(--borda);border-radius:8px;padding:12px 14px;}
+.legal-box b{display:block;color:var(--roxo);font-size:10px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px;}
+.legal-box ul{margin-left:16px;}
+.legal-box li{font-size:11.2px;line-height:1.55;color:var(--leve);margin-bottom:5px;}
+.aviso{background:#fff3f8;border-left:4px solid var(--rosa);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:12px;}
+.aviso p{color:var(--texto);font-weight:500;margin:0;font-size:12px;}
+.dir-rodape{margin-top:14px;background:#fff;border:1px solid var(--borda);border-radius:8px;padding:11px 14px;}
+.dir-rodape p{font-size:11px;color:var(--leve);margin:0;}
+
+/* ─── BEM-VINDO ──────────────────────────────────────────── */
+.bv{padding:14mm 18mm 14mm;display:flex;flex-direction:column;justify-content:flex-start;}
+.bv h2{font-size:26px;font-weight:800;color:var(--roxo);margin-bottom:22px;}
+.bv p{font-size:13px;line-height:1.9;margin-bottom:13px;}
+.cit{background:var(--neutro);border-left:4px solid var(--rosa);padding:14px 18px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.75;font-style:italic;margin:18px 0;}
+.ass{margin-top:22px;font-size:12.5px;color:var(--leve);}
+
+/* ─── SUMÁRIO ────────────────────────────────────────────── */
+.sum{padding:13mm 16mm 15mm;background:#fff;}
+.sum h2{font-size:25px;font-weight:800;color:var(--roxo);margin-bottom:8px;padding-bottom:10px;border-bottom:2px solid var(--borda);}
+.sum-intro{font-size:12px;line-height:1.55;color:var(--leve);margin-bottom:14px;max-width:150mm;}
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.sum-card{border:1px solid var(--borda);border-radius:8px;padding:10px 11px;background:#fff;min-height:34mm;}
+.sum-head{display:flex;gap:8px;align-items:center;margin-bottom:7px;}
+.sum-num{width:25px;height:25px;border-radius:50%;background:var(--roxo);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex:0 0 auto;}
+.sum-title{font-size:12.2px;font-weight:800;color:var(--texto);line-height:1.25;}
+.sum-card p{font-size:10.3px;line-height:1.48;color:var(--leve);margin:0;}
+.sum-ref{grid-column:1 / -1;min-height:auto;display:flex;align-items:center;justify-content:space-between;}
+.sum-ref .sum-title{font-size:12px;}
+
+/* ─── ABERTURA DE CAPÍTULO ───────────────────────────────── */
+.cc{padding:20mm 18mm;background:linear-gradient(140deg,var(--roxo-esc),var(--roxo));color:#fff;display:flex;flex-direction:column;justify-content:center;min-height:297mm;}
+.cc-num{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;opacity:.55;margin-bottom:12px;}
+.cc h2{font-size:34px;font-weight:800;line-height:1.15;margin-bottom:18px;color:#fff;}
+.cc-linha{width:60px;height:5px;background:var(--rosa);border-radius:3px;margin:18px 0;}
+.cc>p{font-size:13.5px;line-height:1.8;opacity:.8;max-width:130mm;color:#fff;}
+.cc-logo{position:absolute;bottom:14mm;right:18mm;}
+.cc-logo img{height:26px;filter:brightness(0) invert(1);opacity:.35;}
+
+/* ─── PÁGINA DE CONTEÚDO (MIOLO) ─────────────────────────── */
+.pg.txt{padding:14mm 18mm 24mm;}
+.pg.txt h3{font-size:17px;font-weight:700;color:var(--roxo);margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--borda);}
+.pg.txt h3:first-child{margin-top:0;}
+.pg.txt h4{font-size:12px;font-weight:700;color:var(--roxo);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.5px;}
+.pg.txt p{font-size:12.3px;line-height:1.82;color:var(--texto);margin-bottom:11px;text-align:justify;}
+.pg.txt .rp{display:none;}
+
+/* Blocos especiais */
+.d{background:var(--neutro);border-left:4px solid var(--roxo);padding:12px 16px;border-radius:0 8px 8px 0;margin:15px 0;font-size:12.5px;line-height:1.8;}
+.dc{background:#fff8e1;border-left:4px solid #f59f00;padding:12px 16px;border-radius:0 8px 8px 0;margin:15px 0;font-size:12.5px;line-height:1.8;}
+.de{background:#f0faf3;border-left:4px solid #2e7d52;padding:12px 16px;border-radius:0 8px 8px 0;margin:15px 0;font-size:12.5px;line-height:1.8;}
+.d b,.dc b,.de b{display:block;margin-bottom:4px;font-size:10px;letter-spacing:1px;text-transform:uppercase;}
+.d b{color:var(--leve);}
+.dc b{color:#b37a00;}
+.de b{color:#2e7d52;}
+
+.obj{background:#f5f3fb;border:1px solid var(--borda);border-radius:8px;padding:13px 16px;margin:14px 0 16px;font-size:12.2px;line-height:1.65;color:var(--texto);}
+.obj b{display:block;color:var(--roxo);font-size:11px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+
+.check{background:#f0faf3;border:1px solid #bfe4ca;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:12.2px;line-height:1.65;color:var(--texto);}
+.check b{display:block;color:#2e7d52;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+
+.pergunta{background:#fff8e1;border-left:4px solid #f59f00;border-radius:0 8px 8px 0;padding:11px 14px;margin:14px 0;font-size:12px;line-height:1.7;}
+
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+.mini>div{background:#fff;border:1px solid var(--borda);border-radius:8px;padding:11px 12px;font-size:11.5px;line-height:1.55;}
+.mini strong{display:block;color:var(--roxo);margin-bottom:4px;}
+
+.case-card{border:1px solid var(--borda);border-radius:8px;padding:12px 14px;background:#fff;margin:10px 0;}
+.case-card b{display:block;color:var(--roxo);font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;}
+.case-card p{font-size:11.7px;line-height:1.62;text-align:left;margin-bottom:7px;}
+
+/* Listas */
+ul.li{margin:12px 0 12px 18px;}
+ul.li li{font-size:12.3px;line-height:1.78;margin-bottom:6px;padding-left:4px;}
+ul.li li::marker{color:var(--rosa);}
+
+/* Tabelas */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:11.2px;table-layout:fixed;overflow-wrap:anywhere;}
+th{background:var(--roxo);color:#fff;padding:9px 11px;text-align:left;font-weight:600;}
+td{padding:7px 10px;border-bottom:1px solid var(--borda);vertical-align:top;line-height:1.5;}
+tr:nth-child(even) td{background:var(--neutro);}
+
+/* ─── REFERÊNCIAS ────────────────────────────────────────── */
+.ref{padding:20mm 18mm 22mm;}
+.ref h2{font-size:22px;font-weight:800;color:var(--roxo);margin-bottom:22px;padding-bottom:10px;border-bottom:2px solid var(--borda);}
+.ref p{font-size:11.5px;line-height:1.85;margin-bottom:11px;text-indent:-18px;padding-left:18px;}
+
+/* ─── RODAPÉ ─────────────────────────────────────────────── */
+.rp{position:absolute;bottom:9mm;left:18mm;right:18mm;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:var(--leve);border-top:1px solid var(--borda);padding-top:5px;}
+
+/* ─── OFERTA (fundo roxo) ────────────────────────────────── */
+.offer-page{background:url('[IMAGEM_FUNDO_ROXO]') center/cover no-repeat;color:#fff;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:297mm;overflow:hidden;}
+.contra-ov{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(28,8,65,.66);z-index:1;}
+.offer-page .contra-ov{background:rgba(28,8,65,.66);}
+.offer-top{padding:12mm 18mm 0;width:100%;display:flex;justify-content:center;position:relative;z-index:2;}
+.offer-top img{height:36px;filter:brightness(0) invert(1);}
+.offer-mid{position:relative;z-index:2;padding:6mm 14mm;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+.offer-kicker{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);padding:5px 18px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:1.4px;margin-bottom:15px;display:inline-block;}
+.offer-mid h2{font-size:28px;font-weight:800;line-height:1.15;margin-bottom:9px;color:#fff;}
+.offer-mid>p{font-size:12.2px;line-height:1.65;opacity:.9;max-width:128mm;color:#fff;margin-bottom:12px;}
+.offer-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:128mm;margin:10px 0 14px;}
+.offer-list div{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:9px 10px;text-align:left;font-size:10.3px;line-height:1.4;color:#fff;}
+.offer-list strong{display:block;color:#fff;font-size:10.5px;margin-bottom:3px;}
+.offer-cert{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.28);border-radius:14px;padding:16px 22px;margin:8px 0 12px;width:126mm;text-align:center;}
+.cert-t{font-size:8.5px;letter-spacing:2px;text-transform:uppercase;opacity:.6;margin-bottom:8px;}
+.cert-n{font-size:14px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:8px;margin-bottom:8px;}
+.cert-c{font-size:11px;opacity:.88;margin-bottom:4px;}
+.cert-h{font-size:10px;opacity:.68;}
+.offer-price-label{font-size:10.5px;opacity:.72;margin-top:2px;}
+.offer-price{font-size:36px;font-weight:800;margin:2px 0;}
+.offer-price small{font-size:14px;font-weight:400;opacity:.78;}
+.offer-cta{text-decoration:none;cursor:pointer;background:var(--rosa);color:#fff;padding:12px 34px;border-radius:28px;font-size:13px;font-weight:800;margin:8px 0 9px;display:inline-block;box-shadow:0 6px 20px rgba(233,30,140,.45);}
+.offer-note{font-size:9.5px;opacity:.68;}
+.offer-bot{position:relative;z-index:2;padding:8mm 18mm;border-top:1px solid rgba(255,255,255,.15);display:flex;justify-content:space-between;align-items:center;font-size:9px;opacity:.58;width:100%;}
+
+/* ─── CONTRACAPA ─────────────────────────────────────────── */
+.contra{padding:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;color:#fff;min-height:297mm;}
+.contra>*{position:relative;z-index:2;}
+.contra-top{padding:12mm 18mm 0;width:100%;display:flex;justify-content:center;}
+.contra-top img{height:38px;filter:brightness(0) invert(1);}
+.contra-mid{padding:6mm 14mm;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+.contra-tag{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);padding:5px 18px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1.5px;margin-bottom:18px;display:inline-block;}
+.contra-mid h2{font-size:27px;font-weight:800;line-height:1.2;margin-bottom:10px;color:#fff;}
+.contra-mid>p{font-size:12px;line-height:1.7;opacity:.82;max-width:118mm;color:#fff;margin-bottom:0;}
+.cert{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.28);border-radius:14px;padding:20px 26px;margin:20px 0;width:126mm;text-align:center;}
+.cert-selos{display:flex;justify-content:center;gap:22px;}
+.cert-s{text-align:center;font-size:9px;opacity:.65;}
+.cert-s div{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.contra-val{font-size:11px;opacity:.65;margin-bottom:5px;}
+.contra-preco{font-size:37px;font-weight:800;margin-bottom:3px;}
+.contra-preco small{font-size:14px;font-weight:400;opacity:.75;vertical-align:middle;}
+.contra-cta{text-decoration:none;cursor:pointer;background:var(--rosa);color:#fff;padding:12px 34px;border-radius:28px;font-size:13px;font-weight:700;margin:14px 0;display:inline-block;box-shadow:0 6px 20px rgba(233,30,140,.45);}
+.contra-nota{font-size:10px;opacity:.6;}
+.contra-bot{padding:8mm 18mm;border-top:1px solid rgba(255,255,255,.15);display:flex;justify-content:space-between;align-items:center;font-size:9px;opacity:.55;width:100%;}
+
+/* ─── IMPRESSÃO ──────────────────────────────────────────── */
+@page{size:A4;margin:0;}
+@media print{
+  body{background:#fff;}
+  .pg{margin:0;box-shadow:none;width:210mm;height:297mm;min-height:297mm;page-break-after:always;break-after:page;}
+  .pg:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+
+/* ─── ANTI-QUEBRA (evita corte de elementos) ─────────────── */
+tr, table, .d, .dc, .de, .obj, .mini, .check, .pergunta, .case-card{break-inside:avoid;}
+h3,h4{break-after:avoid;}
+p,li{orphans:3;widows:3;}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     PÁGINA 1 — CAPA
+     Trocar: [TEMA_APOSTILA], [TITULO_APOSTILA], [SUBTITULO_APOSTILA],
+             [CARGA_HORARIA], [NUM_CAPITULOS], [ANO], [IMAGEM_LOGO]
+     ════════════════════════════════════════════════════════ -->
+<div class="pg capa">
+  <div class="capa-ov"></div>
+  <div class="capa-logo-wrap"><img src="[IMAGEM_LOGO]" alt="Educare Pedagogia"></div>
+  <div class="capa-label-wrap">Material de Apoio<br>ao Curso &middot; [ANO]</div>
+  <div class="capa-content">
+    <div class="capa-tag">[TEMA_APOSTILA]</div>
+    <h1>[TITULO_APOSTILA]</h1>
+    <h2>[SUBTITULO_APOSTILA]</h2>
+    <div class="capa-badges">
+      <div class="badge"><span>[CARGA_HORARIA]</span>Carga horária</div>
+      <div class="badge"><span>[NUM_CAPITULOS]</span>Capítulos</div>
+      <div class="badge"><span>ABED</span>Reconhecido</div>
+    </div>
+  </div>
+  <div class="capa-footer-bar">
+    <span>educarepedagogia.com.br</span>
+    <span>&copy; [ANO] Educare Pedagogia &mdash; Todos os direitos reservados</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PÁGINA 2 — DIREITOS AUTORAIS
+     Trocar: [TITULO_APOSTILA], [ANO]
+     ════════════════════════════════════════════════════════ -->
+<div class="pg dir">
+  <img src="[IMAGEM_LOGO]" alt="Educare Pedagogia">
+  <h2>Informações e direitos de uso</h2>
+  <p><strong>Título:</strong> [TITULO_APOSTILA]</p>
+  <p><strong>Organização:</strong> Educare Pedagogia &middot; educarepedagogia.com.br &middot; Ano: [ANO]</p>
+  <p>Este material foi produzido pela equipe pedagógica da Educare Pedagogia como apoio formativo para professoras e profissionais da educação.</p>
+  <div class="legal-grid">
+    <div class="legal-box">
+      <b>Uso permitido</b>
+      <ul>
+        <li>Estudar o material individualmente.</li>
+        <li>Imprimir para uso pessoal e pedagógico.</li>
+        <li>Compartilhar o arquivo preservando a autoria e a integridade.</li>
+      </ul>
+    </div>
+    <div class="legal-box">
+      <b>Uso não permitido</b>
+      <ul>
+        <li>Vender, revender ou incluir este PDF em pacotes comerciais.</li>
+        <li>Remover logotipo, créditos, links ou identificação da Educare.</li>
+        <li>Alterar o conteúdo e redistribuir como material próprio.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="aviso">
+    <p>&#9888;&#65039; <strong>Importante:</strong> este material é educativo e não substitui avaliação individual, orientação da equipe escolar, atendimento especializado ou normas da sua rede de ensino.</p>
+  </div>
+  <div class="dir-rodape">
+    <p><strong>Contato oficial:</strong> contato@educarepedagogia.com.br &middot; educarepedagogia.com.br</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PÁGINA 3 — OFERTA (início)
+     Trocar: [TITULO_APOSTILA], [PRECO], [LINK_CHECKOUT]
+     Não esquecer: utm_content=oferta-inicio
+     ════════════════════════════════════════════════════════ -->
+<div class="pg offer-page" id="oferta-inicio">
+  <div class="contra-ov"></div>
+  <div class="offer-top"><img src="[IMAGEM_LOGO]" alt="Educare Pedagogia"></div>
+  <div class="offer-mid">
+    <div class="offer-kicker">CURSO COMPLETO COM CERTIFICADO ABED</div>
+    <h2>Quer sair da teoria<br>com materiais prontos?</h2>
+    <p>Continue no curso completo de [TITULO_APOSTILA] e tenha acesso à apostila, materiais complementares para aplicar em sala, avaliação e certificado de conclusão reconhecido pela ABED.</p>
+    <div class="offer-list">
+      <div><strong>Apostila completa</strong>Base teórica organizada para estudar no seu ritmo.</div>
+      <div><strong>Materiais complementares</strong>Modelos, checklists e fichas para adaptar.</div>
+      <div><strong>Avaliação online</strong>Etapa de conclusão para emissão do certificado.</div>
+      <div><strong>Certificado [CARGA_HORARIA]</strong>Documento digital para fortalecer sua formação.</div>
+    </div>
+    <div class="offer-cert">
+      <div class="cert-t">Certificado de Conclusão</div>
+      <div class="cert-n">Maria da Silva</div>
+      <div class="cert-c">[TITULO_APOSTILA]</div>
+      <div class="cert-h">Carga horária: [CARGA_HORARIA] &middot; Reconhecido pela ABED</div>
+    </div>
+    <div class="offer-price-label">Investimento especial para quem veio desta apostila</div>
+    <div class="offer-price"><small>R$</small> [PRECO]</div>
+    <a href="[LINK_CHECKOUT]&utm_content=oferta-inicio" class="offer-cta">Quero acessar o curso &rarr;</a>
+    <div class="offer-note">Garantia de 7 dias &middot; Acesso imediato &middot; Pagamento único</div>
+  </div>
+  <div class="offer-bot">
+    <span>educarepedagogia.com.br</span>
+    <span>&copy; [ANO] Educare Pedagogia</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PÁGINA 4 — BEM-VINDO
+     Trocar: [TEXTO_BOAS_VINDAS_P1], [TEXTO_BOAS_VINDAS_P2],
+             [CITACAO], [ASSINATURA]
+     ════════════════════════════════════════════════════════ -->
+<div class="pg bv" id="boas-vindas">
+  <h2>Bem-vinda, professora.</h2>
+  <p>[TEXTO_BOAS_VINDAS_P1]</p>
+  <p>[TEXTO_BOAS_VINDAS_P2]</p>
+  <div class="cit">"[CITACAO]"</div>
+  <p>[TEXTO_BOAS_VINDAS_P3]</p>
+  <div class="ass">
+    Com carinho,<br>
+    <strong>[ASSINATURA]</strong><br>
+    Equipe Educare Pedagogia
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PÁGINA 5 — SUMÁRIO
+     Adicionar/remover .sum-card conforme número de capítulos.
+     Para apostilas com mais de 8 capítulos, duplicar esta página.
+     ════════════════════════════════════════════════════════ -->
+<div class="pg sum" id="sumario">
+  <h2>Sumário</h2>
+  <p class="sum-intro">Navegue pelos capítulos ou leia do início ao fim. Cada seção foi pensada para ser aplicada diretamente na sua sala de aula.</p>
+  <div class="sum-grid">
+    <!-- Capítulo 1 -->
+    <div class="sum-card">
+      <div class="sum-head">
+        <div class="sum-num">1</div>
+        <div class="sum-title">[TITULO_CAP_1]</div>
+      </div>
+      <p>[RESUMO_CAP_1]</p>
+    </div>
+    <!-- Capítulo 2 -->
+    <div class="sum-card">
+      <div class="sum-head">
+        <div class="sum-num">2</div>
+        <div class="sum-title">[TITULO_CAP_2]</div>
+      </div>
+      <p>[RESUMO_CAP_2]</p>
+    </div>
+    <!-- Capítulo 3 -->
+    <div class="sum-card">
+      <div class="sum-head">
+        <div class="sum-num">3</div>
+        <div class="sum-title">[TITULO_CAP_3]</div>
+      </div>
+      <p>[RESUMO_CAP_3]</p>
+    </div>
+    <!-- Capítulo 4 -->
+    <div class="sum-card">
+      <div class="sum-head">
+        <div class="sum-num">4</div>
+        <div class="sum-title">[TITULO_CAP_4]</div>
+      </div>
+      <p>[RESUMO_CAP_4]</p>
+    </div>
+    <!-- Capítulo 5 -->
+    <div class="sum-card">
+      <div class="sum-head">
+        <div class="sum-num">5</div>
+        <div class="sum-title">[TITULO_CAP_5]</div>
+      </div>
+      <p>[RESUMO_CAP_5]</p>
+    </div>
+    <!-- Capítulo 6 -->
+    <div class="sum-card">
+      <div class="sum-head">
+        <div class="sum-num">6</div>
+        <div class="sum-title">[TITULO_CAP_6]</div>
+      </div>
+      <p>[RESUMO_CAP_6]</p>
+    </div>
+    <!-- Capítulo 7 — ajuste o número conforme necessário -->
+    <div class="sum-card">
+      <div class="sum-head">
+        <div class="sum-num">7</div>
+        <div class="sum-title">[TITULO_CAP_7]</div>
+      </div>
+      <p>[RESUMO_CAP_7]</p>
+    </div>
+    <!-- Referências -->
+    <div class="sum-card sum-ref">
+      <div class="sum-head">
+        <div class="sum-num" style="background:var(--leve);">R</div>
+        <div class="sum-title">Referências Bibliográficas</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     BLOCO REUTILIZÁVEL: ABERTURA DE CAPÍTULO
+     Copiar este bloco inteiro para cada capítulo.
+     Trocar: [N], [TITULO_CAP_N], [INTRO_CAP_N]
+     ════════════════════════════════════════════════════════ -->
+<div class="pg cc" id="cap1">
+  <div class="cc-num">Capítulo 01</div>
+  <h2>[TITULO_CAP_1]</h2>
+  <div class="cc-linha"></div>
+  <p>[INTRO_CAP_1 — 2 a 3 frases apresentando o tema do capítulo]</p>
+  <div class="cc-logo"><img src="[IMAGEM_LOGO]" alt="Educare"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     BLOCO REUTILIZÁVEL: PÁGINA DE CONTEÚDO
+     Copiar quantas vezes precisar por capítulo.
+     Trocar: data-page="N" (número sequencial),
+             [TITULO_SECAO], [CONTEUDO]
+     Blocos disponíveis dentro do .pg.txt:
+       <h3> — título de seção
+       <h4> — subtítulo de subseção
+       <p>  — parágrafo
+       <ul class="li"><li> — lista com marcador rosa
+       <div class="d"> — destaque roxo (definição/conceito)
+       <div class="dc"> — destaque amarelo (cuidado/atenção)
+       <div class="de"> — destaque verde (exemplo/prática)
+       <div class="obj"> — objetivos de aprendizagem
+       <div class="check"> — checklist/verificação
+       <div class="pergunta"> — pergunta de diagnóstico
+       <div class="mini"> — grid 2 colunas de cards pequenos
+       <div class="case-card"> — caso integrador
+       <table><thead><tr><th>/<tbody><tr><td> — tabela
+     ════════════════════════════════════════════════════════ -->
+<div class="pg txt" data-page="1">
+  <h3>[TITULO_SECAO_1_1]</h3>
+  <p>[CONTEUDO_PARAGRAFO]</p>
+  <p>[CONTEUDO_PARAGRAFO]</p>
+
+  <div class="d">
+    <b>Conceito</b>
+    [DEFINICAO_OU_CONCEITO_CHAVE]
+  </div>
+
+  <h4>[SUBTITULO_SUBSECAO]</h4>
+  <p>[CONTEUDO_PARAGRAFO]</p>
+  <ul class="li">
+    <li>[ITEM_1]</li>
+    <li>[ITEM_2]</li>
+    <li>[ITEM_3]</li>
+  </ul>
+
+  <div class="dc">
+    <b>Atenção</b>
+    [ALERTA_OU_CUIDADO]
+  </div>
+</div>
+
+<div class="pg txt" data-page="2">
+  <h3>[TITULO_SECAO_1_2]</h3>
+  <p>[CONTEUDO_PARAGRAFO]</p>
+
+  <div class="de">
+    <b>Na prática</b>
+    [EXEMPLO_DE_APLICACAO_EM_SALA]
+  </div>
+
+  <p>[CONTEUDO_PARAGRAFO]</p>
+
+  <div class="obj">
+    <b>Objetivos desta seção</b>
+    Ao final desta seção, a professora será capaz de:<br>
+    &bull; [OBJETIVO_1]<br>
+    &bull; [OBJETIVO_2]<br>
+    &bull; [OBJETIVO_3]
+  </div>
+
+  <div class="check">
+    <b>Verificação de aplicação</b>
+    &bull; [CRITERIO_1]<br>
+    &bull; [CRITERIO_2]<br>
+    &bull; [CRITERIO_3]
+  </div>
+</div>
+
+<div class="pg txt" data-page="3">
+  <h3>[TITULO_SECAO_COM_TABELA]</h3>
+  <p>[CONTEUDO_PARAGRAFO]</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>[CABECALHO_COL_1]</th>
+        <th>[CABECALHO_COL_2]</th>
+        <th>[CABECALHO_COL_3]</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>[DADO_1_1]</td><td>[DADO_1_2]</td><td>[DADO_1_3]</td></tr>
+      <tr><td>[DADO_2_1]</td><td>[DADO_2_2]</td><td>[DADO_2_3]</td></tr>
+      <tr><td>[DADO_3_1]</td><td>[DADO_3_2]</td><td>[DADO_3_3]</td></tr>
+    </tbody>
+  </table>
+
+  <div class="pergunta">
+    <strong>Diagnóstico:</strong> [PERGUNTA_REFLEXIVA_PARA_A_PROFESSORA]
+  </div>
+</div>
+
+<!-- REPETIR os blocos .pg.txt acima para cada par de páginas de conteúdo.
+     Lembrar de incrementar data-page="N" a cada nova página de texto.
+     Lembrar de incluir a abertura de capítulo (.pg.cc) antes das páginas de texto de cada capítulo. -->
+
+<!-- ════════════════════════════════════════════════════════
+     PÁGINA — OFERTA DO MEIO (colocar antes do capítulo 5, ou onde fizer sentido)
+     Trocar: [TITULO_APOSTILA], [PRECO], [LINK_CHECKOUT]
+     Não esquecer: utm_content=oferta-meio
+     ════════════════════════════════════════════════════════ -->
+<div class="pg offer-page" id="oferta-meio">
+  <div class="contra-ov"></div>
+  <div class="offer-top"><img src="[IMAGEM_LOGO]" alt="Educare Pedagogia"></div>
+  <div class="offer-mid">
+    <div class="offer-kicker">CONTINUAR APRENDENDO</div>
+    <h2>Gostou do conteúdo<br>até aqui?</h2>
+    <p>No curso completo você tem tudo isso mais materiais para aplicar amanhã de manhã na sua sala.</p>
+    <div class="offer-list">
+      <div><strong>Apostila completa</strong>Base teórica organizada para estudar no seu ritmo.</div>
+      <div><strong>Materiais complementares</strong>Modelos, checklists e fichas para adaptar.</div>
+      <div><strong>Avaliação online</strong>Etapa de conclusão para emissão do certificado.</div>
+      <div><strong>Certificado [CARGA_HORARIA]</strong>Documento digital para fortalecer sua formação.</div>
+    </div>
+    <div class="offer-price-label">Investimento especial para quem veio desta apostila</div>
+    <div class="offer-price"><small>R$</small> [PRECO]</div>
+    <a href="[LINK_CHECKOUT]&utm_content=oferta-meio" class="offer-cta">Quero acessar o curso &rarr;</a>
+    <div class="offer-note">Garantia de 7 dias &middot; Acesso imediato &middot; Pagamento único</div>
+  </div>
+  <div class="offer-bot">
+    <span>educarepedagogia.com.br</span>
+    <span>&copy; [ANO] Educare Pedagogia</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PÁGINA — REFERÊNCIAS BIBLIOGRÁFICAS
+     Formato ABNT: sobrenome em maiúsculas, título em negrito ou itálico.
+     ════════════════════════════════════════════════════════ -->
+<div class="pg ref" id="referencias">
+  <h2>Referências Bibliográficas</h2>
+  <p>[SOBRENOME], [Nome]. <em>[Título da obra]</em>. [Cidade]: [Editora], [Ano].</p>
+  <p>[SOBRENOME], [Nome]. <em>[Título da obra]</em>. [Cidade]: [Editora], [Ano].</p>
+  <p>[SOBRENOME], [Nome]. <em>[Título da obra]</em>. [Cidade]: [Editora], [Ano].</p>
+  <!-- adicionar referências conforme necessário -->
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     ÚLTIMA PÁGINA — CONTRACAPA / OFERTA FINAL
+     Trocar: [TITULO_APOSTILA], [PRECO], [LINK_CHECKOUT]
+     Não esquecer: utm_content=oferta-final
+     ════════════════════════════════════════════════════════ -->
+<div class="pg contra" id="oferta-final">
+  <div class="contra-ov"></div>
+  <div class="contra-top"><img src="[IMAGEM_LOGO]" alt="Educare Pedagogia"></div>
+  <div class="contra-mid">
+    <div class="contra-tag">CURSO COMPLETO COM CERTIFICADO ABED</div>
+    <h2>Pronta para dar<br>o próximo passo?</h2>
+    <p>Acesse o curso completo, obtenha seu certificado de [CARGA_HORARIA] reconhecido pela ABED e leve materiais prontos para a sua sala de aula.</p>
+    <div class="cert">
+      <div class="cert-t">Certificado de Conclusão</div>
+      <div class="cert-n">Maria da Silva</div>
+      <div class="cert-c">[TITULO_APOSTILA]</div>
+      <div class="cert-h">Carga horária: [CARGA_HORARIA] &middot; Reconhecido pela ABED</div>
+      <div class="cert-selos">
+        <div class="cert-s"><div>&#127891;</div>Certificado</div>
+        <div class="cert-s"><div>&#9989;</div>ABED</div>
+        <div class="cert-s"><div>&#128196;</div>Digital</div>
+      </div>
+    </div>
+    <div class="contra-val">Investimento especial para quem veio desta apostila</div>
+    <div class="contra-preco"><small>R$</small> [PRECO]</div>
+    <a href="[LINK_CHECKOUT]&utm_content=oferta-final" class="contra-cta">Quero acessar o curso &rarr;</a>
+    <div class="contra-nota">Garantia de 7 dias &middot; Acesso imediato &middot; Pagamento único</div>
+  </div>
+  <div class="contra-bot">
+    <span>educarepedagogia.com.br</span>
+    <span>contato@educarepedagogia.com.br</span>
+    <span>&copy; [ANO] Educare Pedagogia</span>
+  </div>
+</div>
+
+</body>
+</html>

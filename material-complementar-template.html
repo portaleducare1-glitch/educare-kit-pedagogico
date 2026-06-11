@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<!--
+  TEMPLATE — MATERIAL COMPLEMENTAR EDUCARE
+  ─────────────────────────────────────────
+  Para cada material novo:
+  1. Copiar este arquivo e renomear: material-[nome].html
+  2. Preencher os [PLACEHOLDERS] abaixo
+  3. Escolher o layout da página de conteúdo (exemplos no body)
+  4. Deletar os layouts que não forem usar
+  5. Gerar PDF via Chrome headless quando pronto
+
+  [CONFIGURAR]:
+  - TITULO_MATERIAL: ex. "Checklist de Barreiras da Sala de Aula"
+  - NOME_CURSO: ex. "Tecnologias Assistivas na Educação Inclusiva"
+  - LINK_CHECKOUT: URL com UTM base
+  - ANO: ex. "2026"
+  - IMAGEM_LOGO: nome do arquivo do logo
+-->
+<title>[TITULO_MATERIAL] — Educare Pedagogia</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+:root{
+  --roxo:#4a1e8a;--roxo-esc:#2d0f5e;--rosa:#e91e8c;
+  --neutro:#f5f3fb;--texto:#1e1e2e;--leve:#5a5a7a;--borda:#e0d7f5;
+  --verde:#2e7d52;--verde-bg:#f0faf3;--verde-borda:#bfe4ca;
+  --amarelo:#f59f00;--amarelo-bg:#fff8e1;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#c8c8c8;color:var(--texto);}
+
+/* Página base */
+.pg{width:210mm;min-height:297mm;background:#fff;margin:8mm auto;box-shadow:0 4px 24px rgba(0,0,0,.2);position:relative;overflow:hidden;}
+
+/* Cabeçalho padrão de material */
+.mat-header{background:linear-gradient(135deg,var(--roxo-esc),var(--roxo));color:#fff;padding:12mm 18mm 10mm;position:relative;}
+.mat-header img{height:26px;filter:brightness(0) invert(1);margin-bottom:14px;display:block;}
+.mat-tag{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);display:inline-block;padding:3px 12px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.mat-header h1{font-size:20px;font-weight:800;line-height:1.2;margin-bottom:5px;}
+.mat-header p{font-size:10.5px;opacity:.75;line-height:1.5;}
+
+/* Rodapé padrão */
+.mat-footer{position:absolute;bottom:8mm;left:18mm;right:18mm;display:flex;justify-content:space-between;align-items:center;font-size:8.5px;color:var(--leve);border-top:1px solid var(--borda);padding-top:5px;}
+
+/* Conteúdo */
+.mat-body{padding:10mm 18mm 22mm;}
+
+/* ── LAYOUT 1: CHECKLIST ─────────────────────────────────── */
+.cl-section{margin-bottom:16px;}
+.cl-section h3{font-size:12px;font-weight:700;color:var(--roxo);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;padding-bottom:4px;border-bottom:1.5px solid var(--borda);}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px dashed var(--borda);}
+.cl-box{width:16px;height:16px;border:2px solid var(--roxo);border-radius:3px;flex-shrink:0;margin-top:1px;}
+.cl-item p{font-size:11.5px;line-height:1.5;color:var(--texto);}
+.cl-item small{display:block;font-size:10px;color:var(--leve);margin-top:2px;}
+.cl-obs{background:var(--neutro);border-left:3px solid var(--rosa);padding:10px 13px;border-radius:0 6px 6px 0;margin-top:8px;font-size:11px;line-height:1.55;color:var(--leve);}
+
+/* ── LAYOUT 2: PRANCHA / GRID DE CARDS ───────────────────── */
+.prancha-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0;}
+.prancha-card{border:1.5px solid var(--borda);border-radius:8px;padding:10px;text-align:center;min-height:36mm;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
+.prancha-card .icone{width:36px;height:36px;background:var(--neutro);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.prancha-card p{font-size:10.5px;font-weight:600;color:var(--texto);line-height:1.3;}
+.prancha-card small{font-size:9.5px;color:var(--leve);line-height:1.3;}
+
+/* ── LAYOUT 3: FICHA DE REGISTRO ─────────────────────────── */
+.ficha-field{margin-bottom:12px;}
+.ficha-field label{display:block;font-size:9.5px;font-weight:700;color:var(--roxo);text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px;}
+.ficha-line{border:none;border-bottom:1.5px solid var(--borda);width:100%;height:22px;display:block;}
+.ficha-box{border:1.5px solid var(--borda);border-radius:6px;width:100%;height:40px;display:block;}
+.ficha-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.ficha-tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* ── LAYOUT 4: ROTEIRO SEQUENCIAL ────────────────────────── */
+.passo{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.passo-num{width:28px;height:28px;border-radius:50%;background:var(--roxo);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.passo-body{flex:1;}
+.passo-body h4{font-size:12.5px;font-weight:700;color:var(--texto);margin-bottom:3px;}
+.passo-body p{font-size:11.5px;line-height:1.55;color:var(--leve);}
+.passo-dica{background:var(--amarelo-bg);border-left:3px solid var(--amarelo);padding:8px 11px;border-radius:0 6px 6px 0;margin-top:6px;font-size:10.5px;line-height:1.5;}
+
+/* ── BLOCO DE OFERTA SIMPLES (rodapé da última página) ───── */
+.mat-oferta{background:linear-gradient(135deg,var(--roxo-esc),var(--roxo));color:#fff;padding:14px 18px;border-radius:8px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mat-oferta p{font-size:11px;line-height:1.5;opacity:.9;flex:1;}
+.mat-oferta a{background:var(--rosa);color:#fff;padding:8px 18px;border-radius:20px;font-size:10.5px;font-weight:700;text-decoration:none;white-space:nowrap;box-shadow:0 4px 12px rgba(233,30,140,.4);}
+
+@page{size:A4;margin:0;}
+@media print{
+  body{background:#fff;}
+  .pg{margin:0;box-shadow:none;width:210mm;height:297mm;min-height:297mm;page-break-after:always;break-after:page;}
+  .pg:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+.cl-section,.passo,.prancha-card,.ficha-field{break-inside:avoid;}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     EXEMPLO A — CHECKLIST
+     ════════════════════════════════════════════ -->
+<div class="pg">
+  <div class="mat-header">
+    <img src="[IMAGEM_LOGO]" alt="Educare Pedagogia">
+    <div class="mat-tag">Material Complementar · [NOME_CURSO]</div>
+    <h1>[TITULO_MATERIAL]</h1>
+    <p>Use este checklist para identificar as principais barreiras antes de planejar adaptações.</p>
+  </div>
+  <div class="mat-body">
+
+    <div class="cl-section">
+      <h3>[CATEGORIA_1]</h3>
+      <div class="cl-item"><div class="cl-box"></div><p>[ITEM_1]<small>[DICA_OPCIONAL]</small></p></div>
+      <div class="cl-item"><div class="cl-box"></div><p>[ITEM_2]</p></div>
+      <div class="cl-item"><div class="cl-box"></div><p>[ITEM_3]</p></div>
+    </div>
+
+    <div class="cl-section">
+      <h3>[CATEGORIA_2]</h3>
+      <div class="cl-item"><div class="cl-box"></div><p>[ITEM_4]</p></div>
+      <div class="cl-item"><div class="cl-box"></div><p>[ITEM_5]</p></div>
+      <div class="cl-item"><div class="cl-box"></div><p>[ITEM_6]</p></div>
+    </div>
+
+    <div class="cl-obs">[OBSERVACAO_OU_ORIENTACAO_DE_USO]</div>
+
+    <div class="mat-oferta">
+      <p>Quer mais materiais como este? Acesse o curso completo com certificado de [CARGA_HORARIA] reconhecido pela ABED.</p>
+      <a href="[LINK_CHECKOUT]&utm_content=material-[NOME_MATERIAL]">Ver curso &rarr;</a>
+    </div>
+
+  </div>
+  <div class="mat-footer">
+    <span>educarepedagogia.com.br</span>
+    <span>[TITULO_MATERIAL] &middot; [NOME_CURSO]</span>
+    <span>&copy; [ANO] Educare Pedagogia</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     EXEMPLO B — PRANCHA / GRID DE PICTOGRAMAS
+     Usar para: prancha de CAA, banco de recursos,
+     cards visuais de rotina
+     ════════════════════════════════════════════ -->
+<div class="pg">
+  <div class="mat-header">
+    <img src="[IMAGEM_LOGO]" alt="Educare Pedagogia">
+    <div class="mat-tag">Material Complementar · [NOME_CURSO]</div>
+    <h1>[TITULO_MATERIAL]</h1>
+    <p>[INSTRUCAO_DE_USO]</p>
+  </div>
+  <div class="mat-body">
+
+    <div class="prancha-grid">
+      <!-- Substituir emoji por pictograma ARASAAC via CDN quando disponível -->
+      <!-- URL ARASAAC: https://static.arasaac.org/pictograms/[ID]/[ID]_500.png -->
+      <div class="prancha-card"><div class="icone">🙋</div><p>[PALAVRA_1]</p><small>[CONTEXTO_OPCIONAL]</small></div>
+      <div class="prancha-card"><div class="icone">💧</div><p>[PALAVRA_2]</p></div>
+      <div class="prancha-card"><div class="icone">🍽️</div><p>[PALAVRA_3]</p></div>
+      <div class="prancha-card"><div class="icone">🚻</div><p>[PALAVRA_4]</p></div>
+      <div class="prancha-card"><div class="icone">📖</div><p>[PALAVRA_5]</p></div>
+      <div class="prancha-card"><div class="icone">✏️</div><p>[PALAVRA_6]</p></div>
+      <div class="prancha-card"><div class="icone">😊</div><p>[PALAVRA_7]</p></div>
+      <div class="prancha-card"><div class="icone">😔</div><p>[PALAVRA_8]</p></div>
+      <div class="prancha-card"><div class="icone">🆘</div><p>[PALAVRA_9]</p></div>
+    </div>
+
+    <div class="mat-oferta">
+      <p>Acesse o curso completo para aprender a usar esta prancha em sala de aula e obter seu certificado reconhecido pela ABED.</p>
+      <a href="[LINK_CHECKOUT]&utm_content=material-[NOME_MATERIAL]">Ver curso &rarr;</a>
+    </div>
+
+  </div>
+  <div class="mat-footer">
+    <span>educarepedagogia.com.br</span>
+    <span>[TITULO_MATERIAL] &middot; [NOME_CURSO]</span>
+    <span>&copy; [ANO] Educare Pedagogia</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     EXEMPLO C — FICHA DE REGISTRO
+     Usar para: plano de apoio, ficha de
+     acompanhamento, modelo de atividade
+     ════════════════════════════════════════════ -->
+<div class="pg">
+  <div class="mat-header">
+    <img src="[IMAGEM_LOGO]" alt="Educare Pedagogia">
+    <div class="mat-tag">Material Complementar · [NOME_CURSO]</div>
+    <h1>[TITULO_MATERIAL]</h1>
+    <p>[INSTRUCAO_DE_PREENCHIMENTO]</p>
+  </div>
+  <div class="mat-body">
+
+    <div class="ficha-grid">
+      <div class="ficha-field"><label>Nome do aluno</label><div class="ficha-line"></div></div>
+      <div class="ficha-field"><label>Turma / Ano</label><div class="ficha-line"></div></div>
+    </div>
+    <div class="ficha-field"><label>[CAMPO_1]</label><div class="ficha-line"></div></div>
+    <div class="ficha-field"><label>[CAMPO_2]</label><div class="ficha-box"></div></div>
+    <div class="ficha-field"><label>[CAMPO_3]</label><div class="ficha-box"></div></div>
+
+    <div class="ficha-tri" style="margin-top:10px;">
+      <div class="ficha-field"><label>[CAMPO_CURTO_1]</label><div class="ficha-line"></div></div>
+      <div class="ficha-field"><label>[CAMPO_CURTO_2]</label><div class="ficha-line"></div></div>
+      <div class="ficha-field"><label>[CAMPO_CURTO_3]</label><div class="ficha-line"></div></div>
+    </div>
+
+    <div class="mat-oferta" style="margin-top:14px;">
+      <p>Acesse o curso completo e aprenda a preencher e usar esta ficha com seus alunos.</p>
+      <a href="[LINK_CHECKOUT]&utm_content=material-[NOME_MATERIAL]">Ver curso &rarr;</a>
+    </div>
+
+  </div>
+  <div class="mat-footer">
+    <span>educarepedagogia.com.br</span>
+    <span>[TITULO_MATERIAL] &middot; [NOME_CURSO]</span>
+    <span>&copy; [ANO] Educare Pedagogia</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     EXEMPLO D — ROTEIRO SEQUENCIAL
+     Usar para: roteiro visual de aula, passo a
+     passo de adaptação, protocolo de uso
+     ════════════════════════════════════════════ -->
+<div class="pg">
+  <div class="mat-header">
+    <img src="[IMAGEM_LOGO]" alt="Educare Pedagogia">
+    <div class="mat-tag">Material Complementar · [NOME_CURSO]</div>
+    <h1>[TITULO_MATERIAL]</h1>
+    <p>[INSTRUCAO_DE_USO]</p>
+  </div>
+  <div class="mat-body">
+
+    <div class="passo">
+      <div class="passo-num">1</div>
+      <div class="passo-body">
+        <h4>[TITULO_PASSO_1]</h4>
+        <p>[DESCRICAO_PASSO_1]</p>
+        <div class="passo-dica">Dica: [DICA_DO_PASSO_1]</div>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div class="passo-num">2</div>
+      <div class="passo-body">
+        <h4>[TITULO_PASSO_2]</h4>
+        <p>[DESCRICAO_PASSO_2]</p>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div class="passo-num">3</div>
+      <div class="passo-body">
+        <h4>[TITULO_PASSO_3]</h4>
+        <p>[DESCRICAO_PASSO_3]</p>
+      </div>
+    </div>
+
+    <div class="passo">
+      <div class="passo-num">4</div>
+      <div class="passo-body">
+        <h4>[TITULO_PASSO_4]</h4>
+        <p>[DESCRICAO_PASSO_4]</p>
+      </div>
+    </div>
+
+    <div class="mat-oferta">
+      <p>Acesse o curso completo para aprofundar cada etapa e obter seu certificado reconhecido pela ABED.</p>
+      <a href="[LINK_CHECKOUT]&utm_content=material-[NOME_MATERIAL]">Ver curso &rarr;</a>
+    </div>
+
+  </div>
+  <div class="mat-footer">
+    <span>educarepedagogia.com.br</span>
+    <span>[TITULO_MATERIAL] &middot; [NOME_CURSO]</span>
+    <span>&copy; [ANO] Educare Pedagogia</span>
+  </div>
+</div>
+
+</body>
+</html>

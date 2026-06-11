@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deploy · Kit Pedagógico · Educare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #7C5CFC;
+      --purple-light: #EDE9FF;
+      --purple-dark: #5B3FD4;
+      --green: #1a9e5c;
+      --green-light: #e6f7ef;
+      --orange: #f07830;
+      --orange-light: #fff3ec;
+      --red: #e53e3e;
+      --red-light: #fff5f5;
+      --gray-50: #f9f9fb;
+      --gray-100: #f1f0f5;
+      --gray-200: #e2e0ea;
+      --gray-400: #a09bb8;
+      --gray-600: #6b6585;
+      --gray-800: #2d2b3a;
+      --text: #1a1826;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--gray-50);
+      line-height: 1.6;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      background: var(--purple);
+      border-radius: var(--radius);
+      padding: 2rem 2.5rem;
+      color: white;
+      margin-bottom: 2rem;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      padding: 0.25rem 0.875rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .header h1 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.875rem;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 0.9375rem;
+      opacity: 0.85;
+    }
+
+    /* Sections */
+    .section {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title .num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      background: var(--purple-light);
+      color: var(--purple);
+      border-radius: 50%;
+      font-size: 0.8125rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* Info grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 560px) {
+      .info-grid { grid-template-columns: 1fr; }
+    }
+
+    .info-item {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 0.875rem 1rem;
+    }
+
+    .info-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gray-400);
+      margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gray-800);
+    }
+
+    /* Steps */
+    ol.steps {
+      list-style: none;
+      counter-reset: steps;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    ol.steps li {
+      counter-increment: steps;
+      display: flex;
+      gap: 0.875rem;
+      align-items: flex-start;
+    }
+
+    ol.steps li::before {
+      content: counter(steps);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.625rem;
+      height: 1.625rem;
+      background: var(--purple);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.125rem;
+    }
+
+    ol.steps li strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    ol.steps li p {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+
+    ol.steps li .step-body {
+      flex: 1;
+    }
+
+    /* Code */
+    code {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 5px;
+      padding: 0.1em 0.45em;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.8125rem;
+      color: var(--purple-dark);
+    }
+
+    pre {
+      background: var(--gray-800);
+      color: #e2e0ea;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.8125rem;
+      overflow-x: auto;
+      margin-top: 0.625rem;
+      line-height: 1.7;
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    /* Callouts */
+    .callout {
+      border-radius: 8px;
+      padding: 0.875rem 1rem;
+      font-size: 0.875rem;
+      margin-top: 0.75rem;
+      display: flex;
+      gap: 0.625rem;
+      align-items: flex-start;
+    }
+
+    .callout-icon { flex-shrink: 0; font-size: 1rem; }
+
+    .callout-purple {
+      background: var(--purple-light);
+      border: 1px solid #c4b5fd;
+      color: var(--purple-dark);
+    }
+
+    .callout-green {
+      background: var(--green-light);
+      border: 1px solid #6ee7b7;
+      color: #065f46;
+    }
+
+    .callout-orange {
+      background: var(--orange-light);
+      border: 1px solid #fcd34d;
+      color: #92400e;
+    }
+
+    .callout-red {
+      background: var(--red-light);
+      border: 1px solid #feb2b2;
+      color: #742a2a;
+    }
+
+    /* Checklist */
+    ul.checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+
+    ul.checklist li {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.9rem;
+    }
+
+    ul.checklist li::before {
+      content: '';
+      display: block;
+      width: 1.125rem;
+      height: 1.125rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Tag row */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .tag {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--gray-600);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      margin-top: 2.5rem;
+    }
+
+    /* Horizontal rule */
+    hr {
+      border: none;
+      border-top: 1px solid var(--gray-200);
+      margin: 1.25rem 0;
+    }
+
+    p + p { margin-top: 0.5rem; }
+    .mt { margin-top: 0.75rem; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-badge">Deploy · EasyPanel</div>
+    <h1>Kit Pedagógico 5.0</h1>
+    <p>Instruções de publicação no VPS TurboCloud via EasyPanel.<br>
+       Preparado por Eduardo Cavalheiro · ECM Tech &mdash; junho/2026.</p>
+  </div>
+
+  <!-- Visão geral -->
+  <div class="section">
+    <div class="section-title">Visão geral</div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-label">Projeto</div>
+        <div class="info-value">Portal Assistente Pedagógico</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Produto</div>
+        <div class="info-value">Kit Pedagógico 5.0</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">URL prevista</div>
+        <div class="info-value">portal.educarepedagogia.com.br</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Conteúdo</div>
+        <div class="info-value">136 materiais (PDF) &mdash; WordPress CDN</div>
+      </div>
+    </div>
+
+    <p style="font-size:0.9rem; color: var(--gray-600);">
+      Aplicação SPA (React + Vite) totalmente estática. Não requer banco de dados, variáveis de ambiente secretas ou backend próprio. Os PDFs ficam hospedados no WordPress da Educare &mdash; o portal apenas serve o HTML/JS/CSS.
+    </p>
+
+    <div class="tag-row">
+      <span class="tag">React 19</span>
+      <span class="tag">Vite 6</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">Tailwind CSS v4</span>
+      <span class="tag">nginx:alpine</span>
+      <span class="tag">Docker multi-stage</span>
+    </div>
+  </div>
+
+  <!-- Passo 1: GitHub -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span> Criar repositório no GitHub</div>
+
+    <p style="font-size:0.9rem; color: var(--gray-600);">O EasyPanel conecta direto ao GitHub para build automático. Eduardo vai criar o repositório e conceder acesso.</p>
+
+    <div class="callout callout-orange mt">
+      <span class="callout-icon">⚠️</span>
+      <span><strong>Ação do Eduardo:</strong> Criar um repositório <strong>privado</strong> chamado <code>educare-portal</code> na conta <code>portaleducare1-glitch</code>, enviar o código, e adicionar Giovane como colaborador (ou usar deploy key).</span>
+    </div>
+
+    <div class="callout callout-purple mt">
+      <span class="callout-icon">💡</span>
+      <span>O repositório precisa ter <code>Dockerfile</code> e <code>nginx.conf</code> na raiz &mdash; ambos já estão prontos no projeto.</span>
+    </div>
+  </div>
+
+  <!-- Passo 2: Criar serviço -->
+  <div class="section">
+    <div class="section-title"><span class="num">2</span> Criar serviço no EasyPanel</div>
+
+    <ol class="steps">
+      <li>
+        <div class="step-body">
+          <strong>Abrir EasyPanel</strong>
+          <p>Entrar no painel do VPS TurboCloud e ir em <strong>Projetos &rarr; Novo Projeto</strong> (ou dentro de um projeto existente da Educare).</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Adicionar serviço &rarr; App</strong>
+          <p>Selecionar <strong>App</strong> e depois <strong>GitHub</strong> como fonte.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Conectar o repositório</strong>
+          <p>Selecionar a conta <code>portaleducare1-glitch</code> e o repositório <code>educare-portal</code>.<br>Branch: <code>main</code>.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Configurar o build</strong>
+          <p>O EasyPanel detecta o <code>Dockerfile</code> automaticamente. Deixar como <strong>Dockerfile</strong> (não Nixpacks).</p>
+          <pre><code>Build type: Dockerfile
+Dockerfile path: ./Dockerfile
+Build context: . (raiz do projeto)</code></pre>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Porta exposta</strong>
+          <p>Definir porta como <code>80</code> (o nginx escuta na 80).</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Sem variáveis de ambiente</strong>
+          <p>Nenhuma variável de ambiente é necessária. O projeto é 100% estático.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Deploy</strong>
+          <p>Clicar em <strong>Deploy</strong>. O EasyPanel vai clonar o repo, rodar o build Docker (~2 min) e subir o container.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- Passo 3: Domínio -->
+  <div class="section">
+    <div class="section-title"><span class="num">3</span> Configurar domínio e SSL</div>
+
+    <ol class="steps">
+      <li>
+        <div class="step-body">
+          <strong>Adicionar domínio no serviço</strong>
+          <p>Dentro do serviço criado, ir em <strong>Domains &rarr; Add Domain</strong> e inserir:</p>
+          <pre><code>portal.educarepedagogia.com.br</code></pre>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Apontar DNS</strong>
+          <p>No painel de DNS da Educare (provavelmente HostGator ou Cloudflare), criar um registro:</p>
+          <pre><code>Tipo:  A
+Nome:  portal
+Valor: [IP do VPS TurboCloud]
+TTL:   3600</code></pre>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>SSL automático</strong>
+          <p>O EasyPanel usa Traefik com Let's Encrypt. Assim que o DNS propagar (pode levar alguns minutos), o certificado SSL é emitido automaticamente. Nenhuma configuração adicional necessária.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="callout callout-green mt">
+      <span class="callout-icon">✅</span>
+      <span>Após propagação, o portal estará acessível via HTTPS em <strong>portal.educarepedagogia.com.br</strong> com certificado válido.</span>
+    </div>
+
+    <div class="callout callout-orange mt">
+      <span class="callout-icon">⚠️</span>
+      <span><strong>HSTS ativo:</strong> O nginx já envia o header <code>Strict-Transport-Security</code>. Certifique que o SSL esteja funcionando antes do primeiro acesso para evitar que o navegador bloqueie HTTP.</span>
+    </div>
+  </div>
+
+  <!-- Passo 4: CORS WordPress -->
+  <div class="section">
+    <div class="section-title"><span class="num">4</span> Liberar CORS no WordPress (fazer por último)</div>
+
+    <p style="font-size:0.9rem; color: var(--gray-600);">O portal busca os PDFs diretamente do WordPress da Educare. O CORS já está configurado com <code>*</code> (wildcard) para os testes iniciais. Após confirmar a URL definitiva, substituir pelo domínio real.</p>
+
+    <ol class="steps mt">
+      <li>
+        <div class="step-body">
+          <strong>Acessar o WordPress da Educare</strong>
+          <p>Ir em <strong>Code Snippets &rarr; Snippet ID 8</strong> (CORS dos materiais pedagógicos).</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Substituir o wildcard pelo domínio confirmado</strong>
+          <pre><code>// Antes (temporário):
+header('Access-Control-Allow-Origin: *');
+
+// Depois (produção):
+header('Access-Control-Allow-Origin: https://portal.educarepedagogia.com.br');</code></pre>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Salvar e testar</strong>
+          <p>Abrir qualquer material no portal e confirmar que o PDF carrega sem erro no console do navegador.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="callout callout-red mt">
+      <span class="callout-icon">🔒</span>
+      <span><strong>Fazer esse passo por último,</strong> após o domínio estar estável. Trocar antes pode quebrar os testes intermediários.</span>
+    </div>
+  </div>
+
+  <!-- Atualizações futuras -->
+  <div class="section">
+    <div class="section-title"><span class="num">5</span> Como fazer atualizações no futuro</div>
+
+    <p style="font-size:0.9rem; color: var(--gray-600);">Qualquer alteração no código (novos materiais, ajustes de interface, etc.) segue esse fluxo:</p>
+
+    <ol class="steps mt">
+      <li>
+        <div class="step-body">
+          <strong>Eduardo faz push para a branch <code>main</code></strong>
+          <p>O EasyPanel detecta automaticamente e inicia o rebuild (se webhook estiver configurado).</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Ou acionar manualmente</strong>
+          <p>No painel do serviço, clicar em <strong>Deploy</strong> para forçar um redeploy com a versão mais recente do GitHub.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="callout callout-purple mt">
+      <span class="callout-icon">⚡</span>
+      <span>O build leva aproximadamente <strong>2 a 3 minutos</strong>. O portal fica indisponível por alguns segundos durante a troca de container.</span>
+    </div>
+  </div>
+
+  <!-- Informações técnicas -->
+  <div class="section">
+    <div class="section-title">Informações técnicas</div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-label">Porta interna</div>
+        <div class="info-value">80 (nginx)</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Build time estimado</div>
+        <div class="info-value">~2 a 3 minutos</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Imagem base</div>
+        <div class="info-value">node:20-alpine + nginx:alpine</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Tamanho do bundle</div>
+        <div class="info-value">~432 KB (gzip)</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Variáveis de ambiente</div>
+        <div class="info-value">Nenhuma necessaria</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Banco de dados</div>
+        <div class="info-value">Nenhum (SPA estatico)</div>
+      </div>
+    </div>
+
+    <hr>
+
+    <p style="font-size:0.875rem; font-weight:600; color:var(--gray-800); margin-bottom:0.5rem;">Headers de segurança inclusos (nginx)</p>
+    <div class="tag-row">
+      <span class="tag">X-Content-Type-Options</span>
+      <span class="tag">X-Frame-Options: SAMEORIGIN</span>
+      <span class="tag">HSTS</span>
+      <span class="tag">CSP</span>
+      <span class="tag">Referrer-Policy</span>
+      <span class="tag">Permissions-Policy</span>
+      <span class="tag">server_tokens off</span>
+    </div>
+
+    <hr>
+
+    <p style="font-size:0.875rem; font-weight:600; color:var(--gray-800); margin-bottom:0.5rem;">Cache configurado no nginx</p>
+    <div style="font-size:0.875rem; color:var(--gray-600);">
+      <p>JS/CSS/Fontes &rarr; 1 ano (imutavel, hash de build)</p>
+      <p>Imagens/icones &rarr; 30 dias</p>
+      <p>HTML (index.html) &rarr; sem cache (<code>no-store</code>)</p>
+    </div>
+  </div>
+
+  <!-- Checklist -->
+  <div class="section">
+    <div class="section-title">Checklist pos-deploy</div>
+
+    <ul class="checklist">
+      <li>Portal abre em <code>https://portal.educarepedagogia.com.br</code></li>
+      <li>Cadeado verde (SSL valido) no navegador</li>
+      <li>Navegar para a pagina de acervo e clicar num material</li>
+      <li>PDF abre normalmente (sem erro de CORS no console)</li>
+      <li>Testar no iPhone &mdash; botao "Ver PDF" e scroll funcionam</li>
+      <li>Testar no Android &mdash; botao "Ver PDF" abre e o botao Voltar funciona</li>
+      <li>Recarregar a pagina numa rota interna (ex: <code>/portal/acervo</code>) &mdash; nao deve dar 404</li>
+      <li>CORS do WordPress atualizado para o dominio definitivo</li>
+      <li>Favoritar um material e reabrir o portal &mdash; favorito persiste</li>
+    </ul>
+  </div>
+
+  <!-- Contato -->
+  <div class="section">
+    <div class="section-title">Contato para duvidas</div>
+    <p style="font-size:0.9rem; color:var(--gray-600);">
+      Eduardo Cavalheiro &mdash; ECM Tech<br>
+      <strong>portaleducare1@gmail.com</strong>
+    </p>
+    <div class="callout callout-purple mt">
+      <span class="callout-icon">📁</span>
+      <span>O codigo-fonte completo (incluindo <code>Dockerfile</code> e <code>nginx.conf</code>) estara no repositorio GitHub assim que Eduardo criar e subir o projeto.</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    Educare Pedagogia &middot; Kit Pedagógico 5.0 &middot; junho/2026<br>
+    Documento preparado por ECM Tech
+  </div>
+
+</div>
+</body>
+</html>

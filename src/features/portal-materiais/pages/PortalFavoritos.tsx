@@ -19,7 +19,8 @@ export function PortalFavoritos() {
   if (meusMateriais.length === 0) {
     return (
       <div className="py-20 text-center space-y-3">
-        <p className="text-4xl">💛</p>
+        <h1 className="sr-only">Favoritos</h1>
+        <p className="text-4xl" aria-hidden="true">💛</p>
         <p className="font-bold text-base text-foreground">Nenhum favorito ainda</p>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto">
           Toque no coração em qualquer material para salvar aqui.

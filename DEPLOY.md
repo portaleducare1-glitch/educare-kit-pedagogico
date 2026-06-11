@@ -80,7 +80,7 @@ location / {
 ```
 
 ### Domínio de produção
-`portal.educarepedagogia.com.br`
+`kit.educarepedagogia.com.br`
 
 ---
 

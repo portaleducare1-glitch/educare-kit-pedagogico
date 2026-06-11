@@ -17,9 +17,12 @@
   --brand-blue: #4890d0;
   --brand-blue-600: #3a7cb8;
   --brand-blue-50: #eaf3fb;
+  --brand-blue-text: #1e5f94;
   --brand-green: #60c088;
   --brand-green-600: #4aa872;
+  --brand-green-text: #1e6b45;
   --brand-orange: #f07830;
+  --brand-orange-text: #b04d0e;
   --brand-yellow: #e6b81e;
   --brand-coral: #ec6a4e;
   --brand-coral-600: #d4543b;
@@ -37,14 +40,14 @@
   --popover: #ffffff;
   --popover-foreground: #1f2733;
 
-  --primary: var(--brand-purple);
+  --primary: var(--brand-purple-600);
   --primary-foreground: #ffffff;
 
   --secondary: #eef2f7;
   --secondary-foreground: #2b3543;
 
   --muted: #eef2f7;
-  --muted-foreground: #647387;
+  --muted-foreground: #616e82;
 
   --accent: #fff1e7;
   --accent-foreground: #9a4313;
@@ -95,8 +98,11 @@
 
   --color-brand-purple: var(--brand-purple);
   --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-text: var(--brand-blue-text);
   --color-brand-green: var(--brand-green);
+  --color-brand-green-text: var(--brand-green-text);
   --color-brand-orange: var(--brand-orange);
+  --color-brand-orange-text: var(--brand-orange-text);
   --color-brand-yellow: var(--brand-yellow);
   --color-brand-coral: var(--brand-coral);
 

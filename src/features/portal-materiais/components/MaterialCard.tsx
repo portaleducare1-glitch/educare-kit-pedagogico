@@ -20,9 +20,9 @@ const SECAO_BAR: Record<Secao, string> = {
 };
 
 const SECAO_TEXTO: Record<Secao, string> = {
-  apostilas: 'text-brand-blue',
-  atividades: 'text-brand-green-600',
-  documentos: 'text-brand-orange',
+  apostilas: 'text-brand-blue-text',
+  atividades: 'text-brand-green-text',
+  documentos: 'text-brand-orange-text',
 };
 
 interface Props {

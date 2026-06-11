@@ -23,9 +23,9 @@ const SECAO_ICON: Record<Secao, React.ElementType> = {
 };
 
 const SECAO_TEXTO: Record<Secao, string> = {
-  apostilas: 'text-brand-blue',
-  atividades: 'text-brand-green-600',
-  documentos: 'text-brand-orange',
+  apostilas: 'text-brand-blue-text',
+  atividades: 'text-brand-green-text',
+  documentos: 'text-brand-orange-text',
 };
 
 export function PortalMaterial() {
@@ -187,7 +187,7 @@ export function PortalMaterial() {
         <Button
           variant="outline"
           size="icon"
-          className={cn('size-12 transition-colors', compartilhado && 'border-brand-green/40 bg-brand-green/5 text-brand-green-600')}
+          className={cn('size-12 transition-colors', compartilhado && 'border-brand-green/40 bg-brand-green/5 text-brand-green-text')}
           onClick={compartilhar}
           aria-label={compartilhado ? 'Link copiado!' : 'Compartilhar'}
         >

@@ -36,9 +36,9 @@ const SECAO_BAR_COLOR: Record<Secao, string> = {
 };
 
 const SECOES: { id: Secao; icon: React.ElementType; corTexto: string }[] = [
-  { id: 'apostilas', icon: BookOpen, corTexto: 'text-brand-blue' },
-  { id: 'atividades', icon: Sparkles, corTexto: 'text-brand-green-600' },
-  { id: 'documentos', icon: ClipboardList, corTexto: 'text-brand-orange' },
+  { id: 'apostilas', icon: BookOpen, corTexto: 'text-brand-blue-text' },
+  { id: 'atividades', icon: Sparkles, corTexto: 'text-brand-green-text' },
+  { id: 'documentos', icon: ClipboardList, corTexto: 'text-brand-orange-text' },
 ];
 
 const SITUACOES: { id: Situacao; label: string; emoji: string }[] = [

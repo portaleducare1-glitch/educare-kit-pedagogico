@@ -16,9 +16,9 @@ const SECAO_ICON: Record<Secao, React.ElementType> = {
 };
 
 const SECAO_ATIVA: Record<Secao, string> = {
-  apostilas: 'bg-blue-50 text-brand-blue border-brand-blue/30 shadow-none',
-  atividades: 'bg-green-50 text-brand-green-600 border-brand-green/30 shadow-none',
-  documentos: 'bg-orange-50 text-brand-orange border-brand-orange/30 shadow-none',
+  apostilas: 'bg-blue-50 text-brand-blue-text border-brand-blue/30 shadow-none',
+  atividades: 'bg-green-50 text-brand-green-text border-brand-green/30 shadow-none',
+  documentos: 'bg-orange-50 text-brand-orange-text border-brand-orange/30 shadow-none',
 };
 
 const ETAPAS: Etapa[] = ['maternal', 'infantil', 'alfabetizacao', 'fund-iniciais', 'fund-finais'];

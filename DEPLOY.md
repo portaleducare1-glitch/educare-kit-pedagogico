@@ -8,13 +8,15 @@
 
 ## O que é este projeto
 
-O **Kit Pedagógico 5.0** é o primeiro produto da plataforma Educare. É uma SPA (Single-Page Application) que entrega dois módulos:
+O **Kit Pedagógico 5.0** é o primeiro produto da plataforma Educare. É uma SPA (Single-Page Application) com um único módulo:
 
-1. **Validador de Certificados** — rota `/` — valida certificados Educare via OCR client-side (sem enviar o arquivo para nenhum servidor).
-2. **Portal de Materiais** — rota `/portal` — 136 materiais pedagógicos organizados, pesquisáveis e filtráveis. PWA instalável no celular.
+- **Portal de Materiais** — rota `/portal` — 136 materiais pedagógicos organizados, pesquisáveis e filtráveis. PWA instalável no celular.
+
+A rota `/` redireciona automaticamente para `/portal`.
 
 Este produto faz parte do ecossistema futuro da Educare:
 - **Kit Pedagógico** (este repo) — entrega imediata, produto autônomo
+- **Validador de Certificados** — produto separado, repo proprio (`educare-validador-certificados`)
 - **Assistente Pedagógico** — produto maior que incluirá o Kit (roadmap futuro)
 - **Portal do Aluno** — plataforma interna para alunos (roadmap futuro)
 
@@ -29,7 +31,6 @@ Este produto faz parte do ecossistema futuro da Educare:
 | CSS | Tailwind CSS v4 |
 | Componentes | shadcn/ui (Radix) |
 | PWA | vite-plugin-pwa + Workbox |
-| OCR/PDF | pdf.js + tesseract.js (client-side, sem backend) |
 | Analytics | Google Analytics 4 (G-B4VE78DNRF) + Microsoft Clarity (mcj559upll) |
 | Backend | Nenhum — 100% client-side na Fase 1 |
 | Banco de dados | Nenhum — dados estáticos em `src/features/portal-materiais/data/materiais.ts` |
@@ -133,7 +134,6 @@ src/
 │   │   ├── lib/                   # Lógica pura (busca, favoritos, visitados)
 │   │   ├── pages/                 # Páginas: Home, Acervo, Material, Favoritos
 │   │   └── types.ts               # Tipos TypeScript + labels de display
-│   └── certificate-validator/     # Módulo validador de certificados
 ├── components/                    # Componentes globais (layout, UI)
 ├── lib/
 │   ├── analytics.ts               # Todos os eventos GA4
@@ -160,12 +160,6 @@ src/
 - **Download PDF** com fallback para iOS (Share Sheet)
 - **PWA** instalável no celular/tablet (ícone, splash screen, offline básico)
 - **Empty state** com chips de sugestão quando busca não retorna resultados
-
-### Módulo Validador de Certificados
-- Valida certificados Educare por upload de imagem ou PDF
-- OCR client-side via pdf.js + tesseract.js
-- Verifica CNPJ (28.719.923/0001-17), data, nome, carga horária
-- 100% offline após primeiro carregamento
 
 ### Analytics
 - **GA4** com eventos customizados: `abrir_material`, `busca_portal`, `busca_sem_resultado`, `download_pdf`, `filtro_tema`, `filtro_secao`, `filtro_etapa`, `share_whatsapp`, `favorito_add`, `favorito_remove`, `click_situacao`
@@ -220,7 +214,7 @@ npm run test     # Testes unitários (vitest)
 | Check | Resultado |
 |-------|-----------|
 | TypeScript | 0 erros |
-| Testes | 12/12 passando |
+| Testes | Lógica do portal sem testes unitários nesta fase (testes do validador ficaram no repo do validador) |
 | Build prod | OK, sem warnings |
 | Segredos no bundle | Nenhum |
 | npm audit (prod deps) | 0 vulnerabilidades |

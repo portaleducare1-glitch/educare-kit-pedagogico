@@ -4,7 +4,7 @@ import type { CertificateMeta, CheckResult, ExtractedFields } from './types';
 
 /*
   Impressão digital de um certificado autêntico da Educare.
-  Estes valores vêm do certificado-modelo (public/certificado-teste.pdf) e
+  Estes valores vêm do certificado-modelo (src/test/fixtures/certificado-teste.pdf) e
   são o ponto de extensão para novas regras ("depois definimos mais regras").
 
   Atenção: as chaves de comparação abaixo (producer, creator, title,

@@ -79,6 +79,9 @@ start_educare.sh
 # Arquivo duplicado com espaço no nome
 public/\ logo-educare.webp
 
+# Relatórios de segurança e estado do gstack (local only)
+.gstack/
+
 # Imagens grandes na raiz (assets do portal ficam em public/)
 /*.jpeg
 /*.jpg

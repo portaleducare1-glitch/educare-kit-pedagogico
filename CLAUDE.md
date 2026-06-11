@@ -55,3 +55,8 @@ npm run build    # build de produção
 2. Mexeu em UI/regra? Conferiu o DESIGN_SYSTEM.md e a paridade mobile/desktop?
 3. Criou/alterou módulo? Atualizou a spec (`03-tasks.md`)?
 4. Mudou algo estrutural? Atualizou este índice?
+
+## Health Stack
+
+- typecheck: tsc --noEmit
+- test: vitest run

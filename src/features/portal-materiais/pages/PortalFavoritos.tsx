@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { materiais } from '../data/materiais';
 import { useFavoritos } from '../lib/useFavoritos';
@@ -20,7 +21,7 @@ export function PortalFavoritos() {
     return (
       <div className="py-20 text-center space-y-3">
         <h1 className="sr-only">Favoritos</h1>
-        <p className="text-4xl" aria-hidden="true">💛</p>
+        <Heart className="mx-auto size-12 fill-brand-coral text-brand-coral" aria-hidden="true" />
         <p className="font-bold text-base text-foreground">Nenhum favorito ainda</p>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto">
           Toque no coração em qualquer material para salvar aqui.

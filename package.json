@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Educare · plataforma de cursos de aperfeiçoamento em pedagogia. Módulo 1: validador público de certificados.",
+  "description": "Educare · Kit Pedagógico 5.0 — portal de materiais pedagógicos, 136 recursos para educadores.",
   "scripts": {
     "dev": "vite --port 3000 --host",
     "build": "vite build",
@@ -19,14 +19,11 @@
     "@supabase/supabase-js": "^2.97.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "dompurify": "^3.3.3",
     "lucide-react": "^0.546.0",
-    "pdfjs-dist": "^4.10.38",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.13.0",
-    "tailwind-merge": "^3.5.0",
-    "tesseract.js": "^5.1.1"
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.3.4",
@@ -36,7 +33,6 @@
     "@tailwindcss/vite": "^4.1.14",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
-    "@types/dompurify": "^3.0.5",
     "@types/node": "^22.14.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

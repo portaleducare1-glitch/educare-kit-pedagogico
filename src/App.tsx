@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import { PortalLayout } from '@/features/portal-materiais/components/PortalLayout';
-import { ValidatorPage } from '@/features/certificate-validator/components/ValidatorPage';
 import { PortalHome } from '@/features/portal-materiais/pages/PortalHome';
 import { PortalAcervo } from '@/features/portal-materiais/pages/PortalAcervo';
 import { PortalMaterial } from '@/features/portal-materiais/pages/PortalMaterial';
@@ -14,10 +13,9 @@ import { NotFound } from '@/pages/NotFound';
 export default function App() {
   return (
     <Routes>
-      {/* Site publico (validador de certificados) */}
+      <Route path="/" element={<Navigate to="/portal" replace />} />
+
       <Route element={<PublicLayout />}>
-        <Route path="/" element={<ValidatorPage />} />
-        <Route path="/validar" element={<Navigate to="/" replace />} />
         <Route path="/privacidade" element={<PrivacyPolicy />} />
         <Route path="/termos" element={<TermsOfUse />} />
       </Route>

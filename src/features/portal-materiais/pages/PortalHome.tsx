@@ -129,7 +129,7 @@ export function PortalHome() {
               key={s.id}
               onClick={() => handleSituacao(s.id)}
               className={cn(
-                'flex items-center gap-2 px-3.5 py-2.5 rounded-xl',
+                'flex items-center gap-2 px-3.5 py-2.5 min-h-[44px] rounded-xl',
                 'bg-card border border-border shadow-sm',
                 'text-sm font-medium text-foreground',
                 'hover:border-primary/40 hover:shadow-md hover:bg-primary/5',

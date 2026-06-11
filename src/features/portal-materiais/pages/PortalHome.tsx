@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { trackSituacao } from '@/lib/analytics';
-import { Search, BookOpen, Sparkles, ClipboardList, ChevronRight, History } from 'lucide-react';
+import { Search, BookOpen, Sparkles, ClipboardList, ChevronRight, History, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import { MaterialCard } from '../components/MaterialCard';
@@ -28,6 +28,11 @@ const IDS_DESTAQUE = [
 const materiaisDestaque = IDS_DESTAQUE
   .map((id) => materiais.find((m) => m.id === id))
   .filter(Boolean) as typeof materiais;
+
+const _hoje = new Date();
+const materiaisNovos = materiais
+  .filter((m) => m.novidadeAte && _hoje <= new Date(m.novidadeAte))
+  .sort((a, b) => new Date(b.novidadeAte!).getTime() - new Date(a.novidadeAte!).getTime());
 
 const SECAO_BAR_COLOR: Record<Secao, string> = {
   apostilas: '#4890d0',
@@ -161,6 +166,18 @@ export function PortalHome() {
           </SectionHeader>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {materiaisRecentes.map((m) => (
+              <MaterialCard key={m.id} material={m} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Adicionados recentemente */}
+      {materiaisNovos.length > 0 && (
+        <section className="space-y-3">
+          <SectionHeader icon={Star}>Adicionados recentemente</SectionHeader>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {materiaisNovos.map((m) => (
               <MaterialCard key={m.id} material={m} />
             ))}
           </div>

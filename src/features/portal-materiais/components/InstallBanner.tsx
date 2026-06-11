@@ -41,7 +41,7 @@ export function InstallBanner() {
                       <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary border border-border font-medium">
                         <Share2 className="size-3" />
                       </span>{' '}
-                      Compartilhar — ou nas <strong>3 barras ≡</strong> ao lado do endereço
+                      Compartilhar, ou nas <strong>3 barras ≡</strong> ao lado do endereço
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-foreground/80">

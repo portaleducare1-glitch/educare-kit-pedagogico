@@ -1,13 +1,13 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { trackBusca, trackBuscaSemResultado } from '@/lib/analytics';
+import { trackBusca, trackBuscaSemResultado, trackTemaFiltro, trackEtapaFiltro, trackSecaoFiltro } from '@/lib/analytics';
 import { Search, BookOpen, Sparkles, ClipboardList, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { materiais } from '../data/materiais';
 import { buscar } from '../lib/busca';
 import { MaterialCard } from '../components/MaterialCard';
-import type { Secao, Etapa, Situacao } from '../types';
-import { SECAO_LABELS, ETAPA_LABELS, SITUACAO_LABELS } from '../types';
+import type { Secao, Etapa, Situacao, Tema } from '../types';
+import { SECAO_LABELS, ETAPA_LABELS, SITUACAO_LABELS, TEMA_LABELS } from '../types';
 
 const SECAO_ICON: Record<Secao, React.ElementType> = {
   apostilas: BookOpen,
@@ -32,6 +32,7 @@ export function PortalAcervo() {
   const [query, setQuery] = useState(queryInicial);
   const [secao, setSecao] = useState<Secao | undefined>(secaoInicial);
   const [etapa, setEtapa] = useState<Etapa | undefined>();
+  const [tema, setTema] = useState<Tema | undefined>();
   const [situacao, setSituacao] = useState<Situacao | undefined>(situacaoInicial);
   const [limite, setLimite] = useState(30);
 
@@ -41,16 +42,17 @@ export function PortalAcervo() {
         query: query || undefined,
         secao,
         etapa,
+        tema,
         situacao,
       }),
-    [query, secao, etapa, situacao],
+    [query, secao, etapa, tema, situacao],
   );
 
   // Reseta paginação e sobe ao topo ao trocar filtros
   useEffect(() => {
     setLimite(30);
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [query, secao, etapa, situacao]);
+  }, [query, secao, etapa, tema, situacao]);
 
   // Sincroniza estado com URL (substituindo — sem criar entradas no histórico)
   useEffect(() => {
@@ -59,17 +61,32 @@ export function PortalAcervo() {
     if (secao) params.secao = secao;
     if (situacao) params.situacao = situacao;
     setSearchParams(params, { replace: true });
-  }, [query, secao, situacao]); // etapa é filtro local apenas
+  }, [query, secao, situacao]); // etapa e tema são filtros locais apenas
 
   function toggleSecao(s: Secao) {
+    trackSecaoFiltro(s);
     setSecao((prev) => (prev === s ? undefined : s));
   }
 
   function toggleEtapa(e: Etapa) {
+    trackEtapaFiltro(e);
     setEtapa((prev) => (prev === e ? undefined : e));
   }
 
+  function toggleTema(t: Tema) {
+    trackTemaFiltro(t);
+    setTema((prev) => (prev === t ? undefined : t));
+  }
+
   function limparSituacao() {
+    setSituacao(undefined);
+  }
+
+  function limparFiltros() {
+    setQuery('');
+    setSecao(undefined);
+    setEtapa(undefined);
+    setTema(undefined);
     setSituacao(undefined);
   }
 
@@ -187,12 +204,53 @@ export function PortalAcervo() {
         <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent" />
       </div>
 
+      {/* Filtros por tema */}
+      <div className="relative">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          {(Object.keys(TEMA_LABELS) as Tema[]).map((t) => (
+            <button
+              key={t}
+              onClick={() => toggleTema(t)}
+              className={cn(
+                'px-3 py-1.5 rounded-lg border text-xs whitespace-nowrap shrink-0',
+                'transition-all cursor-pointer',
+                tema === t
+                  ? 'border-primary bg-primary/10 text-primary font-semibold shadow-none'
+                  : 'border-border bg-card text-muted-foreground shadow-sm hover:bg-secondary hover:shadow-none',
+              )}
+            >
+              {TEMA_LABELS[t]}
+            </button>
+          ))}
+        </div>
+        <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent" />
+      </div>
+
       {/* Grade de materiais */}
       {resultado.length === 0 ? (
-        <div className="py-16 text-center space-y-2">
-          <p className="text-2xl">🔍</p>
-          <p className="text-muted-foreground text-sm">Nenhum material encontrado.</p>
-          <p className="text-xs text-muted-foreground">Tente palavras diferentes ou remova os filtros.</p>
+        <div className="py-12 text-center space-y-4">
+          <p className="text-2xl" aria-hidden="true">🔍</p>
+          <div className="space-y-1">
+            <p className="text-muted-foreground text-sm font-medium">Nenhum material encontrado.</p>
+            <p className="text-xs text-muted-foreground">Tente palavras diferentes ou explore por situacao:</p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 max-w-sm mx-auto">
+            {(['inclusao-especial', 'atividade-pronta', 'leitura-alfabetizacao'] as Situacao[]).map((s) => (
+              <button
+                key={s}
+                onClick={() => { setQuery(''); setSecao(undefined); setEtapa(undefined); setTema(undefined); setSituacao(s); }}
+                className="px-3 py-1.5 rounded-lg border border-primary/30 bg-primary/5 text-primary text-xs hover:bg-primary/15 transition-colors"
+              >
+                {SITUACAO_LABELS[s]}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={limparFiltros}
+            className="text-xs text-primary underline underline-offset-2"
+          >
+            Ver todo o acervo
+          </button>
         </div>
       ) : (
         <>

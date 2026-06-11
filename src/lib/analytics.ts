@@ -56,3 +56,23 @@ export function trackFavoritoAdd(id: string) {
 export function trackFavoritoRemove(id: string) {
   track('favorito_remove', { material_id: id });
 }
+
+// Compartilhamento via WhatsApp
+export function trackWhatsApp(id: string, titulo: string) {
+  track('share_whatsapp', { material_id: id, material_titulo: titulo });
+}
+
+// Filtro por tema aplicado no Acervo
+export function trackTemaFiltro(tema: string) {
+  track('filtro_tema', { tema });
+}
+
+// Filtro por seção aplicado no Acervo
+export function trackSecaoFiltro(secao: string) {
+  track('filtro_secao', { secao });
+}
+
+// Filtro por etapa aplicado no Acervo
+export function trackEtapaFiltro(etapa: string) {
+  track('filtro_etapa', { etapa });
+}

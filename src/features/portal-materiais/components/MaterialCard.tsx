@@ -36,6 +36,7 @@ export function MaterialCard({ material }: Props) {
   const Icon = SECAO_ICON[material.secao];
   const favorito = isFavorito(material.id);
   const visitado = foiVisitado(material.id);
+  const isNovo = !!(material.novidadeAte && new Date() <= new Date(material.novidadeAte));
 
   return (
     <Link
@@ -51,11 +52,18 @@ export function MaterialCard({ material }: Props) {
 
       {/* Conteúdo */}
       <div className="flex flex-col gap-1.5 py-3.5 pl-3.5 pr-10 flex-1 min-w-0">
-        <div className={cn('flex items-center gap-1', SECAO_TEXTO[material.secao])}>
-          <Icon className="size-3 shrink-0" />
-          <span className="text-[10px] font-bold uppercase tracking-wider">
-            {SECAO_LABELS[material.secao]}
-          </span>
+        <div className="flex items-center gap-2">
+          <div className={cn('flex items-center gap-1', SECAO_TEXTO[material.secao])}>
+            <Icon className="size-3 shrink-0" />
+            <span className="text-[10px] font-bold uppercase tracking-wider">
+              {SECAO_LABELS[material.secao]}
+            </span>
+          </div>
+          {isNovo && (
+            <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-success/15 text-success leading-none">
+              Novo
+            </span>
+          )}
         </div>
         <h3 className="font-semibold text-sm text-foreground leading-snug line-clamp-2">
           {material.titulo}

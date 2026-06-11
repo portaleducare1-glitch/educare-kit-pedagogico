@@ -1,4 +1,4 @@
-import type { Material, Secao, Etapa, Situacao } from '../types';
+import type { Material, Secao, Etapa, Situacao, Tema } from '../types';
 
 // Remove acentos e normaliza para comparacao tolerante
 function normalizar(texto: string): string {
@@ -75,6 +75,7 @@ export interface FiltrosBusca {
   secao?: Secao;
   etapa?: Etapa;
   situacao?: Situacao;
+  tema?: Tema;
 }
 
 export function buscar(materiais: Material[], filtros: FiltrosBusca): Material[] {
@@ -91,6 +92,9 @@ export function buscar(materiais: Material[], filtros: FiltrosBusca): Material[]
   }
   if (filtros.situacao) {
     resultado = resultado.filter((m) => m.situacoes.includes(filtros.situacao!));
+  }
+  if (filtros.tema) {
+    resultado = resultado.filter((m) => m.temas.includes(filtros.tema!));
   }
 
   // Busca textual

@@ -46,6 +46,8 @@ export interface Material {
   descricao: string;
   quando_usar: string;
   como_usar: string;
+  /** ISO date string (YYYY-MM-DD). Badge "Novo" aparece enquanto a data atual for anterior ou igual. */
+  novidadeAte?: string;
 }
 
 export const SECAO_LABELS: Record<Secao, string> = {
@@ -67,6 +69,21 @@ export const ETAPA_LABELS: Record<Etapa, string> = {
   'fund-iniciais': 'Fund. Anos Iniciais (1º ao 5º ano)',
   'fund-finais': 'Fund. Anos Finais (6º ao 9º ano)',
   todos: 'Todas as etapas',
+};
+
+export const TEMA_LABELS: Record<Tema, string> = {
+  tea: 'TEA / Autismo',
+  tdah: 'TDAH',
+  aee: 'AEE',
+  caa: 'CAA',
+  libras: 'LIBRAS',
+  braille: 'Braille',
+  superdotacao: 'Altas Habilidades',
+  socioemocional: 'Socioemocional',
+  matematica: 'Matemática',
+  leitura: 'Leitura',
+  grafomotricidade: 'Grafomotricidade',
+  inclusao: 'Inclusão',
 };
 
 export const SITUACAO_LABELS: Record<Situacao, string> = {

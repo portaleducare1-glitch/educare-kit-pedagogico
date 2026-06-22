@@ -1,7 +1,7 @@
 # Stage 1: instalar dependências
 FROM node:20-alpine AS deps
 WORKDIR /app
-COPY package*.json ./
+COPY package*.json .npmrc ./
 RUN npm ci
 
 # Stage 2: build

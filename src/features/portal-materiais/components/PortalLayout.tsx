@@ -7,6 +7,7 @@ import { useFavoritos, FavoritosProvider } from '../lib/useFavoritos';
 import { ToastProvider } from '@/lib/toast';
 import { InstallBanner } from './InstallBanner';
 import { InstallProvider, useInstall } from '../lib/useInstall';
+import { TrackingNotice } from './TrackingNotice';
 
 function PortalLayoutInner() {
   const location = useLocation();
@@ -36,7 +37,7 @@ function PortalLayoutInner() {
       </div>
 
       <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-        <div className="mx-auto flex h-14 w-full max-w-2xl items-center gap-3 px-4">
+        <div className="mx-auto flex h-14 w-full max-w-2xl lg:max-w-5xl items-center gap-3 px-4">
           {!isHome && (
             <Button variant="ghost" size="icon" className="-ml-2 shrink-0" onClick={() => navigate(-1)}>
               <ArrowLeft className="size-5" />
@@ -56,6 +57,16 @@ function PortalLayoutInner() {
             </span>
           </Link>
           <Link
+            to="/portal/acervo"
+            className={cn(
+              'hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+              isAcervo ? 'text-primary bg-primary/10' : 'text-muted-foreground hover:bg-secondary',
+            )}
+          >
+            <Search className="size-4" />
+            Acervo
+          </Link>
+          <Link
             to="/portal/favoritos"
             className="relative hidden sm:flex p-2 rounded-full hover:bg-secondary transition-colors"
             aria-label={`Meus favoritos${favoritos.length > 0 ? ` (${favoritos.length})` : ''}`}
@@ -70,8 +81,10 @@ function PortalLayoutInner() {
         </div>
       </header>
 
+      <TrackingNotice />
+
       {/* Conteudo com padding para nao sobrepor o bottom nav no mobile, incluindo safe area do iPhone */}
-      <main className="relative mx-auto w-full max-w-2xl flex-1 px-4 py-6 pb-safe-nav sm:pb-6">
+      <main className="relative mx-auto w-full max-w-2xl lg:max-w-5xl flex-1 px-4 py-6 pb-safe-nav sm:pb-6">
         <Outlet />
       </main>
 
@@ -141,7 +154,7 @@ function PortalFooter() {
     <footer
       className="border-t border-border bg-card/50 px-4 pt-5 sm:pb-5 pb-[calc(5rem+env(safe-area-inset-bottom,0px))]"
     >
-      <div className="mx-auto max-w-2xl space-y-3">
+      <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-3">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-0.5">
             <p className="text-xs font-semibold text-foreground">Educare Pedagogia</p>
@@ -182,7 +195,7 @@ function PortalFooter() {
         </div>
 
         <p className="text-[10px] text-muted-foreground/50">
-          Kit Pedagogico 5.0 · v1.0.0
+          Kit Pedagogico 5.0 · v1.0.1
         </p>
       </div>
     </footer>

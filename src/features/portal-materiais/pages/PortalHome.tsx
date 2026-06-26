@@ -164,7 +164,7 @@ export function PortalHome() {
           >
             Continue de onde parou
           </SectionHeader>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {materiaisRecentes.map((m) => (
               <MaterialCard key={m.id} material={m} />
             ))}
@@ -175,11 +175,28 @@ export function PortalHome() {
       {/* Adicionados recentemente */}
       {materiaisNovos.length > 0 && (
         <section className="space-y-3">
-          <SectionHeader icon={Star}>Adicionados recentemente</SectionHeader>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {materiaisNovos.map((m) => (
-              <MaterialCard key={m.id} material={m} />
-            ))}
+          <SectionHeader
+            icon={Star}
+            action={
+              <button
+                onClick={() => navigate('/portal/acervo?novo=1')}
+                className="text-xs text-primary font-medium hover:underline shrink-0 whitespace-nowrap"
+              >
+                Ver todos
+              </button>
+            }
+          >
+            Adicionados recentemente
+          </SectionHeader>
+          <div className="relative -mx-4 px-4 sm:-mx-0 sm:px-0">
+            <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-none snap-x snap-mandatory">
+              {materiaisNovos.map((m) => (
+                <div key={m.id} className="w-[260px] shrink-0 snap-start">
+                  <MaterialCard material={m} />
+                </div>
+              ))}
+            </div>
+            <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent sm:hidden" />
           </div>
         </section>
       )}
@@ -237,7 +254,7 @@ export function PortalHome() {
       {materiaisDestaque.length > 0 && (
         <section className="space-y-3">
           <SectionHeader>Comece por aqui</SectionHeader>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {materiaisDestaque.map((m) => (
               <MaterialCard key={m.id} material={m} />
             ))}

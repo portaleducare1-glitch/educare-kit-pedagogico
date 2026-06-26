@@ -40,7 +40,7 @@ export function PublicLayout({ children }: { children?: React.ReactNode }) {
           <p className="font-medium text-foreground/70">
             EDUCARE CURSOS E TREINAMENTOS LTDA · CNPJ 28.719.923/0001-17
           </p>
-          <p>Validação feita no seu dispositivo. Nenhum arquivo é enviado.</p>
+          <p>Portal de Materiais do Kit Pedagógico 5.0.</p>
           <nav className="flex justify-center gap-4" aria-label="Links legais">
             <Link to="/privacidade" className="hover:text-foreground underline underline-offset-2">
               Política de Privacidade

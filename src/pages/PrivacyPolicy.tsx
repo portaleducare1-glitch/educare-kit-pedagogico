@@ -5,15 +5,15 @@ export function PrivacyPolicy() {
   return (
     <div className="mx-auto max-w-3xl space-y-8">
       <Link
-        to="/"
+        to="/portal"
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
-        ← Voltar ao validador
+        ← Voltar ao portal
       </Link>
 
       <header className="space-y-1">
         <h1 className="font-display text-3xl font-extrabold">Política de Privacidade</h1>
-        <p className="text-sm text-muted-foreground">Atualizada em 31 de maio de 2026</p>
+        <p className="text-sm text-muted-foreground">Atualizada em 26 de junho de 2026</p>
       </header>
 
       <Card>
@@ -33,89 +33,122 @@ export function PrivacyPolicy() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-base font-bold">2. Quais dados são tratados</h2>
+            <h2 className="font-display text-base font-bold">2. O que é este portal</h2>
             <p>
-              Quando você envia um certificado para validação, o sistema extrai e exibe
-              temporariamente os seguintes dados presentes no próprio documento:
+              O Portal de Materiais do Kit Pedagógico 5.0 reúne apostilas, atividades e
+              documentos prontos para consulta, download e compartilhamento. Não há cadastro,
+              login nem envio de arquivos ou documentos pessoais por parte de quem usa o portal.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="font-display text-base font-bold">3. Quais dados são tratados</h2>
+            <p>
+              Como o portal está em fase de teste, usamos ferramentas de análise de uso para
+              entender como os professores navegam, o que buscam e quais materiais acessam,
+              com o objetivo de melhorar o produto. Essas ferramentas coletam, de forma
+              anônima ou pseudonimizada:
             </p>
             <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-              <li>Nome do aluno</li>
-              <li>CPF ou CNPJ do titular</li>
-              <li>Datas de início e término do curso</li>
-              <li>Nome do curso e carga horária</li>
+              <li>Páginas e materiais visitados, buscas realizadas, downloads e cliques</li>
+              <li>Gravação de sessão e mapas de calor (movimento do mouse, toque, rolagem)</li>
+              <li>Informações técnicas do dispositivo e navegador, e localização aproximada via IP</li>
             </ul>
             <p>
-              Esses dados não são coletados, armazenados, transmitidos nem compartilhados
-              pela Educare. O processamento ocorre exclusivamente no seu dispositivo.
+              O portal não pede nome, CPF, e-mail ou qualquer outro dado de identificação direta.
+              As ferramentas de análise mascaram automaticamente campos sensíveis e não capturam
+              o conteúdo de PDFs visualizados.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-base font-bold">3. Como processamos</h2>
+            <h2 className="font-display text-base font-bold">4. Ferramentas de análise usadas</h2>
             <p>
-              Todo o processamento, incluindo a leitura do PDF e o reconhecimento de texto (OCR),
-              acontece inteiramente no seu navegador. Nenhum arquivo, nenhum dado extraído e
-              nenhum resultado é enviado a qualquer servidor. Ao fechar ou sair da página,
-              todos os dados deixam de existir.
+              Usamos dois serviços de terceiros para essa análise:
             </p>
+            <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
+              <li><strong>Google Analytics 4</strong> (Google LLC) — estatísticas de uso e eventos de navegação</li>
+              <li><strong>Microsoft Clarity</strong> (Microsoft Corporation) — gravação de sessão e mapas de calor</li>
+            </ul>
             <p>
-              O modelo de idioma usado pelo OCR é baixado de um servidor de distribuição de
-              conteúdo (CDN) apenas da primeira vez que você usa o validador. Somente o modelo
-              é transferido, nunca o conteúdo do seu documento.
+              Esses dados ficam armazenados nos servidores dessas empresas, conforme as
+              respectivas políticas de privacidade do{' '}
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-2 hover:text-foreground"
+              >
+                Google
+              </a>{' '}
+              e da{' '}
+              <a
+                href="https://privacy.microsoft.com/pt-br/privacystatement"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-2 hover:text-foreground"
+              >
+                Microsoft
+              </a>.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-base font-bold">4. Finalidade e base legal</h2>
+            <h2 className="font-display text-base font-bold">5. Finalidade e base legal</h2>
             <p>
-              O tratamento tem a finalidade exclusiva de verificar se um certificado foi emitido
-              pela Educare. A base legal é o legítimo interesse da instituição emissora em
-              disponibilizar um meio de conferência de autenticidade para os seus titulares,
-              nos termos do art. 7º, inciso IX, da Lei 13.709/2018 (LGPD).
+              O tratamento tem a finalidade de avaliar a utilidade do portal nesta fase de
+              teste e priorizar melhorias antes de uma versão definitiva. A base legal é o
+              legítimo interesse da Educare em desenvolver e aprimorar seus produtos, nos
+              termos do art. 7º, inciso IX, da Lei 13.709/2018 (LGPD). Você pode impedir essa
+              coleta a qualquer momento bloqueando cookies de terceiros nas configurações do
+              seu navegador.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-base font-bold">5. Armazenamento local (localStorage)</h2>
+            <h2 className="font-display text-base font-bold">6. Armazenamento local (localStorage)</h2>
             <p>
-              A única informação gravada no seu dispositivo é a preferência de tema visual
-              (claro ou escuro), sob a chave <code className="rounded bg-muted px-1">educare-theme</code>.
-              Esse dado não é pessoal e pode ser apagado a qualquer momento limpando o
+              O portal grava no seu dispositivo, sem enviar a nenhum servidor: a preferência de
+              tema visual (claro ou escuro), os materiais marcados como favoritos e o histórico
+              de materiais visitados (para o recurso "continue de onde parou"). Nenhum desses
+              dados é pessoal, e todos podem ser apagados a qualquer momento limpando o
               armazenamento local do seu navegador.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-base font-bold">6. Cookies e rastreamento</h2>
+            <h2 className="font-display text-base font-bold">7. Cookies</h2>
             <p>
-              Este serviço não utiliza cookies, pixels de rastreamento, ferramentas de análise
-              de audiência nem qualquer tecnologia de monitoramento de comportamento.
+              O Google Analytics 4 e o Microsoft Clarity gravam cookies próprios no seu
+              navegador para reconhecer visitas e sessões de forma anônima. Você pode bloquear
+              ou apagar esses cookies nas configurações do navegador sem perder acesso a
+              nenhuma funcionalidade do portal.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-base font-bold">7. Transferência internacional</h2>
+            <h2 className="font-display text-base font-bold">8. Transferência internacional</h2>
             <p>
-              Não há transferência de dados pessoais para outros países, pois nenhum dado
-              pessoal sai do seu dispositivo.
+              Os dados de uso anônimo coletados pelo Google Analytics 4 e pelo Microsoft
+              Clarity podem ser processados em servidores fora do Brasil, operados por essas
+              empresas sob seus próprios mecanismos de conformidade internacional, aceitos
+              como salvaguarda adequada nos termos do art. 33 da LGPD.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-base font-bold">8. Direitos do titular</h2>
+            <h2 className="font-display text-base font-bold">9. Direitos do titular</h2>
             <p>
-              Como nenhum dado pessoal é coletado ou armazenado por nós, os direitos de acesso,
-              retificação, exclusão, portabilidade e oposição previstos no art. 18 da LGPD
-              são exercidos diretamente pelo titular sobre o arquivo em seu próprio dispositivo.
-            </p>
-            <p>
-              Para dúvidas ou solicitações, entre em contato pelo e-mail
-              contato@educarepedagogia.com.br.
+              Você pode solicitar informações sobre os dados de uso anônimo coletados, ou pedir
+              que parem de ser coletados em relação à sua navegação, pelo e-mail
+              contato@educarepedagogia.com.br. Como o portal não exige cadastro, a forma mais
+              direta de exercer os direitos do art. 18 da LGPD é bloquear cookies de terceiros
+              no seu navegador, o que interrompe a coleta para os próximos acessos.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-base font-bold">9. Vigência e alterações</h2>
+            <h2 className="font-display text-base font-bold">10. Vigência e alterações</h2>
             <p>
               Esta política entra em vigor na data indicada no topo desta página. A Educare
               pode atualizá-la a qualquer momento. Alterações relevantes serão comunicadas

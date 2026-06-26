@@ -76,6 +76,8 @@ export interface FiltrosBusca {
   etapa?: Etapa;
   situacao?: Situacao;
   tema?: Tema;
+  /** Quando true, mostra só materiais com novidadeAte vigente, mais recentes primeiro. */
+  novidade?: boolean;
 }
 
 export function buscar(materiais: Material[], filtros: FiltrosBusca): Material[] {
@@ -95,6 +97,12 @@ export function buscar(materiais: Material[], filtros: FiltrosBusca): Material[]
   }
   if (filtros.tema) {
     resultado = resultado.filter((m) => m.temas.includes(filtros.tema!));
+  }
+  if (filtros.novidade) {
+    const hoje = new Date();
+    resultado = resultado
+      .filter((m) => m.novidadeAte && hoje <= new Date(m.novidadeAte))
+      .sort((a, b) => new Date(b.novidadeAte!).getTime() - new Date(a.novidadeAte!).getTime());
   }
 
   // Busca textual

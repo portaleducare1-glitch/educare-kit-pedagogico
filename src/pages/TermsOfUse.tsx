@@ -5,15 +5,15 @@ export function TermsOfUse() {
   return (
     <div className="mx-auto max-w-3xl space-y-8">
       <Link
-        to="/"
+        to="/portal"
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
-        ← Voltar ao validador
+        ← Voltar ao portal
       </Link>
 
       <header className="space-y-1">
         <h1 className="font-display text-3xl font-extrabold">Termos de Uso</h1>
-        <p className="text-sm text-muted-foreground">Atualizados em 31 de maio de 2026</p>
+        <p className="text-sm text-muted-foreground">Atualizados em 26 de junho de 2026</p>
       </header>
 
       <Card>
@@ -22,42 +22,38 @@ export function TermsOfUse() {
           <section className="space-y-3">
             <h2 className="font-display text-base font-bold">1. O serviço</h2>
             <p>
-              Este é o validador público de certificados da Educare, operado por
-              EDUCARE CURSOS E TREINAMENTOS LTDA, CNPJ 28.719.923/0001-17. O serviço permite
-              que qualquer pessoa verifique se um certificado em formato PDF foi emitido
-              pela Educare, sem necessidade de cadastro e sem envio de dados a servidores.
+              Este é o Portal de Materiais do Kit Pedagógico 5.0, operado por
+              EDUCARE CURSOS E TREINAMENTOS LTDA, CNPJ 28.719.923/0001-17. O portal reúne
+              apostilas, atividades e documentos prontos para consulta, download e
+              compartilhamento, oferecido como benefício adicional a quem adquiriu o Kit
+              Pedagógico 5.0, sem necessidade de cadastro ou senha.
             </p>
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-base font-bold">2. Caráter informativo</h2>
+            <h2 className="font-display text-base font-bold">2. Fase de teste</h2>
             <p>
-              O resultado produzido por este validador tem caráter exclusivamente
-              informativo. Ele indica se o arquivo apresentado corresponde ao padrão
-              técnico dos certificados emitidos pela Educare, mas não constitui prova
-              jurídica de autenticidade, não substitui a verificação direta com a
-              instituição emissora e não tem valor probatório em procedimentos
-              administrativos ou judiciais.
-            </p>
-            <p>
-              Em caso de dúvida sobre a autenticidade de um certificado, entre em
-              contato com a Educare pelo e-mail contato@educarepedagogia.com.br.
+              O portal está em fase de avaliação. Isso significa que pode passar por
+              mudanças de conteúdo, layout ou funcionalidades, apresentar instabilidade
+              temporária, ou ser descontinuado, conforme os resultados dessa avaliação.
+              Usamos ferramentas de análise de uso durante essa fase, detalhadas na{' '}
+              <Link to="/privacidade" className="underline underline-offset-2 hover:text-foreground">
+                Política de Privacidade
+              </Link>.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="font-display text-base font-bold">3. Uso permitido</h2>
             <p>
-              O serviço destina-se a:
+              O acesso destina-se a compradores do Kit Pedagógico 5.0, para uso pessoal e
+              profissional dos materiais em sala de aula ou no planejamento pedagógico.
             </p>
-            <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-              <li>Titulares de certificados emitidos pela Educare que desejam confirmar a autenticidade do seu documento.</li>
-              <li>Empregadores, instituições e terceiros que receberam um certificado e desejam verificá-lo.</li>
-            </ul>
             <p>
-              É vedado utilizar este serviço para fins ilícitos, para tentar identificar
-              vulnerabilidades do sistema ou para qualquer outra finalidade não prevista
-              nestes termos.
+              É vedado redistribuir, revender ou compartilhar publicamente o link de acesso
+              ao portal ou os arquivos nele disponíveis fora desse uso individual, bem como
+              utilizar o serviço para fins ilícitos ou para tentar identificar
+              vulnerabilidades do sistema.
             </p>
           </section>
 
@@ -67,16 +63,14 @@ export function TermsOfUse() {
               A Educare não se responsabiliza por:
             </p>
             <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-              <li>Certificados falsificados que eventualmente passem pelas verificações técnicas.</li>
-              <li>Certificados legítimos que não passem nas verificações por problemas de leitura ou variações no arquivo.</li>
-              <li>Danos decorrentes do uso ou da impossibilidade de uso do serviço.</li>
-              <li>Indisponibilidade temporária do serviço.</li>
+              <li>Danos decorrentes do uso ou da impossibilidade de uso do portal.</li>
+              <li>Indisponibilidade temporária do serviço durante a fase de teste.</li>
+              <li>Uso dos materiais fora do contexto pedagógico para o qual foram criados.</li>
             </ul>
             <p>
-              O validador utiliza verificações técnicas baseadas em padrões do documento,
-              sem acesso a base de dados de certificados emitidos. Isso significa que o
-              resultado reflete a conformidade do arquivo com o padrão Educare, e não
-              confirma a existência do certificado em registros internos.
+              Os materiais são fornecidos como estão, com finalidade educacional, e não
+              substituem avaliação ou acompanhamento profissional individualizado quando o
+              caso do aluno exigir.
             </p>
           </section>
 

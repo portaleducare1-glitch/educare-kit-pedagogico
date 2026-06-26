@@ -28,12 +28,14 @@ export function PortalAcervo() {
   const queryInicial = searchParams.get('q') ?? '';
   const secaoInicial = (searchParams.get('secao') as Secao) ?? undefined;
   const situacaoInicial = (searchParams.get('situacao') as Situacao) ?? undefined;
+  const novidadeInicial = searchParams.get('novo') === '1';
 
   const [query, setQuery] = useState(queryInicial);
   const [secao, setSecao] = useState<Secao | undefined>(secaoInicial);
   const [etapa, setEtapa] = useState<Etapa | undefined>();
   const [tema, setTema] = useState<Tema | undefined>();
   const [situacao, setSituacao] = useState<Situacao | undefined>(situacaoInicial);
+  const [novidade, setNovidade] = useState(novidadeInicial);
   const [limite, setLimite] = useState(30);
 
   const resultado = useMemo(
@@ -44,15 +46,16 @@ export function PortalAcervo() {
         etapa,
         tema,
         situacao,
+        novidade,
       }),
-    [query, secao, etapa, tema, situacao],
+    [query, secao, etapa, tema, situacao, novidade],
   );
 
   // Reseta paginação e sobe ao topo ao trocar filtros
   useEffect(() => {
     setLimite(30);
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [query, secao, etapa, tema, situacao]);
+  }, [query, secao, etapa, tema, situacao, novidade]);
 
   // Sincroniza estado com URL (substituindo — sem criar entradas no histórico)
   useEffect(() => {
@@ -60,8 +63,13 @@ export function PortalAcervo() {
     if (query) params.q = query;
     if (secao) params.secao = secao;
     if (situacao) params.situacao = situacao;
+    if (novidade) params.novo = '1';
     setSearchParams(params, { replace: true });
-  }, [query, secao, situacao]); // etapa e tema são filtros locais apenas
+  }, [query, secao, situacao, novidade]); // etapa e tema são filtros locais apenas
+
+  function limparNovidade() {
+    setNovidade(false);
+  }
 
   function toggleSecao(s: Secao) {
     trackSecaoFiltro(s);
@@ -88,6 +96,7 @@ export function PortalAcervo() {
     setEtapa(undefined);
     setTema(undefined);
     setSituacao(undefined);
+    setNovidade(false);
   }
 
   // Debounce de 600ms para não disparar evento GA4 a cada tecla digitada
@@ -106,11 +115,13 @@ export function PortalAcervo() {
     return () => { if (trackTimer.current) clearTimeout(trackTimer.current); };
   }, [query, resultado.length]);
 
-  const titulo = situacao
-    ? SITUACAO_LABELS[situacao]
-    : secao
-      ? SECAO_LABELS[secao]
-      : 'Todos os materiais';
+  const titulo = novidade
+    ? 'Adicionados recentemente'
+    : situacao
+      ? SITUACAO_LABELS[situacao]
+      : secao
+        ? SECAO_LABELS[secao]
+        : 'Todos os materiais';
 
   useEffect(() => {
     document.title = `${titulo} · Educare`;
@@ -144,7 +155,7 @@ export function PortalAcervo() {
 
       {/* Filtros por secao */}
       <div className="relative">
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none lg:flex-wrap lg:overflow-visible">
           {(Object.keys(SECAO_LABELS) as Secao[]).map((s) => {
             const Icon = SECAO_ICON[s];
             return (
@@ -165,26 +176,37 @@ export function PortalAcervo() {
             );
           })}
         </div>
-        <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent lg:hidden" />
       </div>
 
-      {/* Badge de situacao ativa */}
-      {situacao && (
+      {/* Badge de situacao ou novidade ativa */}
+      {(situacao || novidade) && (
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">Filtrando por:</span>
-          <button
-            onClick={limparSituacao}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-lg border border-primary/40 bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors max-w-[260px]"
-          >
-            <span className="truncate">{SITUACAO_LABELS[situacao]}</span>
-            <X className="size-3 shrink-0" />
-          </button>
+          {situacao && (
+            <button
+              onClick={limparSituacao}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg border border-primary/40 bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors max-w-[260px]"
+            >
+              <span className="truncate">{SITUACAO_LABELS[situacao]}</span>
+              <X className="size-3 shrink-0" />
+            </button>
+          )}
+          {novidade && (
+            <button
+              onClick={limparNovidade}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-lg border border-primary/40 bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors max-w-[260px]"
+            >
+              <span className="truncate">Adicionados recentemente</span>
+              <X className="size-3 shrink-0" />
+            </button>
+          )}
         </div>
       )}
 
       {/* Filtros por etapa */}
       <div className="relative">
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none lg:flex-wrap lg:overflow-visible">
           {ETAPAS.map((e) => (
             <button
               key={e}
@@ -201,12 +223,12 @@ export function PortalAcervo() {
             </button>
           ))}
         </div>
-        <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent lg:hidden" />
       </div>
 
       {/* Filtros por tema */}
       <div className="relative">
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none lg:flex-wrap lg:overflow-visible">
           {(Object.keys(TEMA_LABELS) as Tema[]).map((t) => (
             <button
               key={t}
@@ -223,7 +245,7 @@ export function PortalAcervo() {
             </button>
           ))}
         </div>
-        <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-linear-to-l from-background to-transparent lg:hidden" />
       </div>
 
       {/* Grade de materiais */}
@@ -254,7 +276,7 @@ export function PortalAcervo() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {resultado.slice(0, limite).map((m) => (
               <MaterialCard key={m.id} material={m} />
             ))}

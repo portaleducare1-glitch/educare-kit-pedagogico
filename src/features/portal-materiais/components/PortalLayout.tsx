@@ -8,6 +8,7 @@ import { ToastProvider } from '@/lib/toast';
 import { InstallBanner } from './InstallBanner';
 import { InstallProvider, useInstall } from '../lib/useInstall';
 import { TrackingNotice } from './TrackingNotice';
+import { useAvaliacaoPortal } from '../lib/useAvaliacaoPortal';
 
 function PortalLayoutInner() {
   const location = useLocation();
@@ -16,6 +17,8 @@ function PortalLayoutInner() {
   const isHome = location.pathname === '/portal';
   const isAcervo = location.pathname === '/portal/acervo';
   const isFavoritos = location.pathname === '/portal/favoritos';
+
+  useAvaliacaoPortal();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });

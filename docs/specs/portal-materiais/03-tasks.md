@@ -265,3 +265,71 @@ Eduardo pediu uma última checagem do que mudou hoje antes do deploy. Achados:
 - [ ] Plano de monitoramento (GA4/Clarity) e configuração de leitura via API
 - [ ] Pesquisa de validação (uso real, utilidade, percepção de valor) — insumo
   pra decisão de Fase 2
+
+## Melhorias pós-deploy discutidas (26/06/2026, continuação) — onboarding, avaliação, WhatsApp
+
+Eduardo trouxe 3 ideias depois de ver o painel ao vivo: tour guiado de primeira
+visita, avaliação por estrela, e bolha de WhatsApp. Discussão registrada aqui
+em vez de ficar só no chat.
+
+**Onboarding guiado — decisão: não fazer agora.** Pesquisado (dado real: tours
+de 3 passos completam ~72%, de 7 passos cai a 16%), mas decisão final pesa o
+contexto específico: já existe o aviso de rastreamento ocupando a primeira
+visita, o público (professora) abre o app com pressa por uma necessidade
+pontual, e não há nenhum dado de uso ainda pra saber onde ela realmente
+travaria. Revisitar depois de 1-2 semanas de Clarity/GA4 reais — se houver
+ponto de confusão identificado, construir tour pontual pra aquele ponto
+específico, não um tour genérico.
+
+**Avaliação por estrela — decisão: via Typebot, gatilho por visita (não por
+material aberto).**
+- Gatilho final: **2ª visita** (dia diferente da primeira) **+ pelo menos 2
+  materiais abertos no total**. Critério explicitamente preferido sobre
+  "3 materiais abertos numa sentada só", porque a curiosidade da primeira
+  visita não é sinal de valor real — voltar é.
+- Quem responde, nunca mais recebe o pedido naquele aparelho. Quem só fecha
+  sem responder pode receber de novo numa visita futura.
+- Download (`download_pdf`, já instrumentado no GA4, separado de
+  `abrir_material`) decidido como sinal **complementar de análise**, não
+  como gatilho — download é ação mais rara no celular, exigir isso geraria
+  poucas respostas.
+- **Typebot criado via API**, pasta "pesquisas" do workspace Typebot (mesma
+  pasta de `Pesquisa Onboarding — Educare` e `Pesquisa Base — Educare`), nome
+  `[Pesquisa] Avaliação Portal de Materiais — Kit Pedagógico`, id
+  `cmqvjctea000xkq2n6dothg4n`. Fluxo: estrelas (1-5, variável
+  `nota_avaliacao_portal`) → bloco de Condição (nota ≤3 vs ≥4) → nota baixa
+  pergunta múltipla escolha (com opção "Outro" abrindo texto livre) → nota
+  alta pergunta aberta → encerramento. **Revisado e publicado por Eduardo em
+  26/06/2026.**
+- [x] **Gatilho conectado no código** (`useAvaliacaoPortal.tsx`, plugado no
+  `PortalLayout`): conta visita por dia (`localStorage`), conta materiais
+  visitados (reaproveita `useVisitados`/nova `contarVisitados`), dispara o
+  popup do Typebot só uma vez por aparelho quando 2ª visita + 2 materiais.
+  **Testado de ponta a ponta com Playwright** (não só "parece certo"): 1ª
+  visita não dispara, 2ª visita dispara, popup abre com a pergunta certa,
+  nota baixa ramifica pra pergunta de múltipla escolha como desenhado.
+- **Bug real encontrado e corrigido durante o teste:** a primeira tentativa
+  importava `@typebot.io/js` errado (`import * as Typebot`) e quebrava o
+  `PortalLayoutInner` inteiro (`Typebot.initBubble is not a function`) — só
+  não derrubou o app porque existe um `ErrorBoundary`. Corrigido usando o
+  import certo (`initPopup` vem do default export de `@typebot.io/js/web`).
+- **`apiHost` errado descoberto e corrigido:** builder (`typebot.educarepedagogia.com.br`)
+  e viewer público dos bots (`materialgratis.educarepedagogia.com.br`) são
+  domínios diferentes neste self-host — Eduardo confirmou o correto colando
+  o embed code real do painel. Registrado em `acessos-api.md`.
+- **Otimização de performance aplicada:** o pacote `@typebot.io/js/web`
+  (~170kB gzip, traz DOMPurify + UI do chat) quase dobrou o bundle principal
+  do portal. Corrigido com `import()` dinâmico só no momento em que a
+  condição de disparo é atingida — confirmado via Playwright que o chunk não
+  é baixado em quem nunca vai disparar a pesquisa. Mesmo padrão de code
+  splitting já documentado em `ARCHITECTURE.md` pra pdf.js/tesseract.js.
+- **Falta:** conectar o resultado a algum destino externo (planilha/n8n,
+  mesmo padrão dos outros typebots) — opcional, já que o Typebot guarda toda
+  resposta na própria aba de Resultados, sem precisar de nada a mais pra
+  funcionar.
+
+**Bolha de WhatsApp — decisão: sim, reaproveitando o link que já existe.**
+O rodapé já tem "Suporte" apontando pra
+`https://educarepedagogia.com.br/suporte-whatsapp`, que redireciona pro
+WhatsApp real (`5565981044319`). Falta só promover esse link pra um botão
+flutuante fixo na tela — ainda não implementado nesta sessão.

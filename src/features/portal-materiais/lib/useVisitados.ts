@@ -20,6 +20,11 @@ function salvarVisitados(ids: string[]) {
   } catch { /* storage cheio — ignora */ }
 }
 
+/** Lê o total de materiais visitados direto do localStorage, sem state React. */
+export function contarVisitados(): number {
+  return lerVisitados().length;
+}
+
 export function useVisitados() {
   const [visitados, setVisitados] = useState<string[]>(() => lerVisitados());
 

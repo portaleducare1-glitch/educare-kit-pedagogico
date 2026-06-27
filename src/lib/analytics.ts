@@ -62,6 +62,11 @@ export function trackWhatsApp(id: string, titulo: string) {
   track('share_whatsapp', { material_id: id, material_titulo: titulo });
 }
 
+// Clique no botão flutuante de suporte via WhatsApp
+export function trackSuporteWhatsApp() {
+  track('contato_suporte_whatsapp');
+}
+
 // Filtro por tema aplicado no Acervo
 export function trackTemaFiltro(tema: string) {
   track('filtro_tema', { tema });

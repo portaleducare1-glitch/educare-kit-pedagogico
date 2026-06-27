@@ -10,6 +10,7 @@ import { InstallProvider, useInstall } from '../lib/useInstall';
 import { TrackingNotice } from './TrackingNotice';
 import { useAvaliacaoPortal } from '../lib/useAvaliacaoPortal';
 import { AvaliacaoBubble } from './AvaliacaoBubble';
+import { SuporteWhatsAppButton } from './SuporteWhatsAppButton';
 
 function PortalLayoutInner() {
   const location = useLocation();
@@ -95,6 +96,8 @@ function PortalLayoutInner() {
       <PortalFooter />
 
       <InstallBanner />
+
+      <SuporteWhatsAppButton />
 
       {mostrarAvaliacao && <AvaliacaoBubble />}
 

@@ -20,7 +20,7 @@ function PortalLayoutInner() {
   const isAcervo = location.pathname === '/portal/acervo';
   const isFavoritos = location.pathname === '/portal/favoritos';
 
-  const mostrarAvaliacao = useAvaliacaoPortal();
+  const { mostrarAvaliacao, ocultarSuporte } = useAvaliacaoPortal();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
@@ -97,7 +97,7 @@ function PortalLayoutInner() {
 
       <InstallBanner />
 
-      <SuporteWhatsAppButton />
+      {!ocultarSuporte && <SuporteWhatsAppButton />}
 
       {mostrarAvaliacao && <AvaliacaoBubble />}
 

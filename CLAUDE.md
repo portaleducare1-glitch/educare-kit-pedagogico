@@ -2,6 +2,12 @@
 
 > Índice. Não duplica conteúdo, aponta. Identifique a task e abra só o doc relevante.
 
+## Antes de qualquer coisa
+
+Carregue `Vault/protocolo-comportamento-ia.md` — regra geral de como tratar qualquer instrução
+do Eduardo (pesquisar antes de criar, não assumir ordem literal, nunca expor tática no
+resultado final). Vale pra qualquer projeto, código ou negócio, antes de qualquer doc abaixo.
+
 ## Sessão de negócio (apostila, funil, copy, análise)?
 
 Carregue primeiro: `Vault/Projetos/Educare/guia-ia.md` — tem o mapa completo de qual contexto carregar para cada tipo de tarefa de negócio.

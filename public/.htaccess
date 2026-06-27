@@ -19,7 +19,12 @@ RewriteRule ^ index.html [QSA,L]
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), camera=(), microphone=(), payment=()"
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-FX+Sz4JJzE5MgALP9kyz2/odK9jAUarrMmIbiO1MXto=' 'sha256-qVNMNRTFa1awIUmy7MQpYiWyZXWkiOf4cdmo+b5Dtxg=' https://www.googletagmanager.com https://www.clarity.ms; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://educarepedagogia.com.br https://www.google-analytics.com https://*.clarity.ms; connect-src 'self' https://educarepedagogia.com.br https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://*.clarity.ms; frame-src https://educarepedagogia.com.br; font-src 'self' data:; object-src 'none'; worker-src blob:; form-action 'self'; base-uri 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-r4i5PERpQzSj+JzuLsda4zfQiIt+CExCVVs7li1EHVs=' 'sha256-qVNMNRTFa1awIUmy7MQpYiWyZXWkiOf4cdmo+b5Dtxg=' https://www.googletagmanager.com https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.bunny.net; img-src 'self' data: blob: https://educarepedagogia.com.br https://www.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com; connect-src 'self' https://educarepedagogia.com.br https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://*.clarity.ms https://materialgratis.educarepedagogia.com.br; frame-src https://educarepedagogia.com.br; font-src 'self' data: https://fonts.bunny.net; object-src 'none'; worker-src 'self' blob:; form-action 'self'; base-uri 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
+  # Área restrita aos compradores (sem login nesta fase) — robots.txt só pede,
+  # não garante. X-Robots-Tag garante de verdade mesmo se o link for compartilhado.
+  <If "%{REQUEST_URI} =~ m#^/portal#">
+    Header always set X-Robots-Tag "noindex, nofollow"
+  </If>
 </IfModule>
 
 # ─── Cache de assets estáticos ─────────────────────────────────────────────────

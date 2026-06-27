@@ -45,6 +45,7 @@ coverage
 # Conteúdo pedagógico (PDFs hospedados no WordPress — não vão no repo)
 apostilas-educare/
 apostila-tecnologias-assistivas/
+apostila-bncc/
 certificados/
 kit-pedagogico-5/
 materiais-referencia/
@@ -52,6 +53,11 @@ documentos/
 imagens/
 output/
 rascunhos/
+
+# Ferramenta/tooling local de IA (não faz parte do app, equivalente ao .claude/)
+.agents/
+.context/
+apostila-creator-workspace/
 
 # Contexto de trabalho e histórico (não faz parte do deploy)
 Documentos\ IA/

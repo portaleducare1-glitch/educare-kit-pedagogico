@@ -4,6 +4,7 @@ import { trackSituacao } from '@/lib/analytics';
 import { Search, BookOpen, Sparkles, ClipboardList, ChevronRight, History, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
+import { safeRemoveItem } from '@/lib/safeStorage';
 import { MaterialCard } from '../components/MaterialCard';
 import { useVisitados } from '../lib/useVisitados';
 import { materiais } from '../data/materiais';
@@ -155,8 +156,8 @@ export function PortalHome() {
             icon={History}
             action={
               <button
-                onClick={() => { localStorage.removeItem('educare-visitados'); window.location.reload(); }}
-                className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors shrink-0"
+                onClick={() => { safeRemoveItem('educare-visitados'); window.location.reload(); }}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors shrink-0 py-3 -my-3 px-1 -mx-1"
               >
                 Limpar
               </button>

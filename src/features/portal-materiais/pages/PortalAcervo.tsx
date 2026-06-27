@@ -1,19 +1,13 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { trackBusca, trackBuscaSemResultado, trackTemaFiltro, trackEtapaFiltro, trackSecaoFiltro } from '@/lib/analytics';
-import { Search, BookOpen, Sparkles, ClipboardList, X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { materiais } from '../data/materiais';
 import { buscar } from '../lib/busca';
 import { MaterialCard } from '../components/MaterialCard';
 import type { Secao, Etapa, Situacao, Tema } from '../types';
-import { SECAO_LABELS, ETAPA_LABELS, SITUACAO_LABELS, TEMA_LABELS } from '../types';
-
-const SECAO_ICON: Record<Secao, React.ElementType> = {
-  apostilas: BookOpen,
-  atividades: Sparkles,
-  documentos: ClipboardList,
-};
+import { SECAO_ICON, SECAO_LABELS, ETAPA_LABELS, SITUACAO_LABELS, TEMA_LABELS } from '../types';
 
 const SECAO_ATIVA: Record<Secao, string> = {
   apostilas: 'bg-blue-50 text-brand-blue-text border-brand-blue/30 shadow-none',

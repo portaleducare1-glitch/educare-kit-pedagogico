@@ -135,7 +135,7 @@ function PortalLayoutInner() {
             to="/portal/favoritos"
             className={cn(
               'relative flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-medium transition-colors',
-              isFavoritos ? 'text-brand-coral' : 'text-muted-foreground hover:text-foreground',
+              isFavoritos ? 'text-brand-coral-text' : 'text-muted-foreground hover:text-foreground',
             )}
             aria-label={`Favoritos${favoritos.length > 0 ? ` (${favoritos.length})` : ''}`}
           >
@@ -203,8 +203,8 @@ function PortalFooter() {
           )}
         </div>
 
-        <p className="text-[10px] text-muted-foreground/50">
-          Kit Pedagogico 5.0 · v1.0.1
+        <p className="text-[10px] text-muted-foreground">
+          Kit Pedagogico 5.0 · v1.1.0
         </p>
       </div>
     </footer>

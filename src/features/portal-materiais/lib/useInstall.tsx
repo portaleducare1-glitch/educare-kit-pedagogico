@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef, type ReactNode } from 'react';
+import { safeGetItem, safeSetItem } from '@/lib/safeStorage';
 
 const DISMISSED_KEY = 'educare-install-dismissed';
 
@@ -32,7 +33,7 @@ export function InstallProvider({ children }: { children: ReactNode }) {
       !!(navigator as unknown as { standalone?: boolean }).standalone;
 
     setIsStandalone(standalone);
-    setIsDismissed(!!localStorage.getItem(DISMISSED_KEY));
+    setIsDismissed(!!safeGetItem(DISMISSED_KEY));
 
     if (standalone) return;
 
@@ -61,7 +62,7 @@ export function InstallProvider({ children }: { children: ReactNode }) {
   }, []);
 
   function dismiss() {
-    localStorage.setItem(DISMISSED_KEY, '1');
+    safeSetItem(DISMISSED_KEY, '1');
     setIsDismissed(true);
   }
 

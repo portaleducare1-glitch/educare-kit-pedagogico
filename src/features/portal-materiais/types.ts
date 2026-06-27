@@ -1,3 +1,5 @@
+import { BookOpen, Sparkles, ClipboardList } from 'lucide-react';
+
 export type Secao = 'apostilas' | 'atividades' | 'documentos';
 
 export type Etapa =
@@ -49,6 +51,12 @@ export interface Material {
   /** ISO date string (YYYY-MM-DD). Badge "Novo" aparece enquanto a data atual for anterior ou igual. */
   novidadeAte?: string;
 }
+
+export const SECAO_ICON: Record<Secao, React.ElementType> = {
+  apostilas: BookOpen,
+  atividades: Sparkles,
+  documentos: ClipboardList,
+};
 
 export const SECAO_LABELS: Record<Secao, string> = {
   apostilas: 'Apostilas de Estudo',

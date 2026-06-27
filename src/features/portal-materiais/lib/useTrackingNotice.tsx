@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { safeGetItem, safeSetItem } from '@/lib/safeStorage';
 
 const DISMISSED_KEY = 'educare-tracking-notice-dismissed';
 
@@ -6,11 +7,11 @@ export function useTrackingNotice() {
   const [isDismissed, setIsDismissed] = useState(true);
 
   useEffect(() => {
-    setIsDismissed(!!localStorage.getItem(DISMISSED_KEY));
+    setIsDismissed(!!safeGetItem(DISMISSED_KEY));
   }, []);
 
   function dismiss() {
-    localStorage.setItem(DISMISSED_KEY, '1');
+    safeSetItem(DISMISSED_KEY, '1');
     setIsDismissed(true);
   }
 

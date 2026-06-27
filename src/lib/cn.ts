@@ -5,10 +5,3 @@ import { twMerge } from 'tailwind-merge';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
-/** Remove acentos para buscas/comparações insensíveis a diacríticos. */
-export const normalize = (str: string) =>
-  str
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase();

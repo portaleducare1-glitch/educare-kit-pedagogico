@@ -345,5 +345,307 @@ material aberto).**
 **Bolha de WhatsApp — decisão: sim, reaproveitando o link que já existe.**
 O rodapé já tem "Suporte" apontando pra
 `https://educarepedagogia.com.br/suporte-whatsapp`, que redireciona pro
-WhatsApp real (`5565981044319`). Falta só promover esse link pra um botão
-flutuante fixo na tela — ainda não implementado nesta sessão.
+WhatsApp real (`5565981044319`). Botão flutuante fixo implementado
+(`SuporteWhatsAppButton.tsx`), linkando pro mesmo redirecionador do WordPress
+(nunca o número direto), escondido enquanto o banner de instalar ou a
+avaliação estão ativos pra não conflitar.
+
+## Bateria final "profundamente" antes do deploy (26/06/2026, continuação)
+
+Eduardo pediu explicitamente teste profundo, não raso, antes do deploy. Rodada
+em Chromium + WebKit (Safari real, motor instalado pra essa sessão), contra o
+`dist/` de produção servido por **nginx real** (instalado via Homebrew só pra
+esse teste, rodando o `nginx.conf` do repo literal, não um mock) — não contra
+o servidor de dev do Vite, que nunca manda os headers de segurança e por isso
+mascarava os problemas abaixo.
+
+- [x] **Crash real corrigido: localStorage bloqueado derrubava o app
+  inteiro.** `ThemeProvider` (raiz da árvore) chamava `localStorage.getItem`
+  sem try/catch; em modos de navegação muito restritos isso lança erro e o
+  `ErrorBoundary` global mostra "Algo deu errado" pra qualquer funcionalidade,
+  não só tema. Criado `src/lib/safeStorage.ts` (`safeGetItem`/`safeSetItem`/
+  `safeRemoveItem`) e aplicado em `ThemeProvider`, `useInstall`,
+  `useTrackingNotice`, `useAvaliacaoPortal` e no botão "Limpar" de
+  `PortalHome`. `useFavoritos`/`useVisitados` já tinham proteção própria.
+  Confirmado via Playwright simulando `localStorage` lançando erro em ambos
+  os motores: antes quebrava, depois não.
+- [x] **Achado não previsto, o mais grave da rodada: a CSP de produção
+  bloqueava 4 features inteiras, incluindo o Typebot construído hoje.** O
+  servidor de dev nunca aplica `Content-Security-Policy`, então nenhum teste
+  desta sessão (nem os anteriores) passava por essa validação. Simulando a
+  CSP real (primeiro via mock Python, depois via nginx de verdade pra
+  garantir fidelidade total), apareceram 5 bloqueios reais em `nginx.conf`
+  (arquivo que o `Dockerfile` realmente usa — ver achado de infraestrutura
+  abaixo):
+  1. **Typebot da avaliação 100% bloqueado** — `connect-src` não incluía
+     `materialgratis.educarepedagogia.com.br`, então o `startChat` falhava
+     com "Failed to fetch". A pesquisa construída e testada a sessão toda
+     nunca teria funcionado em produção.
+  2. **Service Worker do PWA 100% bloqueado** — `worker-src` só tinha
+     `blob:`, sem `'self'`, e o registro de `/sw.js` (script same-origin) é
+     regido por essa diretiva. Instalar como app e funcionamento offline
+     quebrados.
+  3. **Hash do script inline do GA4 estava errado** — `sha256-FX+Sz...`
+     configurado não bate com o hash real do `gtag('config', ...)` builtado
+     (`sha256-r4i5PERpQzSj+JzuLsda4zfQiIt+CExCVVs7li1EHVs=`, confirmado
+     calculando o hash do `dist/index.html` de verdade). GA4 nunca teria
+     disparado nenhum evento.
+  4. **Script do Clarity bloqueado** — `script-src` só liberava
+     `www.clarity.ms`, não `scripts.clarity.ms` (domínio real de onde carrega
+     `clarity.js`). Trocado pra `https://*.clarity.ms`.
+  5. **Fonte do próprio widget do Typebot bloqueada** — carrega
+     `fonts.bunny.net`, fora do `style-src`/`font-src`. Cosmético (cairia
+     pra fonte padrão), mas corrigido.
+  - Corrigidos os 5 nos três arquivos que duplicam a CSP (`nginx.conf`,
+    `netlify.toml`, `public/.htaccess`). Revalidado depois da correção: 0
+    erros inesperados em Chromium (14/14) e WebKit (12/14 — as 2 "falhas"
+    restantes são o achado de Clarity/Beacon abaixo, não bug nosso).
+  - **Decisão de Eduardo:** pings auxiliares de remarketing do Google Ads
+    (`doubleclick.net`, `ads/ga-audiences`) ficam deliberadamente bloqueados
+    — o portal não roda campanha de Ads, GA4 principal funciona sem eles, e
+    é menos dado compartilhado.
+- [x] **Achado de infraestrutura, causa raiz de tudo acima: `nginx.conf` é
+  quem manda em produção, não o `.htaccess`.** `DEPLOY.md` dizia "Apache"
+  mas o `Dockerfile` builda com `nginx:alpine` e copia `nginx.conf` —
+  confirmado batendo direto no domínio do EasyPanel (`Server: nginx` na
+  resposta). `nginx.conf` estava com uma CSP de uma versão anterior, de
+  antes do Clarity e do Typebot terem sido adicionados ao `.htaccess`/
+  `netlify.toml` — os três divergiram e ninguém notou porque nada testa
+  contra o nginx real. `DEPLOY.md` atualizado explicando que os três
+  arquivos têm a mesma CSP duplicada de propósito e que `nginx.conf` é a
+  fonte da verdade; qualquer novo domínio de script/widget precisa entrar
+  nos três juntos.
+- [x] **Erro do Clarity no WebKit investigado a fundo: é real, é conhecido,
+  não é bug nosso.** Em Safari/WebKit, `navigator.sendBeacon`/fetch keepalive
+  tem uma cota compartilhada de 64KB por contexto de navegação — confirmado
+  via pesquisa (mesmo erro relatado contra o SDK do Datadog, e documentado
+  como comportamento de especificação do WebKit). O Clarity ocasionalmente
+  estoura essa cota e alguns beacons de gravação de sessão são descartados;
+  não quebra nenhuma funcionalidade do app, é uma limitação do
+  navegador/terceiro, não corrigível pelo nosso lado.
+- [x] **CORS do WordPress reflete qualquer `Origin`, não faz allowlist de
+  verdade** — testado enviando um domínio inventado e o WordPress aceitou.
+  Equivale na prática a um `*` mesmo "configurado" com o domínio certo.
+  Registrado em `DEPLOY.md` como tarefa pendente do lado do WordPress (fora
+  deste repositório).
+- [x] **Domínio de produção (`kit.educarepedagogia.com.br`) ainda sem DNS** —
+  app já está no ar via Docker/EasyPanel, mas só pelo domínio padrão
+  (`site-educare-kitpedagogico.vpqsrq.easypanel.host`), que é pra onde o
+  botão do WordPress aponta hoje. Esperado nesta fase, registrado em
+  `DEPLOY.md` pra não esquecer de trocar o link depois do DNS apontar.
+- Versão do rodapé atualizada `v1.0.1` → `v1.0.2` (acumula: correção de
+  localStorage, correção de CSP em produção, bolha de WhatsApp, avaliação por
+  Typebot).
+
+## Análise de melhorias adicional, pós "mais alguma melhoria?" (26/06/2026)
+
+Eduardo pediu mais uma rodada de análise profunda além do que já tinha sido
+testado. Auditoria real com **axe-core** (motor do Lighthouse), não inspeção
+visual, nas 5 páginas principais.
+
+- [x] **3 falhas reais de contraste WCAG encontradas e corrigidas:**
+  1. Badge "Novo" (`MaterialCard.tsx`): `text-success` sobre `bg-success/15`
+     dava 2.54:1 (precisa 4.5:1). Trocado pra `text-brand-green-text`, token
+     que já existia no design system pra exatamente esse uso e nunca tinha
+     sido aplicado nesse componente → 5.61:1.
+  2. Versão no rodapé (`PortalLayout.tsx`): `text-muted-foreground/50`
+     dava ~2:1. O `/50` duplicava o esmaecimento de um token que já é
+     "secundário" por natureza. Removida a opacidade extra → 5.17:1.
+  3. Aba ativa "Favoritos" no menu inferior: `text-brand-coral` no texto
+     dava 3.09:1. Criado `--brand-coral-text` (`#b83114`, 5.97:1), seguindo o
+     mesmo padrão já usado pra azul/verde/laranja (`--brand-X-text`), e
+     aplicado só no texto da aba — o ícone continua com o coral claro normal,
+     não é regido pela mesma regra de contraste de texto.
+  - Revalidado: 0 violações sérias/críticas em todas as 5 páginas testadas.
+- [x] **Achado de segurança contido, sem ação necessária:**
+  `logs/nutror-varredura-debug.json` (538KB) tem tokens JWT reais de acesso
+  ao Nutror/Eduzz capturados durante a varredura de cursos desta sessão.
+  Confirmado: `logs/` está no `.gitignore`, nunca entrou no histórico do git.
+  Tokens de acesso expiram em 15min (`exp - iat` do payload), já mortos.
+  Achado independente, não substitui a tarefa já existente "Rotacionar JWT
+  Nutror/Eduzz (exposto em 09/06/2026)" no `DEPLOY.md`, que se refere a uma
+  exposição anterior em histórico de chat, não neste arquivo.
+
+## Terceira rodada de "mais alguma melhoria?" (26/06/2026, continuação)
+
+- [x] **`/portal/*` agora garante `noindex` de verdade, não só pede.** O
+  portal não tem login nesta fase (link recebido por e-mail é o único
+  controle de acesso) e `robots.txt` já tinha `Disallow: /portal/`, mas isso
+  só pede pros crawlers bem-comportados não rastrearem — não impede a URL de
+  aparecer indexada se alguém compartilhar o link em algum lugar público.
+  Adicionado `X-Robots-Tag: noindex, nofollow` via header HTTP (camada que
+  garante de verdade, não depende de crawler respeitar nada) nos três
+  arquivos de config (`nginx.conf`, `.htaccess`, `netlify.toml`), escopado só
+  pra `/portal/*` — `/`, `/privacidade`, `/termos` continuam indexáveis
+  normalmente.
+  - **Pegadinha real do nginx descoberta no processo:** a primeira tentativa
+    (`location ^~ /portal { add_header ...; try_files ...; }`) parecia certa
+    mas nunca funcionava de verdade — o `try_files` redireciona internamente
+    pra `/index.html` quando a rota não existe como arquivo real (que é
+    sempre o caso pras rotas do React Router), e esse redirecionamento
+    interno faz o nginx reavaliar a location do zero pro novo destino, caindo
+    no bloco `~* \.html$` em vez do bloco original. Corrigido movendo a
+    condição pra dentro do bloco `.html$` mesmo, usando
+    `if ($request_uri ~ ^/portal)` — `$request_uri` preserva a URL original
+    do cliente mesmo depois do redirecionamento interno, ao contrário de
+    `$uri`. Confirmado com nginx real (não mock): `/portal/acervo` tem o
+    header, `/` e `/privacidade` não têm, e a bateria completa de testes
+    (14/14 Chromium) continua passando depois da mudança.
+- [ ] **Pendente, decisão de produto, não de bug:** botão de favoritar em
+  cada card de material (`MaterialCard.tsx`) tem área de toque de 24x24px
+  (ícone 16px + padding de 4px). Cumpre o mínimo técnico do WCAG 2.5.8 (AA,
+  24px), mas fica bem abaixo do padrão de conforto que Apple/Google
+  recomendam (44/48px) — e esse é o botão mais repetido do app (aparece nos
+  220 materiais). Mesma situação em "Fechar aviso" (24x24) e "Limpar"
+  (38x16px de altura). Não corrigido porque aumentar a área de toque muda o
+  tamanho visual do botão em todo lugar que ele aparece — decisão de
+  visual/produto, não correção óbvia de bug.
+- **Verificado e descartado (não eram bugs reais):** busca com 1 caractere
+  acentuado (ex. "ç") retorna o catálogo inteiro — é o guard intencional de
+  "mínimo 2 caracteres pra buscar" funcionando como desenhado, não falha de
+  normalização. `temas`/`situacoes`/`etapas` não passam por `normalizar()`
+  em `busca.ts` (inconsistente com os outros campos) mas são sempre slugs
+  ASCII minúsculos por convenção, então não tem efeito prático hoje.
+- [x] **Área de toque aumentada, com aprovação de Eduardo:** botão de
+  favoritar (`MaterialCard.tsx`) de 24x24px → ~40x40px (`p-1`→`p-3`,
+  `top-3 right-3`→`top-2 right-2`, `pr-10`→`pr-12` no texto pra não
+  sobrepor). Confirmado por screenshot: ícone do coração visualmente na
+  mesma posição, sem sobrepor título/badge. "Fechar aviso" do
+  `TrackingNotice.tsx` 24x24→36x36 (padding+margem negativa, mesma técnica).
+  "Limpar" de `PortalHome.tsx` ganhou hitbox invisível maior (`py-3 -my-3
+  px-1 -mx-1`) sem mudar o tamanho visual do texto.
+- [x] **Contraste do "Limpar" corrigido de quebra:** `text-muted-foreground/60`
+  dava ~2.4:1. Esse achado só apareceu agora porque a seção "Continue de
+  onde parou" só renderiza com histórico de visita — não existia no
+  navegador limpo da varredura anterior. Removida a opacidade extra, igual
+  ao rodapé.
+- [ ] **Achado novo, mais sério, pendente de decisão:** o tratamento visual
+  de card "já visitado" (`opacity-70` no card inteiro, em `MaterialCard.tsx`)
+  quebra contraste de qualquer texto que já estivesse no limite, porque
+  opacidade dilui a cor renderizada. Confirmado com números: mesmo subindo
+  pra `opacity-90` (quase imperceptível como "esmaecido"), o texto da
+  descrição (`text-muted-foreground`) ainda fica em 4.13:1, abaixo do
+  4.5:1 — não tem opacidade que resolva sem also tornando o esmaecimento
+  inútil visualmente. Esse problema só piora quanto mais a professora usa o
+  app (mais cards "visitados" acumulam o defeito). **Não corrigido**: a
+  solução de verdade é trocar a abordagem (esmaecer só borda/ícone, ou usar
+  um selo "já visto" em vez de opacidade no texto), não é ajuste de número —
+  decisão de design, registrada aqui pra próxima sessão de iteração visual.
+
+## Redesenho do estado "visitado" (26/06/2026, continuação)
+
+Eduardo perguntou se o `opacity-70` foi decisão dele. Não foi: confirmado via
+`git log -S"opacity-70"` que entrou no commit único de scaffold inicial
+(`640cfa4`, 10/06/2026), sem registro de discussão, e a spec (`01-
+requirements.md`, R3) só exige "permitir ver histórico", sem especificar a
+forma visual — era escolha de implementação de sessão anterior, nunca
+validada visualmente por ele. Pesquisado (WebSearch: WCAG non-text contrast +
+padrões de "lido/completo" em LMS, leitores de artigo, e-mail) antes de
+decidir: nenhuma referência usa opacidade no conteúdo inteiro pra indicar
+estado — o padrão consistente é selo/ícone separado, porque opacidade sempre
+dilui contraste do texto quando visível o suficiente pra perceber (confirmado
+matematicamente na rodada anterior: nem opacity-90 resolve).
+
+- [x] **Implementado: selo "Visto" substitui a opacidade no card inteiro**
+  (`MaterialCard.tsx`). Removido `opacity-70`/`border-border/50`/`hover:
+  opacity-100` do card "já visitado" — título e descrição agora sempre em
+  contraste pleno, visitado ou não. Adicionado selo `✓ Visto` (ícone `Check`
+  + texto, estilo contorno, `border-border`/`text-muted-foreground`) na
+  mesma linha do selo "Novo" — contorno em vez de preenchido de propósito,
+  pra ler como "neutro" em vez de "chamativo" (preenchido é reservado pro
+  "Novo", que deve mesmo chamar atenção). Contraste calculado antes de
+  aplicar: 5.05:1 (margem confortável acima do mínimo 4.5:1).
+  - Motivo do desenho, não só o quê: a seção "Continue de onde parou" existe
+    pra fazer a professora reabrir algo que já visitou — esmaecer com
+    opacidade comunica "isso importa menos", o oposto da intenção da seção.
+    Um selo neutro comunica o estado sem sugerir irrelevância.
+  - Convive bem com "Novo" simultâneo (mesmo material novo E já aberto):
+    testado visualmente via screenshot, os dois selos cabem na mesma linha
+    sem cortar.
+  - Revalidado depois da troca: axe-core 0 violações graves/críticas em toda
+    bateria, incluindo a seção "Continue de onde parou" (que só renderiza
+    com histórico de visita — não existia na varredura anterior, por isso só
+    apareceu agora). Bateria completa de produção (nginx real): Chromium
+    14/14, WebKit 12/14 (as 2 restantes continuam sendo só o achado já
+    confirmado de Beacon API do Safari, não regressão).
+- Versão `v1.0.5`.
+
+## Correção da regra de versionamento (26/06/2026, continuação)
+
+Eduardo perguntou se a versão conta por commit ou por deploy. Resposta:
+não tinha regra confirmada, só uma proposta de sessão anterior nunca validada
+(`02-design.md`, marcado "não resolvido"). **Decidido agora: versão sobe só
+quando o código vai pro ar em produção, nunca antes.** Como nada desta sessão
+foi deployado ainda, o bump de `v1.0.1` até `v1.0.5` feito a cada correção
+estava errado por essa regra — **revertido o rodapé de volta pra `v1.0.1`**
+(versão da última build realmente em produção). Todas as correções desta
+sessão continuam implementadas no código, só o número não sobe até o deploy
+de verdade acontecer. Regra documentada em `02-design.md`. Próximo deploy:
+decidir o número certo na hora (patch vs. minor, ver critério no
+`02-design.md`) — dado o volume de mudança (Typebot de avaliação, WhatsApp,
+correção de CSP em produção, 3 fixes de contraste, redesenho do "visitado"),
+provavelmente é minor (`v1.1.0`), não patch.
+
+## Revisão final pré-deploy de verdade (27/06/2026)
+
+Eduardo confirmou que push no `main` dispara deploy automático no EasyPanel
+— ou seja, o momento do commit/push É o deploy, não um passo manual
+separado depois. Por isso esta revisão foi tratada como a última checagem
+antes de produção de fato, não mais um teste local.
+
+- [x] **Higiene de repositório:** achadas 2 pastas do Life Psicologia
+  (`life-combo-3-cursos-emails/`, `life-psicodocumentos-pagina-vendas/`)
+  dentro do repo Educare por engano (sessão de 24-25/06, diretório de
+  trabalho errado) — movidas pra `Sistemas/` antes de qualquer commit, não
+  entraram na história do git do Educare. Também adicionado ao
+  `.gitignore`: `apostila-bncc/` (conteúdo cru, mesmo padrão de outras
+  pastas de conteúdo já ignoradas), `.agents/`/`.context/` (ferramenta local
+  de IA, equivalente ao `.claude/` que já era ignorado),
+  `apostila-creator-workspace/` (dados de avaliação do skill-creator, não é
+  conteúdo do app).
+- [x] **`DEPLOY.md` corrigido: a seção "Como fazer o deploy" descrevia um
+  fluxo que não existe** (clonar/instalar/buildar manualmente, servir
+  estático). A realidade (confirmada em sessão anterior e agora oficializada
+  com Eduardo): é Docker, `nginx.conf` é a config real, e **push no main já
+  é o deploy**, automático.
+- [x] **Varredura completa de qualidade de código (jscpd + knip, projeto
+  inteiro, não só o escopo incremental dos hooks) encontrou e corrigiu 2
+  duplicações reais:**
+  1. `SECAO_ICON` (mapa ícone por seção) estava copiado literalmente em
+     `MaterialCard.tsx` E `PortalAcervo.tsx` — exatamente "duas funções que
+     fazem a mesma coisa". Extraído pra `types.ts` (mesmo lugar de
+     `SECAO_LABELS`, já era o padrão estabelecido pra mapas chaveados por
+     `Secao`), os dois arquivos agora importam de um lugar só.
+  2. `src/lib/cn.ts` tinha uma função `normalize()` (remove acento) **nunca
+     usada em lugar nenhum**, fazendo basicamente a mesma coisa que
+     `normalizar()` já existente e em uso dentro de `busca.ts` — achado via
+     knip (export morto) + inspeção manual confirmando a duplicação
+     conceitual. Removida.
+  - Também removida `agruparPorCategoria` em `busca.ts` — export sem
+    nenhuma referência em lugar nenhum do código, sem menção em nenhuma
+    spec sugerindo uso futuro planejado (diferente do caso do
+    `supabase.ts`, que tem plano documentado).
+  - **Decisão deliberada de não tocar:** 11 clones restantes no jscpd são
+    padrão JSX repetido (boilerplate do shadcn em `card.tsx`, barra de
+    busca repetida entre `PortalAcervo`/`PortalHome`, wrapper de "chips de
+    filtro" repetido 2x dentro do próprio `PortalAcervo` pra seção/tema,
+    cabeçalho compartilhado entre `PrivacyPolicy`/`TermsOfUse`) — refatorável,
+    mas mexer em estrutura visual na véspera do deploy tem risco de
+    regressão maior que o ganho agora. Registrado aqui como recomendação
+    pra uma sessão de limpeza dedicada, não bloqueou o deploy.
+  - Achados do knip aceitos como estão, não removidos: `alert.tsx`,
+    `badge.tsx`, `progress.tsx`, `skeleton.tsx` (primitivas do shadcn
+    instaladas mas não usadas ainda — normal ter biblioteca de componente
+    maior que o uso atual), `supabase.ts` (stub intencional Fase 2,
+    confirmado anteriormente), exports do `button.tsx`/`card.tsx`
+    (`buttonVariants`, `ButtonProps`, `CardHeader` etc. — exports padrão do
+    shadcn pra quem for customizar, não sobra de implementação).
+- [x] **Bateria completa revalidada depois de todas as correções desta
+  rodada** (rebuild + nginx real simulando produção): Chromium 14/14,
+  WebKit 12/14 (as 2 restantes continuam sendo só o achado de Beacon API do
+  Safari, sem regressão). axe-core: 0 violações graves/críticas, incluindo a
+  seção "Continue de onde parou".
+- [x] Versão bumpada pra `v1.1.0` — primeira vez que a versão sobe desde o
+  lançamento (`v1.0.1` ficou parado no código desde 22/06, exatamente
+  porque a regra nova diz que só sobe no momento real do deploy, e esta é a
+  primeira vez que um deploy de verdade vai acontecer desde essa decisão).

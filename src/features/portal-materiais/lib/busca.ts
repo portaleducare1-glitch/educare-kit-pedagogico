@@ -140,14 +140,3 @@ export function buscarRelacionados(todos: Material[], material: Material, limite
     .slice(0, limite)
     .map(({ material }) => material);
 }
-
-export function agruparPorCategoria(materiais: Material[]): Record<string, Material[]> {
-  return materiais.reduce(
-    (acc, m) => {
-      if (!acc[m.categoria]) acc[m.categoria] = [];
-      acc[m.categoria].push(m);
-      return acc;
-    },
-    {} as Record<string, Material[]>,
-  );
-}

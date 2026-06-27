@@ -39,48 +39,39 @@ Este produto faz parte do ecossistema futuro da Educare:
 
 ---
 
-## Como fazer o deploy (EasyPanel / VPS)
+## Como fazer o deploy (EasyPanel, real — confirmado 27/06/2026)
 
-### Pré-requisitos
-- Node.js 20+ na máquina de build
-- Git configurado com acesso ao repo
+**Não é deploy manual de site estático.** É Docker, e **push no `main`
+dispara o rebuild automaticamente** — confirmado direto com Eduardo. Ou seja:
+o momento do `git push` **é** o momento do deploy, não um passo separado que
+alguém precisa lembrar de clicar depois.
 
-### Passo a passo
+O EasyPanel builda usando o `Dockerfile` deste repo (3 estágios: instala
+dependências com `npm ci` usando o `.npmrc` do projeto → builda com
+`npm run build` → serve a pasta `dist/` com `nginx:alpine`, usando o
+`nginx.conf` deste repo como config — não Apache, não Caddy). Confirmado
+batendo direto no domínio do EasyPanel: o servidor responde `Server: nginx`.
 
-```bash
-# 1. Clonar o repositório
-git clone https://github.com/portaleducare1-glitch/educare-kit-pedagogico.git
-cd educare-kit-pedagogico
+**Antes de dar push, garantir:**
+- `npm run build` local limpo (mesmo comando que o Docker vai rodar)
+- `nginx.conf` está com a config que deve valer em produção — é a **única**
+  fonte real de verdade pros headers de segurança/CSP (`.htaccess` e
+  `netlify.toml` existem só como alternativa caso a hospedagem mude um dia
+  pra Apache/Netlify; mudar CSP/header sem replicar nos três é o tipo de
+  divergência que já causou bug real nesta sessão — ver `03-tasks.md`)
 
-# 2. Instalar dependências
-npm install
-
-# 3. Build de produção
-npm run build
-# Gera a pasta dist/ com todos os arquivos estáticos
-
-# 4. Servir a pasta dist/ como site estático
-# No EasyPanel: apontar o static serve para a pasta dist/
-# O arquivo dist/index.html é o entry point do SPA
-```
-
-### Configuração no EasyPanel
-- **Build command:** `npm run build`
-- **Publish directory:** `dist`
-- **Node version:** 20
-- **SPA routing:** obrigatório — todas as rotas devem redirecionar para `index.html`
-
-O arquivo `public/.htaccess` já contém a config de rewrite para Apache. Para Nginx ou Caddy, configure manualmente:
-
-```nginx
-# Nginx
-location / {
-  try_files $uri $uri/ /index.html;
-}
-```
+Não precisa clonar/instalar/buildar manualmente em lugar nenhum — isso tudo
+acontece dentro do container no EasyPanel, automaticamente, a partir do push.
 
 ### Domínio de produção
 `kit.educarepedagogia.com.br`
+
+**Status em 26/06:** esse domínio ainda não resolve (sem DNS configurado). O
+app já está no ar via Docker/EasyPanel, mas só pelo domínio padrão dele
+(`https://site-educare-kitpedagogico.vpqsrq.easypanel.host`), e é esse domínio
+padrão que o botão do WordPress (`/portal-kit-pedagogico/`) usa por enquanto.
+Depois que o DNS de `kit.educarepedagogia.com.br` apontar pra esse app, trocar
+o link no WordPress.
 
 ---
 
@@ -98,10 +89,20 @@ VITE_SUPABASE_ANON_KEY=  # vazio por enquanto
 
 ## Segurança
 
-Os headers de segurança já estão configurados em dois lugares:
+Os headers de segurança estão configurados em três lugares e **`nginx.conf` é o
+único que realmente vale em produção** (o `Dockerfile` builda com `nginx:alpine`
+e copia esse arquivo pra `/etc/nginx/conf.d/default.conf` — confirmado em teste
+de 26/06 batendo direto no domínio do EasyPanel: o servidor responde `Server:
+nginx`, não Apache). `.htaccess` não tem efeito nenhum nesse deploy.
 
-1. **`netlify.toml`** — para preview no Netlify
-2. **`public/.htaccess`** — para o servidor Apache do EasyPanel
+1. **`nginx.conf`** — fonte da verdade, usado pelo `Dockerfile`/EasyPanel
+2. **`netlify.toml`** — só se algum dia rodar preview no Netlify
+3. **`public/.htaccess`** — só se algum dia migrar pra hospedagem Apache
+
+**Atenção:** os três têm a mesma CSP duplicada. Se mudar um (adicionar domínio
+novo de script/widget/analytics), mude os três juntos — foi exatamente a
+divergência entre eles (`nginx.conf` defasado, sem Clarity nem Typebot) que
+quase foi pro ar no teste de 26/06.
 
 Headers incluídos:
 - `Content-Security-Policy` com CSP restritivo (apenas GoogleTagManager, Clarity, WordPress)
@@ -114,7 +115,13 @@ Headers incluídos:
 ### Após o domínio estar confirmado
 
 Atualizar o CORS no WordPress (Code Snippets, ID 8):
-- Mudar de `*` para `https://portal.educarepedagogia.com.br`
+- Mudar de `*` para `https://kit.educarepedagogia.com.br`
+
+**Atenção, achado no teste de 26/06:** o snippet de CORS atual não está fazendo
+allowlist de verdade, ele reflete de volta qualquer `Origin` enviado pelo
+navegador (testado com um domínio inventado e ele aceitou). Isso equivale na
+prática a um `*`, mesmo já estando "configurado" com o domínio certo. Trocar
+para uma comparação estrita contra `https://kit.educarepedagogia.com.br`.
 
 ### Tarefas de segurança pendentes (Eduardo resolve antes do go-live)
 - [ ] Rotacionar senha do usuário WP `duhmachado`

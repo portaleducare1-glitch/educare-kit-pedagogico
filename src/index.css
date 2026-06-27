@@ -26,6 +26,7 @@
   --brand-yellow: #e6b81e;
   --brand-coral: #ec6a4e;
   --brand-coral-600: #d4543b;
+  --brand-coral-text: #b83114;
   --brand-gray: #787878;
 
   /* ---- Tokens semânticos ---- */
@@ -105,6 +106,7 @@
   --color-brand-orange-text: var(--brand-orange-text);
   --color-brand-yellow: var(--brand-yellow);
   --color-brand-coral: var(--brand-coral);
+  --color-brand-coral-text: var(--brand-coral-text);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

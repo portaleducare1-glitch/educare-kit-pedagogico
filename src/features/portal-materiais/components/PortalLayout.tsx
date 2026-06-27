@@ -9,6 +9,7 @@ import { InstallBanner } from './InstallBanner';
 import { InstallProvider, useInstall } from '../lib/useInstall';
 import { TrackingNotice } from './TrackingNotice';
 import { useAvaliacaoPortal } from '../lib/useAvaliacaoPortal';
+import { AvaliacaoBubble } from './AvaliacaoBubble';
 
 function PortalLayoutInner() {
   const location = useLocation();
@@ -18,7 +19,7 @@ function PortalLayoutInner() {
   const isAcervo = location.pathname === '/portal/acervo';
   const isFavoritos = location.pathname === '/portal/favoritos';
 
-  useAvaliacaoPortal();
+  const mostrarAvaliacao = useAvaliacaoPortal();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
@@ -94,6 +95,8 @@ function PortalLayoutInner() {
       <PortalFooter />
 
       <InstallBanner />
+
+      {mostrarAvaliacao && <AvaliacaoBubble />}
 
       {/* Bottom navigation — visivel apenas em mobile */}
       <nav

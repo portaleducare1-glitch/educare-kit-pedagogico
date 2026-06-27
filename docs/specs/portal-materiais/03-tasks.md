@@ -327,6 +327,20 @@ material aberto).**
   mesmo padrão dos outros typebots) — opcional, já que o Typebot guarda toda
   resposta na própria aba de Resultados, sem precisar de nada a mais pra
   funcionar.
+- **Modo trocado de Popup pra Bolha (Bubble), com motivo confirmado por
+  Eduardo:** o modo Popup deste Typebot não tem nenhum botão de fechar —
+  confirmado no código-fonte oficial (não é configuração faltando, é assim
+  que esse modo foi construído) e confirmado por Eduardo testando no
+  desktop. Bolha tem botão de abrir/fechar nativo, testado e funcionando.
+- **`@typebot.io/react` (pacote oficial) tentado e descartado:** só suporta
+  React 16-18 (`peerDependencies`), este projeto está no React 19 — gerar
+  "duas cópias do React" no bundle e quebra todos os hooks (`Invalid hook
+  call`). Voltado pro pacote genérico `@typebot.io/js` (sem dependência de
+  framework), que já funcionava bem antes dessa tentativa. Registrado aqui
+  pra não repetir essa tentativa numa sessão futura sem saber do limite.
+- **Botão de fechar verificado de forma rigorosa** (não só visual): teste
+  Playwright localiza o botão real (não coordenada de tela) e confirma que
+  o conteúdo do chat está visível antes do clique e some depois.
 
 **Bolha de WhatsApp — decisão: sim, reaproveitando o link que já existe.**
 O rodapé já tem "Suporte" apontando pra

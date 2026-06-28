@@ -17,28 +17,17 @@ src/features/portal-materiais/
   types.ts      Material, Secao, Etapa, Tema, Situacao
 ```
 
-## Camada de redirecionamento (nova, 26/06/2026)
+## Domínio (atualizado 28/06/2026 — camada de redirecionamento retirada)
 
-```
-e-mail/WhatsApp para compradores
-        │
-        ▼
-educarepedagogia.com.br/portal-kit-pedagogico   (página WordPress, redirect JS + meta refresh)
-        │
-        ▼
-site-educare-kitpedagogico.vpqsrq.easypanel.host/portal   (app real, hoje)
-```
+`https://app.educarepedagogia.com.br/portal` é o link definitivo, usado direto
+em qualquer comunicação — DNS apontado, SSL válido, confirmado servindo o
+mesmo app que o link cru do EasyPanel.
 
-Criada porque o domínio definitivo (`kit.educarepedagogia.com.br`) nunca teve DNS
-apontado. O encaminhador desacopla o link que vai pro comprador da URL de infra
-real, que pode mudar de novo até o DNS ser resolvido. Implementado via WordPress
-REST API (`POST /wp/v2/pages`, credencial `duhmachado` já documentada em
-`Vault/Projetos/Educare/acessos-api.md`). Conteúdo sobrevive ao `wp_kses` porque o
-usuário tem `unfiltered_html` (confirmado na prática).
-
-**Risco conhecido, não resolvido:** WP Rocket faz cache de página; se o destino do
-redirect mudar de novo, pode ser necessário invalidar o cache dessa página
-específica no painel WP Rocket.
+O redirecionador via WordPress (`/portal-kit-pedagogico`) que existia desde
+26/06 foi retirado (rascunho, não apagado) em 28/06: nunca chegou a ser usado
+em nenhuma comunicação real, e o motivo de existir (domínio próprio sem DNS)
+deixou de valer com o `app.` funcionando. `kit.educarepedagogia.com.br`
+(o domínio antigo planejado) está abandonado.
 
 ## Pipeline de conteúdo (Nutror → portal)
 

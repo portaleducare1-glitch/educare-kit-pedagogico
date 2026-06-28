@@ -1,5 +1,5 @@
 {
-  "name": "Educare · Assistente Pedagógico",
+  "name": "Kit Pedagógico — Portal de Materiais",
   "short_name": "Educare",
   "description": "Materiais do Kit Pedagógico 5.0 organizados para usar em sala de aula.",
   "start_url": "/portal",
@@ -11,10 +11,16 @@
   "lang": "pt-BR",
   "icons": [
     {
-      "src": "/logo-educare.webp",
-      "sizes": "any",
-      "type": "image/webp",
-      "purpose": "any maskable"
+      "src": "/icon-app.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

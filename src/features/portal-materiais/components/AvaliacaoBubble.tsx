@@ -22,6 +22,9 @@ export function AvaliacaoBubble() {
         typebot: TYPEBOT_PUBLIC_ID,
         apiHost: TYPEBOT_API_HOST,
         theme: { button: { backgroundColor: '#7C5CFC' } },
+        onEnd: () => {
+          import('@typebot.io/js').then(({ close }) => close());
+        },
       });
       import('@typebot.io/js').then(({ open }) => open());
     });

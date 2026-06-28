@@ -77,25 +77,17 @@ ou de checagem manual pelo Eduardo, nunca só API.
   painéis, a menos que se configure acesso de leitura à GA4 Data API numa sessão
   futura.
 
-## Versionamento (decidido com Eduardo em 26/06/2026)
+## Versionamento
 
-O rodapé (`PortalLayout.tsx`) exibe a versão do Kit Pedagógico. **Regra
-confirmada: a versão sobe quando o código vai pro ar em produção (deploy
-de verdade), nunca antes.** Dentro de uma mesma sessão de trabalho, qualquer
-quantidade de correções/achados fica acumulada sob a mesma versão até o
-deploy acontecer — a versão reflete o que o usuário final vê em produção,
-não quantas vezes o código foi editado localmente.
+A regra geral (o que é patch/minor/major, "vale o de maior peso", quando o
+número sobe de verdade) virou protocolo próprio, válido pra qualquer
+sistema/projeto, não só este: ver `Vault/protocolo-versionamento.md`. Não
+duplicar aqui.
 
-Na prática: o código no repositório deve sempre mostrar a versão da **última
-build que de fato foi deployada**, mesmo que existam commits locais não
-deployados ainda mudando o número internamente — só bumpar de verdade no
-commit que efetivamente acompanha (ou imediatamente precede) o deploy.
-
-Dentro dessa regra, ao decidir o número:
-- Incrementar o patch (`v1.0.x`) quando mudar conteúdo do catálogo ou
-  comportamento visível pontual.
-- Incrementar minor (`v1.x.0`) quando mudar uma seção/fluxo inteiro (ex.:
-  nova feature como a avaliação por Typebot ou o botão de WhatsApp).
+**Específico deste projeto:** o rodapé (`PortalLayout.tsx`) exibe a versão.
+**Major candidato já identificado:** Fase 2 (login, progresso individual) é
+outra geração do produto — quando chegar lá, vira `v2.0.0`, não um minor a
+mais em cima do `v1.x`.
 
 ## Histórico de incidente de deploy (achado e confirmado 26/06/2026)
 

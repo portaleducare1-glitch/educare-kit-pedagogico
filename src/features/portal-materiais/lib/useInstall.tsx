@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, type ReactNode } from 'react';
-import { safeGetItem, safeSetItem } from '@/lib/safeStorage';
+import { detectMobilePlatform, isStandaloneDisplay } from './platform';
+import { useDismissible } from './useDismissible';
 
 const DISMISSED_KEY = 'educare-install-dismissed';
 
@@ -24,33 +25,24 @@ const InstallContext = createContext<InstallContextValue | null>(null);
 export function InstallProvider({ children }: { children: ReactNode }) {
   const [platform, setPlatform] = useState<InstallPlatform>(null);
   const [isStandalone, setIsStandalone] = useState(false);
-  const [isDismissed, setIsDismissed] = useState(false);
+  const { isDismissed, dismiss } = useDismissible(DISMISSED_KEY);
   const promptRef = useRef<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
-    const standalone =
-      window.matchMedia('(display-mode: standalone)').matches ||
-      !!(navigator as unknown as { standalone?: boolean }).standalone;
+    const standalone = isStandaloneDisplay();
 
     setIsStandalone(standalone);
-    setIsDismissed(!!safeGetItem(DISMISSED_KEY));
 
     if (standalone) return;
 
-    const ua = navigator.userAgent;
-    // Detecta iPad Pro (reporta MacIntel mas tem touchPoints)
-    const isIOS =
-      (/iPad|iPhone|iPod/.test(ua) ||
-        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) &&
-      !(window as unknown as { MSStream?: unknown }).MSStream;
-    const isAndroid = /Android/i.test(ua);
+    const mobilePlatform = detectMobilePlatform();
 
-    if (isIOS) {
+    if (mobilePlatform === 'ios') {
       setPlatform('ios');
       return;
     }
 
-    if (isAndroid) {
+    if (mobilePlatform === 'android') {
       const handler = (e: Event) => {
         e.preventDefault();
         promptRef.current = e as BeforeInstallPromptEvent;
@@ -60,11 +52,6 @@ export function InstallProvider({ children }: { children: ReactNode }) {
       return () => window.removeEventListener('beforeinstallprompt', handler);
     }
   }, []);
-
-  function dismiss() {
-    safeSetItem(DISMISSED_KEY, '1');
-    setIsDismissed(true);
-  }
 
   async function installAndroid() {
     if (!promptRef.current) return;

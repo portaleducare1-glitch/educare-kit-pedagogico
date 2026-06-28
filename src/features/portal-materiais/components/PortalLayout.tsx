@@ -6,6 +6,7 @@ import { cn } from '@/lib/cn';
 import { useFavoritos, FavoritosProvider } from '../lib/useFavoritos';
 import { ToastProvider } from '@/lib/toast';
 import { InstallBanner } from './InstallBanner';
+import { FavoritarDesktopBanner } from './FavoritarDesktopBanner';
 import { InstallProvider, useInstall } from '../lib/useInstall';
 import { TrackingNotice } from './TrackingNotice';
 import { useAvaliacaoPortal } from '../lib/useAvaliacaoPortal';
@@ -58,7 +59,7 @@ function PortalLayoutInner() {
               height={40}
             />
             <span className="text-sm font-semibold text-muted-foreground truncate hidden sm:block">
-              Assistente Pedagógico
+              Kit Pedagógico
             </span>
           </Link>
           <Link
@@ -96,6 +97,8 @@ function PortalLayoutInner() {
       <PortalFooter />
 
       <InstallBanner />
+
+      <FavoritarDesktopBanner />
 
       {!ocultarSuporte && <SuporteWhatsAppButton />}
 
@@ -204,7 +207,7 @@ function PortalFooter() {
         </div>
 
         <p className="text-[10px] text-muted-foreground">
-          Kit Pedagogico 5.0 · v1.1.0
+          Kit Pedagogico 5.0 · v1.1.1
         </p>
       </div>
     </footer>

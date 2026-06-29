@@ -1,9 +1,5 @@
 import type { Material } from '../types';
 
-// URLs base para válidar: todas devem retornar 200.
-// Itens com wp_id duplicado (ex: matemática 1-4 ano) apontam para o mesmo PDF
-// por erro no mapeamento do inventario — válidar manualmente antes de corrigir.
-
 export const materiais: Material[] = [
   // ──────────────────────────────────────────────
   // ORGANIZACAO E GESTAO DA SALA
@@ -695,10 +691,8 @@ export const materiais: Material[] = [
   {
     id: 'matematica-1-ano',
     titulo: 'Atividades de Matemática - 1 ano',
-    // Atencao: URL duplicada no inventario (wp_id 27014 mapeia varios arquivos).
-    // Validar manualmente qual URL correta para este arquivo.
-    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Caderno-de-Atividades-Matematica-02-Adicao-e-Subtracao-Educare-1.pdf',
-    wp_id: 27014,
+    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Atividades-Matematica-1-ano-EDUCARE.pdf',
+    wp_id: 26968,
     secao: 'atividades',
     categoria: 'Matemática',
     etapas: ['alfabetizacao', 'fund-iniciais'],
@@ -711,8 +705,8 @@ export const materiais: Material[] = [
   {
     id: 'matematica-2-ano',
     titulo: 'Atividades de Matemática - 2 ano',
-    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Caderno-de-Atividades-Matematica-02-Adicao-e-Subtracao-Educare-1.pdf',
-    wp_id: 27014,
+    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Atividades-Matematica-2-ano-EDUCARE.pdf',
+    wp_id: 26969,
     secao: 'atividades',
     categoria: 'Matemática',
     etapas: ['fund-iniciais'],
@@ -725,8 +719,8 @@ export const materiais: Material[] = [
   {
     id: 'matematica-3-ano',
     titulo: 'Atividades de Matemática - 3 ano',
-    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Caderno-de-Atividades-Matematica-02-Adicao-e-Subtracao-Educare-1.pdf',
-    wp_id: 27014,
+    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Atividades-Matematica-3-ano-EDUCARE.pdf',
+    wp_id: 26970,
     secao: 'atividades',
     categoria: 'Matemática',
     etapas: ['fund-iniciais'],
@@ -739,8 +733,8 @@ export const materiais: Material[] = [
   {
     id: 'matematica-4-ano',
     titulo: 'Atividades de Matemática - 4 ano',
-    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Caderno-de-Atividades-Matematica-02-Adicao-e-Subtracao-Educare-1.pdf',
-    wp_id: 27014,
+    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Atividades-Matematica-4-ano-Educare.pdf',
+    wp_id: 26971,
     secao: 'atividades',
     categoria: 'Matemática',
     etapas: ['fund-iniciais'],
@@ -768,7 +762,7 @@ export const materiais: Material[] = [
     id: 'caderno-matematica-01',
     titulo: 'Caderno de Atividades de Matemática 01 - Formas Geometricas',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Caderno-de-Atividades-Matematica-01-Formas-Geometricas-Numeral-e-Quantidade-Educare.pdf',
-    wp_id: 26971,
+    wp_id: 26978,
     secao: 'atividades',
     categoria: 'Matemática',
     etapas: ['fund-iniciais'],
@@ -824,7 +818,7 @@ export const materiais: Material[] = [
     id: 'caderno-reforco-escolar',
     titulo: 'Caderno de Reforco Escolar',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/CADERNO-DE-REFORCO-ESCOLAR.pdf',
-    wp_id: 26963,
+    wp_id: 26980,
     secao: 'atividades',
     categoria: 'Fund. Anos Iniciais',
     etapas: ['fund-iniciais'],
@@ -911,7 +905,7 @@ export const materiais: Material[] = [
     id: 'caderno-fundamental-medio-1',
     titulo: 'Caderno de Atividades - Fund. e Médio Vol. 1',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/1-caderno-de-atividades-fundamental-e-medio.pdf',
-    wp_id: 26964,
+    wp_id: 26962,
     secao: 'atividades',
     categoria: 'Fund. Anos Finais',
     etapas: ['fund-finais'],
@@ -925,7 +919,7 @@ export const materiais: Material[] = [
     id: 'caderno-fundamental-medio-2',
     titulo: 'Caderno de Atividades - Fund. e Médio Vol. 2',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/2-caderno-de-atividades-fundamental-e-medio.pdf',
-    wp_id: 26968,
+    wp_id: 26963,
     secao: 'atividades',
     categoria: 'Fund. Anos Finais',
     etapas: ['fund-finais'],
@@ -938,8 +932,8 @@ export const materiais: Material[] = [
   {
     id: 'matematica-6-ano',
     titulo: 'Atividades de Matemática - 6 ano',
-    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Caderno-de-Atividades-Matematica-02-Adicao-e-Subtracao-Educare-1.pdf',
-    wp_id: 27014,
+    url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Atividades-Matematica-6-ano-EDUCARE.pdf',
+    wp_id: 26964,
     secao: 'atividades',
     categoria: 'Matemática',
     etapas: ['fund-finais'],

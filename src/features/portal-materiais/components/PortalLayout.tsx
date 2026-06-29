@@ -7,6 +7,7 @@ import { useFavoritos, FavoritosProvider } from '../lib/useFavoritos';
 import { ToastProvider } from '@/lib/toast';
 import { InstallBanner } from './InstallBanner';
 import { FavoritarDesktopBanner } from './FavoritarDesktopBanner';
+import { AtualizarAtalhoBanner } from './AtualizarAtalhoBanner';
 import { InstallProvider, useInstall } from '../lib/useInstall';
 import { TrackingNotice } from './TrackingNotice';
 import { useAvaliacaoPortal } from '../lib/useAvaliacaoPortal';
@@ -97,6 +98,8 @@ function PortalLayoutInner() {
       <PortalFooter />
 
       <InstallBanner />
+
+      <AtualizarAtalhoBanner />
 
       <FavoritarDesktopBanner />
 

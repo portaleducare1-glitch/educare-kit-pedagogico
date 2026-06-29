@@ -1,6 +1,7 @@
-import { X, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import { useFavoritarDesktop } from '../lib/useFavoritarDesktop';
 import { isMacDesktop } from '../lib/platform';
+import { FloatingBanner } from './FloatingBanner';
 
 export function FavoritarDesktopBanner() {
   const { showBanner, dismiss } = useFavoritarDesktop();
@@ -10,7 +11,7 @@ export function FavoritarDesktopBanner() {
   const atalho = isMacDesktop() ? '⌘ + D' : 'Ctrl + D';
 
   return (
-    <div className="fixed top-4 right-4 z-50 max-w-xs rounded-2xl border border-border bg-card shadow-xl p-4">
+    <FloatingBanner onDismiss={dismiss} position="top-right">
       <div className="flex items-start gap-2">
         <ArrowUp className="size-4 text-primary shrink-0 mt-0.5" aria-hidden="true" />
         <div className="flex-1 min-w-0">
@@ -23,14 +24,7 @@ export function FavoritarDesktopBanner() {
             pra favoritar esta página
           </p>
         </div>
-        <button
-          onClick={dismiss}
-          className="shrink-0 p-1 -mt-0.5 -mr-0.5 rounded-full text-muted-foreground hover:text-foreground transition-colors"
-          aria-label="Fechar"
-        >
-          <X className="size-4" />
-        </button>
       </div>
-    </div>
+    </FloatingBanner>
   );
 }

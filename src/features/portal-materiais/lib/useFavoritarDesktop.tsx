@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { detectMobilePlatform, isStandaloneDisplay } from './platform';
+import { detectMobilePlatform, getPreviewParam, isStandaloneDisplay } from './platform';
 import { useDismissible } from './useDismissible';
 
 const DISMISSED_KEY = 'educare-favoritar-desktop-dismissed';
@@ -14,8 +14,12 @@ export function useFavoritarDesktop() {
     setIsDesktop(!standalone && mobilePlatform === null);
   }, []);
 
+  // Se ?preview= está ativo pra outro aviso (mobile), este fica escondido —
+  // evita os dois aparecerem juntos durante QA visual.
+  const previewDeOutroAviso = getPreviewParam() !== null;
+
   return {
-    showBanner: isDesktop && !isDismissed,
+    showBanner: !previewDeOutroAviso && isDesktop && !isDismissed,
     dismiss,
   };
 }

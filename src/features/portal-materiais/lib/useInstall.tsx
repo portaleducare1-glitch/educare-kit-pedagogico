@@ -77,7 +77,10 @@ export function InstallProvider({ children }: { children: ReactNode }) {
     if (outcome === 'accepted') dismiss();
   }
 
-  const showBanner = !isStandalone && !isDismissed && platform !== null;
+  // Se ?preview= está ativo pra OUTRO aviso, este banner fica escondido —
+  // senão a detecção real (iOS de verdade, não instalado) mostra os dois juntos.
+  const previewDeOutroAviso = previewParam !== null && !isPreview;
+  const showBanner = !previewDeOutroAviso && !isStandalone && !isDismissed && platform !== null;
 
   return (
     <InstallContext.Provider

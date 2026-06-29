@@ -50,7 +50,7 @@ export function PortalMaterial() {
   useEffect(() => {
     if (!material) return;
     document.title = `${titulo} · Educare`;
-    return () => { document.title = 'Educare · Assistente Pedagógico'; };
+    return () => { document.title = 'Kit Pedagógico · Portal de Materiais'; };
   }, [titulo, material]);
 
   useEffect(() => {

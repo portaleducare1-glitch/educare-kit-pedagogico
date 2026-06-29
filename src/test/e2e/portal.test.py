@@ -7,7 +7,7 @@ Execução:
     -- python3 src/test/e2e/portal.test.py
 
 Cobertura:
-  - Validador de certificados (home /)
+  - Raiz (/): redireciona para /portal (validador de certificados é repo separado desde 11/06)
   - Portal Home (/portal): saudação, chips, busca, cards
   - Acervo (/portal/acervo): filtros, busca textual
   - Ficha de material (/portal/m/:id): ações, favorito, campos
@@ -44,22 +44,23 @@ def run(label, fn):
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
 
-    # ── 1. Validador de certificados (/) ──────────────────────────────────────
-    print('\n[1] Validador de certificados (/)')
+    # ── 1. Raiz (/) — redireciona pro Portal ───────────────────────────────────
+    # Validador de Certificados saiu deste repo em 11/06/2026 (produto separado).
+    # "/" hoje é <Navigate to="/portal" replace /> (ver App.tsx) — testar isso,
+    # não o produto antigo.
+    print('\n[1] Raiz (/)')
     page = browser.new_page(viewport=MOBILE_VP)
     page.goto(BASE)
     page.wait_for_load_state('networkidle')
 
+    run('"/" redireciona para /portal',
+        lambda: expect(page).to_have_url(f'{BASE}/portal'))
     run('título correto',
-        lambda: expect(page).to_have_title('Educare · Assistente Pedagógico'))
-    run('h1 "Verifique a autenticidade"',
-        lambda: expect(page.get_by_role('heading', level=1)).to_contain_text('Verifique a autenticidade'))
-    run('botão "Selecionar arquivo PDF" visível',
-        lambda: expect(page.get_by_role('button', name='Selecionar arquivo PDF')).to_be_visible())
+        lambda: expect(page).to_have_title('Kit Pedagógico · Portal de Materiais'))
     run('rodapé com CNPJ',
         lambda: expect(page.locator('text=28.719.923').first).to_be_visible())
-    run('link Política de Privacidade → /privacidade', lambda:
-        expect(page.get_by_role('link', name='Política de Privacidade')).to_have_attribute('href', '/privacidade'))
+    run('link Privacidade (LGPD) → /privacidade', lambda:
+        expect(page.get_by_role('link', name='Privacidade (LGPD)')).to_have_attribute('href', '/privacidade'))
     run('link Termos de Uso → /termos', lambda:
         expect(page.get_by_role('link', name='Termos de Uso')).to_have_attribute('href', '/termos'))
 
@@ -83,10 +84,12 @@ with sync_playwright() as p:
         lambda: expect(page.get_by_role('heading', level=1)).to_contain_text('Olá, professora'))
 
     def test_count_label():
-        # Dois elementos contém "136 materiais" — pegar o parágrafo do subtítulo
-        el = page.locator('p').filter(has_text='136 materiais do Kit Pedagógico').first
+        # Número de materiais cresce com o catálogo — checar o padrão, não um
+        # total fixo (já ficou desatualizado 2x: 136 → 220 → ...).
+        import re
+        el = page.locator('p').filter(has_text=re.compile(r'\d+ materiais do Kit Pedagógico')).first
         expect(el).to_be_visible()
-    run('exibe "136 materiais do Kit Pedagógico"', test_count_label)
+    run('exibe "N materiais do Kit Pedagógico"', test_count_label)
 
     def test_situation_chips():
         # Chips de situação: botões na section "O que você precisa hoje"
@@ -189,16 +192,16 @@ with sync_playwright() as p:
 
     page.close()
 
-    # ── 4. Ficha de material (/portal/m/bncc-2023) ────────────────────────────
-    print('\n[4] Ficha de material (/portal/m/bncc-2023)')
+    # ── 4. Ficha de material (/portal/m/apostila-bncc-2026) ────────────────────────────
+    print('\n[4] Ficha de material (/portal/m/apostila-bncc-2026)')
     page = browser.new_page(viewport=MOBILE_VP)
-    page.goto(f'{BASE}/portal/m/bncc-2023')
+    page.goto(f'{BASE}/portal/m/apostila-bncc-2026')
     page.wait_for_load_state('networkidle')
 
-    run('título "Curso BNCC 2023 · Educare"',
-        lambda: expect(page).to_have_title('Curso BNCC 2023 · Educare'))
-    run('h1 "Curso BNCC 2023"',
-        lambda: expect(page.get_by_role('heading', level=1)).to_contain_text('Curso BNCC 2023'))
+    run('título "Apostila BNCC 2026 · Educare"',
+        lambda: expect(page).to_have_title('Apostila BNCC 2026 · Educare'))
+    run('h1 "Apostila BNCC 2026"',
+        lambda: expect(page.get_by_role('heading', level=1)).to_contain_text('Apostila BNCC 2026'))
     run('botão "Ver PDF"',
         lambda: expect(page.get_by_role('button', name='Ver PDF')).to_be_visible())
     run('botão "Baixar PDF"',
@@ -211,8 +214,10 @@ with sync_playwright() as p:
         lambda: expect(page.get_by_text('Quando usar')).to_be_visible())
     run('seção "Como usar em sala"',
         lambda: expect(page.get_by_text('Como usar em sala')).to_be_visible())
-    run('label de seção "APOSTILAS DE ESTUDO"',
-        lambda: expect(page.get_by_text('APOSTILAS DE ESTUDO')).to_be_visible())
+    run('label de seção "Apostilas de Estudo"',
+        # Texto real do DOM é "Apostilas de Estudo" — o caixa-alta é só CSS
+        # (uppercase), get_by_text compara o texto real, não o visual
+        lambda: expect(page.get_by_text('Apostilas de Estudo')).to_be_visible())
 
     def test_back_button_visible():
         # Botão Voltar tem span sr-only "Voltar" — localizar pelo aria
@@ -224,7 +229,7 @@ with sync_playwright() as p:
         # Estabelece histórico: acervo → material → clica Voltar → acervo
         page.goto(f'{BASE}/portal/acervo')
         page.wait_for_load_state('networkidle')
-        page.goto(f'{BASE}/portal/m/bncc-2023')
+        page.goto(f'{BASE}/portal/m/apostila-bncc-2026')
         page.wait_for_load_state('networkidle')
         btn = page.locator('button').filter(has=page.locator('span:has-text("Voltar")')).first
         btn.click()
@@ -233,7 +238,7 @@ with sync_playwright() as p:
     run('botão Voltar navega para rota anterior', test_back_navigates)
 
     def test_favorite_toggle():
-        page.goto(f'{BASE}/portal/m/bncc-2023')
+        page.goto(f'{BASE}/portal/m/apostila-bncc-2026')
         page.wait_for_load_state('networkidle')
         # Salvar
         page.get_by_role('button', name='Salvar nos favoritos').click()
@@ -259,7 +264,7 @@ with sync_playwright() as p:
     run('favoritos vazio no início', test_fav_empty)
 
     def test_fav_after_save():
-        page.goto(f'{BASE}/portal/m/bncc-2023')
+        page.goto(f'{BASE}/portal/m/apostila-bncc-2026')
         page.wait_for_load_state('networkidle')
         page.get_by_role('button', name='Salvar nos favoritos').click()
         page.wait_for_timeout(300)
@@ -284,7 +289,7 @@ with sync_playwright() as p:
         data = page.evaluate("localStorage.getItem('portal-favoritos')")
         assert data is not None, 'localStorage "portal-favoritos" está vazio'
         parsed = json.loads(data)
-        assert 'bncc-2023' in parsed, f'"bncc-2023" não encontrado em {parsed}'
+        assert 'apostila-bncc-2026' in parsed, f'"apostila-bncc-2026" não encontrado em {parsed}'
     run('localStorage "portal-favoritos" contém ID correto', test_fav_localstorage)
 
     page.close()
@@ -293,11 +298,13 @@ with sync_playwright() as p:
     print('\n[6] Navegação e 404')
     page = browser.new_page(viewport=MOBILE_VP)
 
-    def test_redirect_validar():
+    def test_validar_404():
+        # /validar era do Validador de Certificados (repo separado desde
+        # 11/06) — não existe rota aqui, cai no catch-all "*" → NotFound.
         page.goto(f'{BASE}/validar')
         page.wait_for_load_state('networkidle')
-        expect(page).to_have_url(f'{BASE}/')
-    run('/validar redireciona para /', test_redirect_validar)
+        expect(page.get_by_text('Página não encontrada')).to_be_visible()
+    run('/validar → página de 404 (produto mudou de repo)', test_validar_404)
 
     def test_404_unknown():
         page.goto(f'{BASE}/rota-inexistente-xyzxyz')
@@ -339,7 +346,7 @@ with sync_playwright() as p:
 
     def test_desktop_preview():
         p2 = browser.new_page(viewport=DESKTOP_VP)
-        p2.goto(f'{BASE}/portal/m/bncc-2023')
+        p2.goto(f'{BASE}/portal/m/apostila-bncc-2026')
         p2.wait_for_load_state('networkidle')
         iframe = p2.locator('iframe').first
         expect(iframe).to_be_visible()

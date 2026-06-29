@@ -12,7 +12,7 @@ export function PortalFavoritos() {
 
   useEffect(() => {
     document.title = 'Favoritos · Educare';
-    return () => { document.title = 'Educare · Assistente Pedagógico'; };
+    return () => { document.title = 'Kit Pedagógico · Portal de Materiais'; };
   }, []);
 
   const meusMateriais = materiais.filter((m) => favoritos.includes(m.id));

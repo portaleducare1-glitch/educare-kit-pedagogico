@@ -93,7 +93,7 @@ export function PortalHome() {
   );
 
   useEffect(() => {
-    document.title = 'Educare · Assistente Pedagógico';
+    document.title = 'Kit Pedagógico · Portal de Materiais';
   }, []);
 
   function handleBusca(e: React.FormEvent) {

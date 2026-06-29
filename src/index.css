@@ -162,6 +162,11 @@
   padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
 }
 
+/* Mesmo calculo de .pb-safe-nav, para elementos fixed que precisam ficar ACIMA do bottom nav */
+.bottom-safe-nav {
+  bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+}
+
 /* Previne zoom automático do iOS Safari ao focar em inputs (fonte < 16px dispara o zoom) */
 @supports (-webkit-touch-callout: none) {
   input, textarea, select {

@@ -20,7 +20,7 @@ export function PortalInstalar() {
   useEffect(() => {
     document.title = 'Instalar como App · Educare';
     return () => {
-      document.title = 'Educare · Assistente Pedagógico';
+      document.title = 'Kit Pedagógico · Portal de Materiais';
     };
   }, []);
 

@@ -7,7 +7,7 @@ export function InstallBanner() {
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-20 inset-x-0 z-50 px-4 pb-2 pointer-events-none sm:bottom-6">
+    <div className="fixed bottom-safe-nav inset-x-0 z-50 px-4 pb-2 pointer-events-none sm:bottom-6">
       <div className="pointer-events-auto mx-auto max-w-sm rounded-2xl border border-border bg-card shadow-xl p-4">
         <div className="flex items-start gap-3">
           <div className="flex-1 min-w-0">

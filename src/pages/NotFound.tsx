@@ -8,7 +8,7 @@ export function NotFound() {
       <h1 className="font-display text-2xl font-extrabold">Página não encontrada</h1>
       <p className="text-muted-foreground">O endereço acessado não existe.</p>
       <Button asChild>
-        <Link to="/">Ir para o validador</Link>
+        <Link to="/">Ir para o início</Link>
       </Button>
     </div>
   );

@@ -22,3 +22,9 @@ export function isStandaloneDisplay(): boolean {
 export function isMacDesktop(): boolean {
   return navigator.platform === 'MacIntel' && navigator.maxTouchPoints <= 1;
 }
+
+/** Lê `?preview=algo` da URL — só pra forçar avisos/banners na tela durante
+ * QA visual, sem precisar simular plataforma/localStorage de verdade. */
+export function getPreviewParam(): string | null {
+  return new URLSearchParams(window.location.search).get('preview');
+}

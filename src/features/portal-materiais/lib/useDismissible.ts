@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { safeGetItem, safeSetItem } from '@/lib/safeStorage';
 
-/** Lembra (via localStorage) que um aviso/banner foi dispensado, pra não mostrar de novo. */
-export function useDismissible(key: string) {
+/** Lembra (via localStorage) que um aviso/banner foi dispensado, pra não mostrar de novo.
+ * `forceShow` ignora o localStorage — usado pelo modo `?preview=` de QA visual. */
+export function useDismissible(key: string, forceShow = false) {
   const [isDismissed, setIsDismissed] = useState(true);
 
   useEffect(() => {
-    setIsDismissed(!!safeGetItem(key));
-  }, [key]);
+    setIsDismissed(forceShow ? false : !!safeGetItem(key));
+  }, [key, forceShow]);
 
   function dismiss() {
     safeSetItem(key, '1');

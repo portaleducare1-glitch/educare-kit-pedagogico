@@ -1,8 +1,11 @@
 import { createContext, useContext, useState, useEffect, useRef, type ReactNode } from 'react';
-import { detectMobilePlatform, isStandaloneDisplay } from './platform';
+import { detectMobilePlatform, getPreviewParam, isStandaloneDisplay } from './platform';
 import { useDismissible } from './useDismissible';
 
 const DISMISSED_KEY = 'educare-install-dismissed';
+// QA visual: ?preview=install-ios ou ?preview=install-android força o aviso
+// na tela, sem precisar simular plataforma/localStorage de verdade.
+const PREVIEW_PLATAFORMAS = ['install-ios', 'install-android'] as const;
 
 type BeforeInstallPromptEvent = Event & {
   prompt(): Promise<void>;
@@ -23,12 +26,26 @@ interface InstallContextValue {
 const InstallContext = createContext<InstallContextValue | null>(null);
 
 export function InstallProvider({ children }: { children: ReactNode }) {
+  const previewParam = getPreviewParam();
+  const isPreview = (PREVIEW_PLATAFORMAS as readonly string[]).includes(previewParam ?? '');
+
   const [platform, setPlatform] = useState<InstallPlatform>(null);
   const [isStandalone, setIsStandalone] = useState(false);
-  const { isDismissed, dismiss } = useDismissible(DISMISSED_KEY);
+  const { isDismissed, dismiss } = useDismissible(DISMISSED_KEY, isPreview);
   const promptRef = useRef<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
+    if (previewParam === 'install-ios') {
+      setIsStandalone(false);
+      setPlatform('ios');
+      return;
+    }
+    if (previewParam === 'install-android') {
+      setIsStandalone(false);
+      setPlatform('android');
+      return;
+    }
+
     const standalone = isStandaloneDisplay();
 
     setIsStandalone(standalone);

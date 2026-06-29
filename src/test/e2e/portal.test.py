@@ -17,10 +17,12 @@ Cobertura:
   - Responsividade: sem scroll horizontal (mobile 390px e desktop 1280px)
 """
 
+import os
 import sys
 import json
 from playwright.sync_api import sync_playwright, expect
 
+ENGINE = os.environ.get('BROWSER', 'chromium')  # BROWSER=webkit pra rodar no motor do Safari
 BASE = 'http://localhost:3000'
 MOBILE_VP  = {'width': 390, 'height': 844}
 DESKTOP_VP = {'width': 1280, 'height': 900}
@@ -42,7 +44,7 @@ def run(label, fn):
 # ─── Suite ───────────────────────────────────────────────────────────────────
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
+    browser = getattr(p, ENGINE).launch(headless=True)
 
     # ── 1. Raiz (/) — redireciona pro Portal ───────────────────────────────────
     # Validador de Certificados saiu deste repo em 11/06/2026 (produto separado).

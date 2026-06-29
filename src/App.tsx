@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import { PortalLayout } from '@/features/portal-materiais/components/PortalLayout';
@@ -11,6 +12,14 @@ import { TermsOfUse } from '@/pages/TermsOfUse';
 import { NotFound } from '@/pages/NotFound';
 
 export default function App() {
+  useEffect(() => {
+    const splash = document.getElementById('app-splash');
+    if (!splash) return;
+    splash.style.opacity = '0';
+    splash.style.pointerEvents = 'none';
+    setTimeout(() => splash.remove(), 400);
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/portal" replace />} />

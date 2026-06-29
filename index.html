@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/icon-app.png" />
     <link rel="apple-touch-icon" href="/icon-app.png" />
+    <link
+      rel="apple-touch-startup-image"
+      href="/splash.png"
+      media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)"
+    />
     <link rel="manifest" href="/manifest.json" />
     <meta
       name="viewport"
@@ -22,13 +27,14 @@
     <meta property="og:site_name" content="Educare Pedagogia" />
     <meta property="og:title" content="Kit Pedagógico · Portal de Materiais" />
     <meta property="og:description" content="Atividades prontas para usar hoje em sala de aula." />
-    <meta property="og:image" content="/banner-preview.png" />
+    <meta property="og:url" content="https://app.educarepedagogia.com.br/portal" />
+    <meta property="og:image" content="https://app.educarepedagogia.com.br/banner-preview.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Kit Pedagógico · Portal de Materiais" />
     <meta name="twitter:description" content="Atividades prontas para usar hoje em sala de aula." />
-    <meta name="twitter:image" content="/banner-preview.png" />
+    <meta name="twitter:image" content="https://app.educarepedagogia.com.br/banner-preview.png" />
     <title>Kit Pedagógico · Portal de Materiais</title>
 
     <!-- Google Analytics 4 -->
@@ -51,6 +57,17 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Splash própria pra ficar igual no Android e no iOS (que não tem nativa); some em App.tsx -->
+    <div
+      id="app-splash"
+      aria-hidden="true"
+      style="
+        position: fixed; inset: 0; z-index: 9999;
+        background-image: url('/splash.png'); background-size: cover; background-position: center;
+        background-color: #7C5CFC;
+        transition: opacity 0.4s ease-out;
+      "
+    ></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

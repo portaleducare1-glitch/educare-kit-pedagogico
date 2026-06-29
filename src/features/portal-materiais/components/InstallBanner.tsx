@@ -47,9 +47,7 @@ export function InstallBanner() {
               </span>
             </div>
 
-            {/* O Safari mudou de layout entre versões — não dá pra adivinhar qual
-                a professora tem na tela, então mostra as 3 variações reais em
-                vez de uma instrução só que pode estar errada pra ela. */}
+            {/* Safari varia o layout entre versões, então mostra as 3 variações reais */}
             {mostrarVariacoes && (
               <div className="ml-7 pl-2 border-l-2 border-border space-y-1 text-[11px] text-muted-foreground">
                 <p>

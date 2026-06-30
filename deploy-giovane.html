@@ -347,7 +347,7 @@
         <div class="info-value">Kit Pedagógico 5.0</div>
       </div>
       <div class="info-item">
-        <div class="info-label">URL prevista</div>
+        <div class="info-label">URL de produção</div>
         <div class="info-value">app.educarepedagogia.com.br/portal</div>
       </div>
       <div class="info-item">
@@ -372,18 +372,18 @@
 
   <!-- Passo 1: GitHub -->
   <div class="section">
-    <div class="section-title"><span class="num">1</span> Criar repositório no GitHub</div>
+    <div class="section-title"><span class="num">1</span> Confirmar versão no GitHub</div>
 
-    <p style="font-size:0.9rem; color: var(--gray-600);">O EasyPanel conecta direto ao GitHub para build automático. Eduardo vai criar o repositório e conceder acesso.</p>
+    <p style="font-size:0.9rem; color: var(--gray-600);">O EasyPanel builda direto do GitHub. Antes do rebuild, confirmar se o commit abaixo já está na branch <code>main</code>.</p>
 
     <div class="callout callout-orange mt">
       <span class="callout-icon">⚠️</span>
-      <span><strong>Ação do Eduardo:</strong> Criar um repositório <strong>privado</strong> chamado <code>educare-portal</code> na conta <code>portaleducare1-glitch</code>, enviar o código, e adicionar Giovane como colaborador (ou usar deploy key).</span>
+      <span><strong>Antes do rebuild:</strong> confirmar que o GitHub está depois de <code>48f385a</code> e contém o fix <code>ajusta instalacao ios fora do safari</code>. Se ainda estiver em <code>48f385a</code>, falta push do Eduardo antes do rebuild.</span>
     </div>
 
     <div class="callout callout-purple mt">
       <span class="callout-icon">💡</span>
-      <span>O repositório precisa ter <code>Dockerfile</code> e <code>nginx.conf</code> na raiz &mdash; ambos já estão prontos no projeto.</span>
+      <span>Repositório correto: <code>portaleducare1-glitch/educare-kit-pedagogico</code>. Branch: <code>main</code>. O repo já tem <code>Dockerfile</code> e <code>nginx.conf</code> prontos na raiz.</span>
     </div>
   </div>
 
@@ -407,7 +407,7 @@
       <li>
         <div class="step-body">
           <strong>Conectar o repositório</strong>
-          <p>Selecionar a conta <code>portaleducare1-glitch</code> e o repositório <code>educare-portal</code>.<br>Branch: <code>main</code>.</p>
+          <p>Selecionar a conta <code>portaleducare1-glitch</code> e o repositório <code>educare-kit-pedagogico</code>.<br>Branch: <code>main</code>.</p>
         </div>
       </li>
       <li>
@@ -472,7 +472,7 @@ TTL:   3600</code></pre>
 
     <div class="callout callout-green mt">
       <span class="callout-icon">✅</span>
-      <span>Após propagação, o portal estará acessível via HTTPS em <strong>app.educarepedagogia.com.br/portal</strong> com certificado válido.</span>
+      <span>Domínio e SSL já estão ativos em <strong>app.educarepedagogia.com.br/portal</strong>. Nesta rodada, basta rebuildar o serviço depois do push correto.</span>
     </div>
 
     <div class="callout callout-orange mt">
@@ -485,7 +485,7 @@ TTL:   3600</code></pre>
   <div class="section">
     <div class="section-title"><span class="num">4</span> Liberar CORS no WordPress (fazer por último)</div>
 
-    <p style="font-size:0.9rem; color: var(--gray-600);">O portal busca os PDFs diretamente do WordPress da Educare. O CORS já está configurado com <code>*</code> (wildcard) para os testes iniciais. Após confirmar a URL definitiva, substituir pelo domínio real.</p>
+    <p style="font-size:0.9rem; color: var(--gray-600);">O portal abre PDFs hospedados no WordPress da Educare. O domínio definitivo já é <code>https://app.educarepedagogia.com.br</code>. Se mexer no snippet de CORS, usar comparação estrita com esse domínio; não deixar refletindo qualquer origem.</p>
 
     <ol class="steps mt">
       <li>
@@ -496,12 +496,12 @@ TTL:   3600</code></pre>
       </li>
       <li>
         <div class="step-body">
-          <strong>Substituir o wildcard pelo domínio confirmado</strong>
-          <pre><code>// Antes (temporário):
-header('Access-Control-Allow-Origin: *');
-
-// Depois (produção):
-	header('Access-Control-Allow-Origin: https://app.educarepedagogia.com.br');</code></pre>
+          <strong>Usar allowlist estrita do domínio</strong>
+          <pre><code>// Produção esperada:
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if ($origin === 'https://app.educarepedagogia.com.br') {
+    header('Access-Control-Allow-Origin: https://app.educarepedagogia.com.br');
+}</code></pre>
         </div>
       </li>
       <li>
@@ -528,7 +528,7 @@ header('Access-Control-Allow-Origin: *');
       <li>
         <div class="step-body">
           <strong>Eduardo faz push para a branch <code>main</code></strong>
-          <p>O EasyPanel detecta automaticamente e inicia o rebuild (se webhook estiver configurado).</p>
+          <p>Nesta instalação, o webhook/auto-deploy não tem sido confiável. Depois do push, acionar rebuild manual no EasyPanel.</p>
         </div>
       </li>
       <li>
@@ -564,7 +564,7 @@ header('Access-Control-Allow-Origin: *');
       </div>
       <div class="info-item">
         <div class="info-label">Tamanho do bundle</div>
-        <div class="info-value">~432 KB (gzip)</div>
+        <div class="info-value">~304 KB gzip total app + Typebot</div>
       </div>
       <div class="info-item">
         <div class="info-label">Variáveis de ambiente</div>
@@ -608,10 +608,12 @@ header('Access-Control-Allow-Origin: *');
       <li>Cadeado verde (SSL valido) no navegador</li>
       <li>Navegar para a pagina de acervo e clicar num material</li>
       <li>PDF abre normalmente (sem erro de CORS no console)</li>
-      <li>Testar no iPhone &mdash; botao "Ver PDF" e scroll funcionam</li>
-      <li>Testar no Android &mdash; botao "Ver PDF" abre e o botao Voltar funciona</li>
+      <li>Testar no iPhone instalado: sem aviso recorrente de atualização de ícone e sem splash HTML duplicada</li>
+      <li>Testar iPhone fora do Safari: aviso de instalação deve orientar copiar link e abrir no Safari</li>
+      <li>Testar no Android instalado: não deve aparecer mensagem sobre Safari/atualização de ícone</li>
+      <li>Testar botão WhatsApp no fim da página: não deve tampar links do rodapé</li>
       <li>Recarregar a página numa rota interna (ex: <code>/portal/acervo</code>) &mdash; não deve dar 404</li>
-      <li>CORS do WordPress atualizado para o dominio definitivo</li>
+      <li>CORS do WordPress restrito ao dominio definitivo, se o snippet for alterado</li>
       <li>Favoritar um material e reabrir o portal &mdash; favorito persiste</li>
     </ul>
   </div>

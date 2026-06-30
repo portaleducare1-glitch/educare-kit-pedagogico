@@ -41,6 +41,16 @@ Este produto faz parte do ecossistema futuro da Educare:
 
 ## Como fazer o deploy (EasyPanel, real — atualizado em 30/06/2026)
 
+### Estado desta entrega para o Giovanni
+
+- Antes do rebuild, o GitHub precisa estar depois de `48f385a` e conter o fix `ajusta instalacao ios fora do safari`.
+- Se o GitHub ainda estiver em `48f385a`, falta push do Eduardo/Codex antes de pedir o deploy.
+- Versao visivel do portal: `v1.1.2` (patch acumulado antes do deploy real, conforme protocolo de versionamento).
+- Correcoes principais desta entrega: PWA mobile sem aviso recorrente, sem splash HTML em app instalado, WhatsApp sem tampar rodape, Favoritos visivel no bottom nav, BNCC 2026 corrigida e instalacao iOS fora do Safari com orientacao de copiar link.
+- Verificacao local mais recente: TypeScript OK, Vitest OK sem specs unitarias, build de producao OK, logica mobile validada para iPhone Safari/Chrome/Instagram, Android Chrome e iOS standalone.
+- Limitacao conhecida da sessao local: Playwright visual nao abriu por bloqueio macOS/sandbox; na rodada anterior, E2E Chromium e WebKit passaram 46/46 antes do ajuste pequeno final.
+
+
 **Não é deploy manual de site estático.** É Docker. O EasyPanel usa o
 `Dockerfile` deste repo, mas o auto-deploy por push falhou nas últimas rodadas.
 Fluxo seguro atual: fazer `git push` no `main` e pedir para o Giovanni disparar

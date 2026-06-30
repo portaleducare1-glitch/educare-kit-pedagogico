@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { trackSuporteWhatsApp } from '@/lib/analytics';
 import { useInstall } from '../lib/useInstall';
 
@@ -16,9 +17,22 @@ const SUPORTE_WHATSAPP_URL = 'https://educarepedagogia.com.br/suporte-whatsapp';
  * então o botão volta a aparecer assim que ela fechar (ou não instalar).
  */
 export function SuporteWhatsAppButton() {
+  const [footerVisivel, setFooterVisivel] = useState(false);
   const { showBanner } = useInstall();
 
-  if (showBanner) return null;
+  useEffect(() => {
+    const footer = document.querySelector('[data-portal-footer]');
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setFooterVisivel(entry.isIntersecting),
+      { threshold: 0.05 },
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
+  if (showBanner || footerVisivel) return null;
 
   return (
     <a

@@ -36,6 +36,17 @@
     <meta name="twitter:description" content="Atividades prontas para usar hoje em sala de aula." />
     <meta name="twitter:image" content="https://app.educarepedagogia.com.br/banner-preview.png" />
     <title>Kit Pedagógico · Portal de Materiais</title>
+    <script>
+      if (
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone
+      ) {
+        document.documentElement.classList.add('is-standalone');
+      }
+    </script>
+    <style>
+      html.is-standalone #app-splash { display: none !important; }
+    </style>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4VE78DNRF"></script>
@@ -57,7 +68,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Splash própria pra ficar igual no Android e no iOS (que não tem nativa); some em App.tsx -->
+    <!-- Splash propria so no navegador comum; em app instalado, Android/iOS ja tem splash nativa -->
     <div
       id="app-splash"
       aria-hidden="true"

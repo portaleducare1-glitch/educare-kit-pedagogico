@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getPreviewParam, isStandaloneDisplay } from './platform';
+import { detectMobilePlatform, getPreviewParam, isStandaloneDisplay } from './platform';
 import { useDismissible } from './useDismissible';
 
 /** Bumpar este número sempre que o ícone do app mudar — reabre o aviso pra
@@ -13,9 +13,11 @@ export function useAtualizarAtalho() {
   const isPreview = previewParam === 'atualizar-atalho';
 
   const [isStandalone, setIsStandalone] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
   const { isDismissed, dismiss } = useDismissible(DISMISSED_KEY, isPreview);
 
   useEffect(() => {
+    setIsIOS(isPreview ? true : detectMobilePlatform() === 'ios');
     setIsStandalone(isPreview ? true : isStandaloneDisplay());
   }, [isPreview]);
 
@@ -23,7 +25,7 @@ export function useAtualizarAtalho() {
   // senão a detecção real (app já instalado, aviso ainda não dispensado)
   // mostra os dois juntos.
   const previewDeOutroAviso = previewParam !== null && !isPreview;
-  const showBanner = !previewDeOutroAviso && isStandalone && !isDismissed;
+  const showBanner = !previewDeOutroAviso && isIOS && isStandalone && !isDismissed;
 
   return {
     showBanner,

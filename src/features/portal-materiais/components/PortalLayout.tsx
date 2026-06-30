@@ -141,7 +141,9 @@ function PortalLayoutInner() {
             to="/portal/favoritos"
             className={cn(
               'relative flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-medium transition-colors',
-              isFavoritos ? 'text-brand-coral-text' : 'text-muted-foreground hover:text-foreground',
+              isFavoritos
+                ? 'text-brand-coral-text bg-brand-coral/10'
+                : 'text-muted-foreground hover:text-foreground',
             )}
             aria-label={`Favoritos${favoritos.length > 0 ? ` (${favoritos.length})` : ''}`}
           >
@@ -167,6 +169,7 @@ function PortalFooter() {
 
   return (
     <footer
+      data-portal-footer
       className="border-t border-border bg-card/50 px-4 pt-5 sm:pb-5 pb-[calc(5rem+env(safe-area-inset-bottom,0px))]"
     >
       <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-3">
@@ -210,7 +213,7 @@ function PortalFooter() {
         </div>
 
         <p className="text-[10px] text-muted-foreground">
-          Kit Pedagógico 5.0 · v1.1.1
+          Kit Pedagógico 5.0 · v1.1.2
         </p>
       </div>
     </footer>

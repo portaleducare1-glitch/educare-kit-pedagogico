@@ -25,7 +25,7 @@ export function useAtualizarAtalho() {
   // senão a detecção real (app já instalado, aviso ainda não dispensado)
   // mostra os dois juntos.
   const previewDeOutroAviso = previewParam !== null && !isPreview;
-  const showBanner = !previewDeOutroAviso && isIOS && isStandalone && !isDismissed;
+  const showBanner = isPreview && !previewDeOutroAviso && isIOS && isStandalone && !isDismissed;
 
   return {
     showBanner,

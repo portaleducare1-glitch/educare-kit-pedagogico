@@ -39,10 +39,6 @@
         document.documentElement.classList.add('is-standalone');
       }
     </script>
-    <style>
-      html.is-standalone #app-splash { display: none !important; }
-    </style>
-
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4VE78DNRF"></script>
     <script>
@@ -63,7 +59,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Splash propria so no navegador comum; em app instalado, Android/iOS ja tem splash nativa -->
+    <!-- Splash propria: no app instalado, o React segura brevemente antes de remover. -->
     <div
       id="app-splash"
       aria-hidden="true"

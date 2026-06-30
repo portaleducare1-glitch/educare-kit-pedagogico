@@ -15,9 +15,19 @@ export default function App() {
   useEffect(() => {
     const splash = document.getElementById('app-splash');
     if (!splash) return;
-    splash.style.opacity = '0';
-    splash.style.pointerEvents = 'none';
-    setTimeout(() => splash.remove(), 400);
+
+    const isStandalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      !!(navigator as unknown as { standalone?: boolean }).standalone;
+    const holdMs = isStandalone ? 900 : 120;
+
+    const fadeTimer = window.setTimeout(() => {
+      splash.style.opacity = '0';
+      splash.style.pointerEvents = 'none';
+      window.setTimeout(() => splash.remove(), 400);
+    }, holdMs);
+
+    return () => window.clearTimeout(fadeTimer);
   }, []);
 
   return (

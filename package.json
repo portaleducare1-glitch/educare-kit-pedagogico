@@ -10,8 +10,8 @@
     "preview": "vite preview --host",
     "lint": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "test:e2e": "python3 scripts/with_server.py --server \"npm run dev\" --port 3000 -- python3 src/test/e2e/portal.test.py",
-    "test:e2e:webkit": "BROWSER=webkit python3 scripts/with_server.py --server \"npm run dev\" --port 3000 -- python3 src/test/e2e/portal.test.py",
+    "test:e2e": "python3 scripts/with_server.py --server \"npm run dev -- --strictPort\" --port 3000 -- python3 src/test/e2e/portal.test.py",
+    "test:e2e:webkit": "BROWSER=webkit python3 scripts/with_server.py --server \"npm run dev -- --strictPort\" --port 3000 -- python3 src/test/e2e/portal.test.py",
     "test:watch": "vitest",
     "clean": "rm -rf dist"
   },

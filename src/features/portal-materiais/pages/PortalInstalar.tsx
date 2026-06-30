@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
-import { Smartphone, Share2, Download } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Check, Copy, Smartphone, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useInstall } from '../lib/useInstall';
+import { isIOSSafari } from '../lib/platform';
 
 function Step({ num, children }: { num: number; children: React.ReactNode }) {
   return (
@@ -16,6 +17,18 @@ function Step({ num, children }: { num: number; children: React.ReactNode }) {
 
 export function PortalInstalar() {
   const { platform, isStandalone, installAndroid } = useInstall();
+  const [copiado, setCopiado] = useState(false);
+  const iosForaDoSafari = platform === 'ios' && !isIOSSafari();
+
+  async function copiarLink() {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}/portal`);
+      setCopiado(true);
+      setTimeout(() => setCopiado(false), 2000);
+    } catch {
+      /* clipboard indisponivel - a orientacao manual continua visivel no texto */
+    }
+  }
 
   useEffect(() => {
     document.title = 'Instalar como App · Educare';
@@ -102,10 +115,18 @@ export function PortalInstalar() {
           </Step>
         </div>
 
-        <div className="rounded-xl bg-secondary/50 border border-border p-3 text-xs text-muted-foreground leading-relaxed">
-          <strong className="text-foreground">Use o Safari.</strong> Chrome e outros
-          navegadores no iPhone não permitem instalar apps pela web. Se estiver em outro
-          navegador, copie o link e abra no Safari.
+        <div className="rounded-xl bg-secondary/50 border border-border p-3 text-xs text-muted-foreground leading-relaxed space-y-3">
+          <p>
+            <strong className="text-foreground">Use o Safari.</strong> Chrome e outros
+            navegadores no iPhone não permitem instalar apps pela web. Se estiver em outro
+            navegador, copie o link e abra no Safari.
+          </p>
+          {iosForaDoSafari && (
+            <Button onClick={copiarLink} variant="outline" size="sm" className="w-full gap-2">
+              {copiado ? <Check className="size-4" /> : <Copy className="size-4" />}
+              {copiado ? 'Link copiado' : 'Copiar link do portal'}
+            </Button>
+          )}
         </div>
       </section>
 

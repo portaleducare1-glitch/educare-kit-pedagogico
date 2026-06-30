@@ -12,6 +12,16 @@ export function detectMobilePlatform(): MobilePlatform {
   return null;
 }
 
+export function isIOSSafari(): boolean {
+  const ua = navigator.userAgent;
+  const isIOS = detectMobilePlatform() === 'ios';
+  const isSafari = /Safari/i.test(ua);
+  const isOtherIOSBrowser =
+    /CriOS|FxiOS|EdgiOS|OPiOS|DuckDuckGo|GSA|FBAN|FBAV|Instagram|Line|MicroMessenger/i.test(ua);
+
+  return isIOS && isSafari && !isOtherIOSBrowser;
+}
+
 export function isStandaloneDisplay(): boolean {
   return (
     window.matchMedia('(display-mode: standalone)').matches ||

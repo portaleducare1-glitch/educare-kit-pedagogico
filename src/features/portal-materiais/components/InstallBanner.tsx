@@ -1,13 +1,29 @@
 import { useState } from 'react';
-import { Share, Download } from 'lucide-react';
+import { Check, Copy, Share, Download } from 'lucide-react';
 import { useInstall } from '../lib/useInstall';
+import { getPreviewParam, isIOSSafari } from '../lib/platform';
 import { FloatingBanner } from './FloatingBanner';
 
 export function InstallBanner() {
   const { platform, showBanner, dismiss, installAndroid } = useInstall();
   const [mostrarVariacoes, setMostrarVariacoes] = useState(false);
+  const [copiado, setCopiado] = useState(false);
 
   if (!showBanner) return null;
+
+  const previewParam = getPreviewParam();
+  const iosForaDoSafari = platform === 'ios' && previewParam !== 'install-ios' && !isIOSSafari();
+  const url = `${window.location.origin}/portal`;
+
+  async function copiarLink() {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiado(true);
+      setTimeout(() => setCopiado(false), 2000);
+    } catch {
+      /* clipboard indisponivel - a orientacao manual continua visivel no texto */
+    }
+  }
 
   return (
     <FloatingBanner onDismiss={dismiss} position="bottom">
@@ -24,6 +40,20 @@ export function InstallBanner() {
           >
             <Download className="size-3.5" />
             Instalar como aplicativo
+          </button>
+        </>
+      ) : iosForaDoSafari ? (
+        <>
+          <p className="text-xs text-muted-foreground mt-0.5 mb-3">
+            No iPhone, a instalação pela tela inicial só funciona pelo Safari. Copie o link,
+            abra no Safari e use Compartilhar &gt; Adicionar à Tela de Início.
+          </p>
+          <button
+            onClick={copiarLink}
+            className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold w-full"
+          >
+            {copiado ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+            {copiado ? 'Copiado!' : 'Copiar link'}
           </button>
         </>
       ) : (

@@ -27,7 +27,7 @@ export function PrivacyPolicy() {
             <p className="rounded-lg bg-muted px-4 py-3 font-medium">
               EDUCARE CURSOS E TREINAMENTOS LTDA<br />
               CNPJ: 28.719.923/0001-17<br />
-              Site: https://kit.educarepedagogia.com.br<br />
+              Site: https://app.educarepedagogia.com.br/portal<br />
               Contato: contato@educarepedagogia.com.br
             </p>
           </section>
@@ -67,8 +67,8 @@ export function PrivacyPolicy() {
               Usamos dois serviços de terceiros para essa análise:
             </p>
             <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-              <li><strong>Google Analytics 4</strong> (Google LLC) — estatísticas de uso e eventos de navegação</li>
-              <li><strong>Microsoft Clarity</strong> (Microsoft Corporation) — gravação de sessão e mapas de calor</li>
+              <li><strong>Google Analytics 4</strong> (Google LLC): estatísticas de uso e eventos de navegação</li>
+              <li><strong>Microsoft Clarity</strong> (Microsoft Corporation): gravação de sessão e mapas de calor</li>
             </ul>
             <p>
               Esses dados ficam armazenados nos servidores dessas empresas, conforme as

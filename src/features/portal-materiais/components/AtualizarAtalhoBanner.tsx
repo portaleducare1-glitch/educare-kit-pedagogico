@@ -9,7 +9,7 @@ export function AtualizarAtalhoBanner() {
 
   if (!showBanner) return null;
 
-  const url = window.location.href;
+  const url = `${window.location.origin}/portal`;
 
   function abrirNoSafari() {
     // '_system' força navegador externo em vez do webview do atalho instalado —

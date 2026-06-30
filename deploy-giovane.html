@@ -340,7 +340,7 @@
     <div class="info-grid">
       <div class="info-item">
         <div class="info-label">Projeto</div>
-        <div class="info-value">Portal Assistente Pedagógico</div>
+        <div class="info-value">Kit Pedagógico · Portal de Materiais</div>
       </div>
       <div class="info-item">
         <div class="info-label">Produto</div>
@@ -348,11 +348,11 @@
       </div>
       <div class="info-item">
         <div class="info-label">URL prevista</div>
-        <div class="info-value">kit.educarepedagogia.com.br</div>
+        <div class="info-value">app.educarepedagogia.com.br/portal</div>
       </div>
       <div class="info-item">
         <div class="info-label">Conteúdo</div>
-        <div class="info-value">136 materiais (PDF) &mdash; WordPress CDN</div>
+        <div class="info-value">220 materiais (PDF) &mdash; WordPress CDN</div>
       </div>
     </div>
 
@@ -449,7 +449,7 @@ Build context: . (raiz do projeto)</code></pre>
         <div class="step-body">
           <strong>Adicionar domínio no serviço</strong>
           <p>Dentro do serviço criado, ir em <strong>Domains &rarr; Add Domain</strong> e inserir:</p>
-          <pre><code>kit.educarepedagogia.com.br</code></pre>
+          <pre><code>app.educarepedagogia.com.br</code></pre>
         </div>
       </li>
       <li>
@@ -457,7 +457,7 @@ Build context: . (raiz do projeto)</code></pre>
           <strong>Apontar DNS</strong>
           <p>No painel de DNS da Educare (provavelmente HostGator ou Cloudflare), criar um registro:</p>
           <pre><code>Tipo:  A
-Nome:  portal
+Nome:  app
 Valor: [IP do VPS TurboCloud]
 TTL:   3600</code></pre>
         </div>
@@ -472,7 +472,7 @@ TTL:   3600</code></pre>
 
     <div class="callout callout-green mt">
       <span class="callout-icon">✅</span>
-      <span>Após propagação, o portal estará acessível via HTTPS em <strong>kit.educarepedagogia.com.br</strong> com certificado válido.</span>
+      <span>Após propagação, o portal estará acessível via HTTPS em <strong>app.educarepedagogia.com.br/portal</strong> com certificado válido.</span>
     </div>
 
     <div class="callout callout-orange mt">
@@ -501,7 +501,7 @@ TTL:   3600</code></pre>
 header('Access-Control-Allow-Origin: *');
 
 // Depois (produção):
-header('Access-Control-Allow-Origin: https://kit.educarepedagogia.com.br');</code></pre>
+	header('Access-Control-Allow-Origin: https://app.educarepedagogia.com.br');</code></pre>
         </div>
       </li>
       <li>
@@ -594,7 +594,7 @@ header('Access-Control-Allow-Origin: https://kit.educarepedagogia.com.br');</cod
     <p style="font-size:0.875rem; font-weight:600; color:var(--gray-800); margin-bottom:0.5rem;">Cache configurado no nginx</p>
     <div style="font-size:0.875rem; color:var(--gray-600);">
       <p>JS/CSS/Fontes &rarr; 1 ano (imutavel, hash de build)</p>
-      <p>Imagens/icones &rarr; 30 dias</p>
+      <p>Imagens/ícones &rarr; 30 dias</p>
       <p>HTML (index.html) &rarr; sem cache (<code>no-store</code>)</p>
     </div>
   </div>
@@ -604,13 +604,13 @@ header('Access-Control-Allow-Origin: https://kit.educarepedagogia.com.br');</cod
     <div class="section-title">Checklist pos-deploy</div>
 
     <ul class="checklist">
-      <li>Portal abre em <code>https://kit.educarepedagogia.com.br</code></li>
+      <li>Portal abre em <code>https://app.educarepedagogia.com.br/portal</code></li>
       <li>Cadeado verde (SSL valido) no navegador</li>
       <li>Navegar para a pagina de acervo e clicar num material</li>
       <li>PDF abre normalmente (sem erro de CORS no console)</li>
       <li>Testar no iPhone &mdash; botao "Ver PDF" e scroll funcionam</li>
       <li>Testar no Android &mdash; botao "Ver PDF" abre e o botao Voltar funciona</li>
-      <li>Recarregar a pagina numa rota interna (ex: <code>/portal/acervo</code>) &mdash; nao deve dar 404</li>
+      <li>Recarregar a página numa rota interna (ex: <code>/portal/acervo</code>) &mdash; não deve dar 404</li>
       <li>CORS do WordPress atualizado para o dominio definitivo</li>
       <li>Favoritar um material e reabrir o portal &mdash; favorito persiste</li>
     </ul>

@@ -3,13 +3,15 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Educare · Kit Pedagógico 5.0 — portal de materiais pedagógicos, 136 recursos para educadores.",
+  "description": "Educare · Kit Pedagógico — portal de materiais pedagógicos, 220 recursos para educadores.",
   "scripts": {
     "dev": "vite --port 3000 --host",
     "build": "vite build",
     "preview": "vite preview --host",
     "lint": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
+    "test:e2e": "python3 scripts/with_server.py --server \"npm run dev\" --port 3000 -- python3 src/test/e2e/portal.test.py",
+    "test:e2e:webkit": "BROWSER=webkit python3 scripts/with_server.py --server \"npm run dev\" --port 3000 -- python3 src/test/e2e/portal.test.py",
     "test:watch": "vitest",
     "clean": "rm -rf dist"
   },

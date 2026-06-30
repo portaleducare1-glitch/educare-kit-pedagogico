@@ -15,11 +15,11 @@ Carregue primeiro: `Vault/Projetos/Educare/guia-ia.md` — tem o mapa completo d
 ---
 
 **Stack:** Vite + React 19 + TypeScript · Tailwind CSS 4 · shadcn/ui (Radix) ·
-pdf.js + tesseract.js (validação client-side) · Capacitor (iOS/Android, futuro) ·
+PWA/Workbox · GA4 + Microsoft Clarity · Capacitor (iOS/Android, futuro) ·
 Supabase (stub, futuro).
 
-**O que é:** plataforma Educare. A Fase 1 entrega um **validador público de
-certificados** que roda 100% no navegador, sem backend.
+**O que é:** plataforma Educare. A Fase 1 entrega o **Portal de Materiais do
+Kit Pedagógico**, 100% client-side nesta etapa, sem backend, login ou banco.
 
 ---
 
@@ -31,7 +31,7 @@ certificados** que roda 100% no navegador, sem backend.
 | Criar/alterar um módulo (passo a passo SDD) | [docs/MODULE_GUIDE.md](docs/MODULE_GUIDE.md) |
 | Decisões de arquitetura, nativo, Supabase | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | Segurança, privacidade, hospedagem | [docs/SECURITY.md](docs/SECURITY.md) |
-| Lógica do validador (regras, parse, OCR) | [docs/specs/certificate-validator/](docs/specs/certificate-validator/) |
+| Portal de materiais (regras, UX, tarefas) | [docs/specs/portal-materiais/](docs/specs/portal-materiais/) |
 | Fundação (stack, configs) | [docs/specs/00-foundation/](docs/specs/00-foundation/) |
 | Shell/dashboard (sidebar/header) FUTURO | [docs/specs/app-shell/01-requirements.md](docs/specs/app-shell/01-requirements.md) |
 
@@ -51,18 +51,21 @@ certificados** que roda 100% no navegador, sem backend.
 ```bash
 npm run dev      # dev server (porta 3000)
 npm run lint     # tsc --noEmit
-npm run test     # vitest
+npm run test     # vitest (sem specs unitárias do portal nesta fase)
+npm run test:e2e # Playwright Python contra servidor local
 npm run build    # build de produção
 ```
 
 ## Antes de declarar pronto
 
-1. `npm run lint` e `npm run test` passam?
-2. Mexeu em UI/regra? Conferiu o DESIGN_SYSTEM.md e a paridade mobile/desktop?
-3. Criou/alterou módulo? Atualizou a spec (`03-tasks.md`)?
-4. Mudou algo estrutural? Atualizou este índice?
+1. `npm run lint`, `npm run test` e `npm run build` passam?
+2. Se mexeu em fluxo, navegação, PWA ou UI do portal, rode `npm run test:e2e` quando o ambiente permitir abrir navegador headless.
+3. Mexeu em UI/regra? Conferiu o DESIGN_SYSTEM.md e a paridade mobile/desktop?
+4. Criou/alterou módulo? Atualizou a spec (`03-tasks.md`)?
+5. Mudou algo estrutural? Atualizou este índice?
 
 ## Health Stack
 
 - typecheck: tsc --noEmit
-- test: vitest run
+- unit test: vitest run --passWithNoTests
+- e2e: python3 scripts/with_server.py --server "npm run dev" --port 3000 -- python3 src/test/e2e/portal.test.py

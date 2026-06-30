@@ -210,7 +210,7 @@ function PortalFooter() {
         </div>
 
         <p className="text-[10px] text-muted-foreground">
-          Kit Pedagogico 5.0 · v1.1.1
+          Kit Pedagógico 5.0 · v1.1.1
         </p>
       </div>
     </footer>

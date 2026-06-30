@@ -29,9 +29,9 @@ export function PortalInstalar() {
       <div className="py-20 text-center space-y-3">
         <h1 className="sr-only">Instalar como App</h1>
         <Smartphone className="mx-auto size-12 text-success" aria-hidden="true" />
-        <p className="font-bold text-base text-foreground">App ja instalado!</p>
+        <p className="font-bold text-base text-foreground">App já instalado!</p>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-          Voce ja esta usando o Assistente Pedagogico diretamente da tela inicial.
+          Você já está usando o Kit Pedagógico diretamente da tela inicial.
         </p>
       </div>
     );
@@ -42,7 +42,7 @@ export function PortalInstalar() {
       <div className="space-y-1.5">
         <h1 className="text-3xl font-black text-foreground leading-tight">Instalar como app</h1>
         <p className="text-sm text-muted-foreground">
-          Adicione o Kit Pedagogico a tela inicial e abra sem precisar do navegador.
+          Adicione o Kit Pedagógico à tela inicial e abra sem precisar do navegador.
         </p>
       </div>
 
@@ -89,11 +89,11 @@ export function PortalInstalar() {
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary border border-border text-xs font-medium">
               <Share2 className="size-3" aria-hidden="true" /> Compartilhar
             </span>{' '}
-            na barra inferior. Se nao aparecer, toque nas{' '}
-            <strong>3 barras ≡</strong> ao lado da barra de enderecos.
+            na barra inferior. Se não aparecer, toque nas{' '}
+            <strong>3 barras ≡</strong> ao lado da barra de endereços.
           </Step>
           <Step num={2}>
-            Role a lista de opcoes para baixo. Se nao encontrar, toque em{' '}
+            Role a lista de opções para baixo. Se não encontrar, toque em{' '}
             <strong>"Ver Mais"</strong> primeiro. Depois toque em{' '}
             <strong>"Adicionar a Tela Inicial"</strong>.
           </Step>
@@ -104,7 +104,7 @@ export function PortalInstalar() {
 
         <div className="rounded-xl bg-secondary/50 border border-border p-3 text-xs text-muted-foreground leading-relaxed">
           <strong className="text-foreground">Use o Safari.</strong> Chrome e outros
-          navegadores no iPhone nao permitem instalar apps pela web. Se estiver em outro
+          navegadores no iPhone não permitem instalar apps pela web. Se estiver em outro
           navegador, copie o link e abra no Safari.
         </div>
       </section>
@@ -114,7 +114,7 @@ export function PortalInstalar() {
       <div className="space-y-2 text-center pb-2">
         <Smartphone className="mx-auto size-8 text-muted-foreground/40" aria-hidden="true" />
         <p className="text-xs text-muted-foreground">
-          Apos instalar, o icone do Kit Pedagogico aparece na sua tela inicial. Funciona
+          Após instalar, o ícone do Kit Pedagógico aparece na sua tela inicial. Funciona
           como qualquer outro app, sem precisar abrir o navegador.
         </p>
       </div>

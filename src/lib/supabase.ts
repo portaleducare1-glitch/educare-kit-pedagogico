@@ -1,12 +1,12 @@
 /*
-  Stub do client Supabase. NÃO é usado pela Fase 1 (o validador roda 100%
-  client-side, sem banco). Está aqui pronto para o próximo módulo:
-  Auth e base de certificados emitidos (consulta por código/CPF).
+  Stub do client Supabase. NÃO é usado pela Fase 1 (o Portal do Kit roda
+  100% client-side, sem login ou banco). Está aqui pronto para uma fase futura:
+  autenticação, progresso individual e dados de uso por aluno.
 
   Uso futuro:
     import { getSupabase } from '@/lib/supabase';
     const supabase = getSupabase();
-    const { data } = await supabase.from('certificados').select('*');
+    const { data } = await supabase.from('usuarios').select('*');
 */
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 

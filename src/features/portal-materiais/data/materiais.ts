@@ -377,7 +377,7 @@ export const materiais: Material[] = [
     temas: [],
     situacoes: ['atividade-pronta'],
     descricao: '250 atividades variadas cobrindo todas as áreas de desenvolvimento infantil.',
-    quando_usar: 'Para ter opcoes para o ano todo sem criar do zero.',
+    quando_usar: 'Para ter opções para o ano todo sem criar do zero.',
     como_usar: 'Use o índice por área (cognitiva, motora, linguagem, social). Selecione pela necessidade do dia.',
   },
   {
@@ -639,7 +639,7 @@ export const materiais: Material[] = [
     temas: ['grafomotricidade'],
     situacoes: ['leitura-alfabetizacao', 'atividade-pronta'],
     descricao: 'Segundo volume de grafomotricidade com tracados mais complexos.',
-    quando_usar: 'Apos dominar o volume 1. Para avanco progressivo na coordenação.',
+    quando_usar: 'Após dominar o volume 1. Para avanço progressivo na coordenação.',
     como_usar: 'Imprima. Siga a progressao do volume anterior.',
   },
   {
@@ -1173,7 +1173,7 @@ export const materiais: Material[] = [
     situacoes: ['aluno-nao-fala', 'inclusao-especial'],
     descricao: 'Prancha de CAA com símbolos para escolhas cotidianas básicas.',
     quando_usar: 'Com alunos não verbais para dar autonomia em escolhas do dia a dia.',
-    como_usar: 'Imprima e plastifique. Apresente as opcoes e deixe o aluno apontar.',
+    como_usar: 'Imprima e plastifique. Apresente as opções e deixe o aluno apontar.',
   },
   {
     id: 'hora-do-lanche',
@@ -1381,7 +1381,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'projeto-voce-ensina',
-    titulo: 'Projeto Voce Ensina - Agora e Sua Vez',
+    titulo: 'Projeto Você Ensina - Agora é Sua Vez',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Projeto-Voce-Ensina-Agora-e-Sua-Vez.pdf',
     wp_id: 26925,
     secao: 'atividades',

@@ -10,7 +10,7 @@
 
 O **Kit Pedagógico 5.0** é o primeiro produto da plataforma Educare. É uma SPA (Single-Page Application) com um único módulo:
 
-- **Portal de Materiais** — rota `/portal` — 136 materiais pedagógicos organizados, pesquisáveis e filtráveis. PWA instalável no celular.
+- **Portal de Materiais** — rota `/portal` — 220 materiais pedagógicos organizados, pesquisáveis e filtráveis. PWA instalável no celular.
 
 A rota `/` redireciona automaticamente para `/portal`.
 
@@ -39,12 +39,12 @@ Este produto faz parte do ecossistema futuro da Educare:
 
 ---
 
-## Como fazer o deploy (EasyPanel, real — confirmado 27/06/2026)
+## Como fazer o deploy (EasyPanel, real — atualizado em 30/06/2026)
 
-**Não é deploy manual de site estático.** É Docker, e **push no `main`
-dispara o rebuild automaticamente** — confirmado direto com Eduardo. Ou seja:
-o momento do `git push` **é** o momento do deploy, não um passo separado que
-alguém precisa lembrar de clicar depois.
+**Não é deploy manual de site estático.** É Docker. O EasyPanel usa o
+`Dockerfile` deste repo, mas o auto-deploy por push falhou nas últimas rodadas.
+Fluxo seguro atual: fazer `git push` no `main` e pedir para o Giovanni disparar
+o rebuild no EasyPanel. Depois disso, verificar produção de verdade.
 
 O EasyPanel builda usando o `Dockerfile` deste repo (3 estágios: instala
 dependências com `npm ci` usando o `.npmrc` do projeto → builda com
@@ -64,14 +64,12 @@ Não precisa clonar/instalar/buildar manualmente em lugar nenhum — isso tudo
 acontece dentro do container no EasyPanel, automaticamente, a partir do push.
 
 ### Domínio de produção
-`kit.educarepedagogia.com.br`
+`https://app.educarepedagogia.com.br/portal`
 
-**Status em 26/06:** esse domínio ainda não resolve (sem DNS configurado). O
-app já está no ar via Docker/EasyPanel, mas só pelo domínio padrão dele
-(`https://site-educare-kitpedagogico.vpqsrq.easypanel.host`), e é esse domínio
-padrão que o botão do WordPress (`/portal-kit-pedagogico/`) usa por enquanto.
-Depois que o DNS de `kit.educarepedagogia.com.br` apontar pra esse app, trocar
-o link no WordPress.
+**Status em 28/06:** DNS e SSL confirmados. Este é o link definitivo para
+comunicações novas. O domínio antigo `kit.educarepedagogia.com.br` foi
+abandonado porque nunca apontou no DNS. O redirecionador WordPress
+`/portal-kit-pedagogico` foi retirado e não deve ser usado em comunicação nova.
 
 ---
 
@@ -115,13 +113,13 @@ Headers incluídos:
 ### Após o domínio estar confirmado
 
 Atualizar o CORS no WordPress (Code Snippets, ID 8):
-- Mudar de `*` para `https://kit.educarepedagogia.com.br`
+- Mudar de `*` para `https://app.educarepedagogia.com.br`
 
 **Atenção, achado no teste de 26/06:** o snippet de CORS atual não está fazendo
 allowlist de verdade, ele reflete de volta qualquer `Origin` enviado pelo
 navegador (testado com um domínio inventado e ele aceitou). Isso equivale na
 prática a um `*`, mesmo já estando "configurado" com o domínio certo. Trocar
-para uma comparação estrita contra `https://kit.educarepedagogia.com.br`.
+para uma comparação estrita contra `https://app.educarepedagogia.com.br`.
 
 ### Tarefas de segurança pendentes (Eduardo resolve antes do go-live)
 - [ ] Rotacionar senha do usuário WP `duhmachado`
@@ -137,7 +135,7 @@ src/
 │   ├── portal-materiais/          # Módulo principal — portal de materiais
 │   │   ├── components/            # Componentes React (cards, layout, filtros)
 │   │   ├── data/
-│   │   │   └── materiais.ts       # 136 materiais — fonte única de verdade
+│   │   │   └── materiais.ts       # 220 materiais — fonte única de verdade
 │   │   ├── lib/                   # Lógica pura (busca, favoritos, visitados)
 │   │   ├── pages/                 # Páginas: Home, Acervo, Material, Favoritos
 │   │   └── types.ts               # Tipos TypeScript + labels de display
@@ -153,7 +151,7 @@ src/
 ## O que foi construído (Fase 1)
 
 ### Módulo Portal de Materiais
-- **136 materiais** do Kit Pedagógico 5.0 organizados em 3 seções (Apostilas, Atividades, Documentos)
+- **220 materiais** do Kit Pedagógico organizados em 3 seções (Apostilas, Atividades, Documentos)
 - **Busca textual** com sinônimos expandidos (TEA/autismo, TDAH, LIBRAS, etc.)
 - **Filtros combinados:** seção + etapa escolar + tema + situação
 - **12 temas especializados:** TEA, TDAH, AEE, CAA, LIBRAS, Braille, Altas Habilidades, Socioemocional, Matemática, Leitura, Grafomotricidade, Inclusão
@@ -211,7 +209,8 @@ novidadeAte: '2026-07-11',  // data de hoje + 30 dias
 npm run dev      # Sobe servidor local em http://localhost:3000
 npm run build    # Build de produção → gera dist/
 npm run lint     # TypeScript type check (tsc --noEmit)
-npm run test     # Testes unitários (vitest)
+npm run test     # Testes unitários (vitest; portal sem specs unitárias nesta fase)
+npm run test:e2e # Testes E2E do portal (quando o ambiente permitir navegador headless)
 ```
 
 ---
@@ -234,7 +233,7 @@ npm run test     # Testes unitários (vitest)
 Este portal substitui a entrega tradicional dos materiais pedagógicos da Educare (antes feita pelo Nutror/Eduzz). O objetivo da Fase 1 é:
 
 1. Ter um produto bonito, funcional e rápido que funcione no celular como app instalado
-2. Facilitar o acesso das professoras aos 136 materiais do Kit Pedagógico 5.0
+2. Facilitar o acesso das professoras aos materiais do Kit Pedagógico
 3. Coletar dados de comportamento (GA4 + Clarity) para informar as próximas fases
 
 A Fase 2 prevê: backend próprio (Supabase), autenticação de alunos, progresso individual, e integração com o Assistente Pedagógico.

@@ -9,7 +9,8 @@ const DISMISSED_KEY = `educare-atualizar-atalho-dismissed-v${ICONE_VERSAO_ATUAL}
 
 export function useAtualizarAtalho() {
   // QA visual: ?preview=atualizar-atalho força o aviso na tela
-  const isPreview = getPreviewParam() === 'atualizar-atalho';
+  const previewParam = getPreviewParam();
+  const isPreview = previewParam === 'atualizar-atalho';
 
   const [isStandalone, setIsStandalone] = useState(false);
   const { isDismissed, dismiss } = useDismissible(DISMISSED_KEY, isPreview);
@@ -18,8 +19,14 @@ export function useAtualizarAtalho() {
     setIsStandalone(isPreview ? true : isStandaloneDisplay());
   }, [isPreview]);
 
+  // Se ?preview= está ativo pra OUTRO aviso, este banner fica escondido —
+  // senão a detecção real (app já instalado, aviso ainda não dispensado)
+  // mostra os dois juntos.
+  const previewDeOutroAviso = previewParam !== null && !isPreview;
+  const showBanner = !previewDeOutroAviso && isStandalone && !isDismissed;
+
   return {
-    showBanner: isStandalone && !isDismissed,
+    showBanner,
     dismiss,
   };
 }

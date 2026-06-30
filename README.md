@@ -1,25 +1,23 @@
-# Educare
+# Educare · Kit Pedagógico
 
-Plataforma da **Educare · Cursos de Aperfeiçoamento em Pedagogia**.
+Portal de Materiais do **Kit Pedagógico** da Educare.
 
-Fase 1: **validador público de certificados**. Envie o PDF de um certificado e o
-sistema confere, no próprio navegador (sem enviar nada para servidores), se ele
-corresponde ao padrão dos certificados emitidos pela Educare.
+Fase 1: biblioteca estática com materiais pedagógicos organizados para consulta,
+busca, favoritos, histórico de visitados, download/preview de PDFs, PWA instalável
+e rastreamento de uso com GA4 + Microsoft Clarity. O app não tem login nem backend
+nesta fase.
 
 ## Stack
 
 Vite + React 19 + TypeScript · Tailwind CSS 4 · shadcn/ui (Radix) ·
-pdf.js + tesseract.js (OCR) · pronto para Capacitor (iOS/Android) e Supabase.
+vite-plugin-pwa + Workbox · pronto para Capacitor (iOS/Android) e Supabase.
 
 ## Como rodar
 
 ```bash
 npm install
-npm run dev        # http://localhost:3000
+npm run dev        # http://localhost:3000/portal
 ```
-
-Para validar: abra a página e arraste o PDF (há um exemplo em
-`public/certificado-teste.pdf`).
 
 ## Scripts
 
@@ -29,7 +27,9 @@ Para validar: abra a página e arraste o PDF (há um exemplo em
 | `npm run build` | Build de produção em `dist/` |
 | `npm run preview` | Serve o build |
 | `npm run lint` | Type-check (`tsc --noEmit`) |
-| `npm run test` | Testes (vitest) |
+| `npm run test` | Testes unitários (vitest; hoje não há specs unitárias do portal) |
+| `npm run test:e2e` | Sobe servidor local e roda a suíte E2E do portal no Chromium |
+| `npm run test:e2e:webkit` | Mesma suíte no WebKit/Safari |
 
 ## Documentação
 

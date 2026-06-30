@@ -29,7 +29,7 @@ export default function App() {
         <Route path="/termos" element={<TermsOfUse />} />
       </Route>
 
-      {/* Portal Assistente Pedagogico */}
+      {/* Portal de Materiais do Kit Pedagógico */}
       <Route path="/portal" element={<PortalLayout />}>
         <Route index element={<PortalHome />} />
         <Route path="acervo" element={<PortalAcervo />} />

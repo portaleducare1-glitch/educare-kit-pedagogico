@@ -1,6 +1,6 @@
 # Educare · Segurança e Privacidade
 
-> Revisado em 26/06/2026. Este documento descrevia o validador de certificados
+> Revisado em 30/06/2026. Este documento descrevia o validador de certificados
 > (processamento OCR 100% local), que saiu deste repo em 11/06/2026. Reescrito
 > para o que de fato roda aqui: o Portal de Materiais do Kit Pedagógico 5.0.
 
@@ -30,17 +30,15 @@
 - **CORS do WordPress está aberto demais**: `Access-Control-Allow-Origin` reflete
   qualquer `Origin` enviado pela requisição (testado com `curl`), em vez de
   restringir a uma lista de domínios conhecidos
-  (`kit.educarepedagogia.com.br`, `educarepedagogia.com.br`, e o domínio do
-  EasyPanel enquanto o DNS definitivo não estiver no ar). Isso facilita qualquer
+  (`app.educarepedagogia.com.br` e `educarepedagogia.com.br`). Isso facilita qualquer
   site de terceiro ler dados do `wp-json` em nome de um visitante. Não é
   bloqueador para o lançamento da Fase 1 (não há dado sensível de usuário
   trafegando), mas é uma porta aberta que precisa ser fechada antes de qualquer
   endpoint com dado de aluno (Fase 2).
-- **`kit.educarepedagogia.com.br` não tem DNS apontado** (achado 26/06/2026) — o
-  domínio documentado como produção em todo lugar nunca foi de fato configurado.
-  Mitigado temporariamente por um redirecionador em
-  `educarepedagogia.com.br/portal-kit-pedagogico`. Resolver a causa (apontar DNS)
-  é trabalho do Giovanni, registrado em `docs/specs/portal-materiais/03-tasks.md`.
+- **Domínio de produção atual**: desde 30/06/2026, o endereço operacional do
+  portal é `https://app.educarepedagogia.com.br/portal`. O domínio antigo
+  `kit.educarepedagogia.com.br` e o caminho `/portal-kit-pedagogico` ficam apenas
+  como histórico e não devem ser usados em comunicações novas.
 
 ## Antes de qualquer dado de usuário entrar no projeto (Fase 2 e além)
 

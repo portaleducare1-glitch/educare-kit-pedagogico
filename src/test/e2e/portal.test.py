@@ -1,5 +1,5 @@
 """
-Suite de testes E2E — Portal Assistente Pedagógico Educare
+Suite de testes E2E — Portal de Materiais do Kit Pedagógico Educare
 Playwright (Python, headless Chromium)
 
 Execução:
@@ -235,8 +235,7 @@ with sync_playwright() as p:
         page.wait_for_load_state('networkidle')
         btn = page.locator('button').filter(has=page.locator('span:has-text("Voltar")')).first
         btn.click()
-        page.wait_for_load_state('networkidle')
-        assert '/portal' in page.url, f'Esperado /portal/*, got {page.url}'
+        page.wait_for_url(f'{BASE}/portal/acervo')
     run('botão Voltar navega para rota anterior', test_back_navigates)
 
     def test_favorite_toggle():

@@ -55,17 +55,27 @@ export function useAvaliacaoPortal(): AvaliacaoPortalState {
   const [ocultarSuporte, setOcultarSuporte] = useState(false);
 
   useEffect(() => {
+    // Só dispara em ficha de material — usuário acabou de abrir um material
+    // (contexto pós-tarefa), que é quando a opinião dele está mais formada.
+    if (!location.pathname.startsWith('/portal/m/')) return;
+
     const numVisitas = registrarVisitaDoDia();
     const jaDisparado = !!safeGetItem(DISPARADO_KEY);
     if (jaDisparado) return;
 
     const numMateriais = contarVisitados();
-    if (numVisitas >= VISITAS_MINIMAS && numMateriais >= MATERIAIS_MINIMOS) {
+    if (numVisitas < VISITAS_MINIMAS || numMateriais < MATERIAIS_MINIMOS) return;
+
+    // 9 s de delay: garante que a professora já está lendo o material,
+    // não ainda em transição entre páginas.
+    const timer = window.setTimeout(() => {
       safeSetItem(DISPARADO_KEY, '1');
       setMostrarAvaliacao(true);
       setOcultarSuporte(true);
       setTimeout(() => setOcultarSuporte(false), OCULTAR_SUPORTE_MS);
-    }
+    }, 9_000);
+
+    return () => window.clearTimeout(timer);
   }, [location.pathname]);
 
   return { mostrarAvaliacao, ocultarSuporte };

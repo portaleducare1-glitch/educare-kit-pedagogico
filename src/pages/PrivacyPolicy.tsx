@@ -13,7 +13,7 @@ export function PrivacyPolicy() {
 
       <header className="space-y-1">
         <h1 className="font-display text-3xl font-extrabold">Política de Privacidade</h1>
-        <p className="text-sm text-muted-foreground">Atualizada em 26 de junho de 2026</p>
+        <p className="text-sm text-muted-foreground">Atualizada em 1 de julho de 2026</p>
       </header>
 
       <Card>
@@ -44,10 +44,9 @@ export function PrivacyPolicy() {
           <section className="space-y-3">
             <h2 className="font-display text-base font-bold">3. Quais dados são tratados</h2>
             <p>
-              Como o portal está em fase de teste, usamos ferramentas de análise de uso para
-              entender como os professores navegam, o que buscam e quais materiais acessam,
-              com o objetivo de melhorar o produto. Essas ferramentas coletam, de forma
-              anônima ou pseudonimizada:
+              Para melhorar continuamente o portal, usamos ferramentas de análise de uso para
+              entender como os professores navegam, o que buscam e quais materiais acessam.
+              Essas ferramentas coletam, de forma anônima ou pseudonimizada:
             </p>
             <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
               <li>Páginas e materiais visitados, buscas realizadas, downloads e cliques</li>
@@ -96,9 +95,9 @@ export function PrivacyPolicy() {
           <section className="space-y-3">
             <h2 className="font-display text-base font-bold">5. Finalidade e base legal</h2>
             <p>
-              O tratamento tem a finalidade de avaliar a utilidade do portal nesta fase de
-              teste e priorizar melhorias antes de uma versão definitiva. A base legal é o
-              legítimo interesse da Educare em desenvolver e aprimorar seus produtos, nos
+              O tratamento tem a finalidade de avaliar a utilidade do portal e priorizar
+              melhorias contínuas. A base legal é o legítimo interesse da Educare em
+              desenvolver e aprimorar seus produtos, nos
               termos do art. 7º, inciso IX, da Lei 13.709/2018 (LGPD). Você pode impedir essa
               coleta a qualquer momento bloqueando cookies de terceiros nas configurações do
               seu navegador.

@@ -26,7 +26,6 @@ export function AvaliacaoBubble() {
           import('@typebot.io/js').then(({ close }) => close());
         },
       });
-      import('@typebot.io/js').then(({ open }) => open());
     });
 
     return () => {

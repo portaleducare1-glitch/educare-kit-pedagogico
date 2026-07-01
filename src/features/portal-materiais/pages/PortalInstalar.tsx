@@ -66,25 +66,24 @@ export function PortalInstalar() {
           <h2 className="font-bold text-base text-foreground">Android (Chrome)</h2>
         </div>
 
-        {platform === 'android' ? (
+        {platform === 'android' && (
           <Button onClick={installAndroid} className="w-full gap-2">
             <Download className="size-4" />
             Instalar agora
           </Button>
-        ) : (
-          <div className="space-y-2">
-            <Step num={1}>
-              Toque nos <strong>3 pontos</strong> (⋮) no canto superior direito do Chrome
-            </Step>
-            <Step num={2}>
-              Selecione <strong>"Adicionar a tela inicial"</strong> ou{' '}
-              <strong>"Instalar aplicativo"</strong>
-            </Step>
-            <Step num={3}>
-              Confirme tocando em <strong>Instalar</strong>
-            </Step>
-          </div>
         )}
+        <div className="space-y-2">
+          <Step num={1}>
+            Toque nos <strong>3 pontos</strong> (⋮) no canto superior direito do Chrome
+          </Step>
+          <Step num={2}>
+            Selecione <strong>"Adicionar a tela inicial"</strong> ou{' '}
+            <strong>"Instalar aplicativo"</strong>
+          </Step>
+          <Step num={3}>
+            Confirme tocando em <strong>Instalar</strong>
+          </Step>
+        </div>
       </section>
 
       <div className="border-t border-border" />

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Check, Copy, Share, Download } from 'lucide-react';
 import { useInstall } from '../lib/useInstall';
 import { useCopiarLink } from '../lib/useCopiarLink';
@@ -9,8 +10,10 @@ export function InstallBanner() {
   const { platform, showBanner, dismiss, installAndroid, promptReady } = useInstall();
   const [mostrarVariacoes, setMostrarVariacoes] = useState(false);
   const { copiado, copiarLink } = useCopiarLink(`${window.location.origin}/portal`);
+  const { pathname } = useLocation();
 
-  if (!showBanner) return null;
+  // Não mostra o banner na própria página de instalação — evita redundância
+  if (!showBanner || pathname === '/portal/instalar') return null;
 
   const previewParam = getPreviewParam();
   const iosForaDoSafari = platform === 'ios' && previewParam !== 'install-ios' && !isIOSSafari();

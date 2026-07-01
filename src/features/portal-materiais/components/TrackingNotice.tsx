@@ -11,7 +11,7 @@ export function TrackingNotice() {
     <div className="mx-auto w-full max-w-2xl px-4 pt-3">
       <div className="flex items-start gap-3 rounded-xl border border-border bg-secondary/60 px-4 py-3">
         <p className="flex-1 text-xs text-foreground/80 leading-relaxed">
-          Para melhorar sua experiência, monitoramos o uso de forma anônima — buscas,
+          Para melhorar sua experiência, monitoramos o uso de forma anônima: buscas,
           materiais acessados, cliques. Nenhum dado pessoal é coletado.{' '}
           <Link to="/privacidade" className="underline underline-offset-2 hover:text-foreground">
             Saiba mais

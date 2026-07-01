@@ -16,21 +16,31 @@ export default function App() {
     const splash = document.getElementById('app-splash');
     if (!splash) return;
 
+    // Android standalone: Chrome já exibe splash nativa; CSS esconde a nossa via
+    // is-android-standalone antes do React montar. Remove o nó silenciosamente.
+    if (document.documentElement.classList.contains('is-android-standalone')) {
+      splash.remove();
+      return;
+    }
+
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
       !!(navigator as unknown as { standalone?: boolean }).standalone;
-    // No browser (não instalado): remove imediatamente — sem imagem carregada
-    // a tempo, evita flash de arte que some antes de aparecer direito.
-    // Em standalone: 900ms deixa a splash respirar como app nativo.
+    // Browser: remove imediatamente para evitar flash de imagem que carrega tarde.
+    // Standalone iOS: 900ms deixa a splash respirar como app nativo.
     const holdMs = isStandalone ? 900 : 0;
 
+    let removeTimer: number | undefined;
     const fadeTimer = window.setTimeout(() => {
       splash.style.opacity = '0';
       splash.style.pointerEvents = 'none';
-      window.setTimeout(() => splash.remove(), 400);
+      removeTimer = window.setTimeout(() => splash.remove(), 400);
     }, holdMs);
 
-    return () => window.clearTimeout(fadeTimer);
+    return () => {
+      window.clearTimeout(fadeTimer);
+      window.clearTimeout(removeTimer);
+    };
   }, []);
 
   return (

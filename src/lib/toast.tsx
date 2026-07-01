@@ -39,7 +39,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             className={cn(
               'px-4 py-2.5 rounded-xl shadow-lg text-sm font-medium text-white text-center whitespace-nowrap',
               'animate-in fade-in slide-in-from-bottom-2 duration-200',
-              t.tipo === 'sucesso' ? 'bg-brand-green-600' : 'bg-foreground',
+              t.tipo === 'sucesso' ? 'bg-success' : 'bg-foreground',
             )}
           >
             {t.mensagem}

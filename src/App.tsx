@@ -19,7 +19,10 @@ export default function App() {
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
       !!(navigator as unknown as { standalone?: boolean }).standalone;
-    const holdMs = isStandalone ? 900 : 120;
+    // No browser (não instalado): remove imediatamente — sem imagem carregada
+    // a tempo, evita flash de arte que some antes de aparecer direito.
+    // Em standalone: 900ms deixa a splash respirar como app nativo.
+    const holdMs = isStandalone ? 900 : 0;
 
     const fadeTimer = window.setTimeout(() => {
       splash.style.opacity = '0';

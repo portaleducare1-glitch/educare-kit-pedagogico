@@ -16,9 +16,10 @@ export default defineConfig({
         // Cache do shell: JS, CSS, HTML, fontes e imagens do build
         globPatterns: ['**/*.{js,css,html,woff,woff2,webp,png,svg,ico}'],
         // PDFs do WordPress são servidos em runtime — não pré-cachear.
-        // splash/banner/instagram-preview nunca aparecem dentro do app (só no
-        // 1o paint ou pra crawler externo) — não vale o peso no cache offline.
-        globIgnores: ['**/*.pdf', 'splash.png', 'banner-preview.png', 'instagram-preview.png'],
+        // banner/instagram-preview só para crawlers externos — não vale o peso.
+        // splash.png ESTÁ no precache: standalone precisa dela carregada antes
+        // do holdMs de 900ms disparar — sem cache, chega tarde e some rápido.
+        globIgnores: ['**/*.pdf', 'banner-preview.png', 'instagram-preview.png'],
         runtimeCaching: [
           {
             // Fontes do Google — cache de 1 ano

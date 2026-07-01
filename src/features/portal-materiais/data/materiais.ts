@@ -168,7 +168,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'guia-intervencao-pedagogica',
-    titulo: 'Guia de Intervencao Pedagógica',
+    titulo: 'Guia de Intervenção Pedagógica',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/GUIA-DE-INTERVENCAO-PEDAGOGICA-1.pdf',
     wp_id: 26989,
     secao: 'documentos',
@@ -382,7 +382,7 @@ export const materiais: Material[] = [
   },
   {
     id: '1001-atividades-criancas',
-    titulo: '1001 Atividades para Fazer com as Criancas',
+    titulo: '1001 Atividades para Fazer com as Crianças',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/1001-atividades-para-fazer-com-as-criancas.pdf',
     wp_id: 26943,
     secao: 'atividades',
@@ -560,7 +560,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'vocabulario-caligrafia-1',
-    titulo: 'Vocabulario e Caligrafia Educare',
+    titulo: 'Vocabulário e Caligrafia Educare',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/VOCABULARIO-E-CALIGRAFIA-EDUCARE.pdf',
     wp_id: 26917,
     secao: 'atividades',
@@ -574,7 +574,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'vocabulario-caligrafia-2',
-    titulo: 'Vocabulario e Caligrafia 2.0 Educare',
+    titulo: 'Vocabulário e Caligrafia 2.0 Educare',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/VOCABULARIO-E-CALIGRAFIA-2.0-EDUCARE.pdf',
     wp_id: 26918,
     secao: 'atividades',
@@ -588,7 +588,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'atividades-metodo-fonico',
-    titulo: 'Atividades para Metodo Fonico',
+    titulo: 'Atividades para Método Fônico',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Atividades-para-metodo-fonico.pdf',
     wp_id: 26913,
     secao: 'atividades',
@@ -760,7 +760,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'caderno-matematica-01',
-    titulo: 'Caderno de Atividades de Matemática 01 - Formas Geometricas',
+    titulo: 'Caderno de Atividades de Matemática 01 - Formas Geométricas',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Caderno-de-Atividades-Matematica-01-Formas-Geometricas-Numeral-e-Quantidade-Educare.pdf',
     wp_id: 26978,
     secao: 'atividades',
@@ -788,7 +788,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'caderno-matematica-02',
-    titulo: 'Caderno de Atividades de Matemática 02 - Adicao e Subtração',
+    titulo: 'Caderno de Atividades de Matemática 02 - Adição e Subtração',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Caderno-de-Atividades-Matematica-02-Adicao-e-Subtracao-Educare-1.pdf',
     wp_id: 27014,
     secao: 'atividades',
@@ -816,7 +816,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'caderno-reforco-escolar',
-    titulo: 'Caderno de Reforco Escolar',
+    titulo: 'Caderno de Reforço Escolar',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/CADERNO-DE-REFORCO-ESCOLAR.pdf',
     wp_id: 26980,
     secao: 'atividades',
@@ -1033,7 +1033,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'percepcao-visual',
-    titulo: 'Caderno de Atividades Percepcao Visual',
+    titulo: 'Caderno de Atividades Percepção Visual',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Caderno-de-Atividades-Percepcao-Visual-Educare.pdf',
     wp_id: 26976,
     secao: 'atividades',
@@ -1047,7 +1047,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'moldes-percepcao-visual',
-    titulo: 'Moldes para Percepcao Visual',
+    titulo: 'Moldes para Percepção Visual',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/MOLDES-PERCEPCAO-VISUAL.pdf',
     wp_id: 26977,
     secao: 'atividades',
@@ -1061,7 +1061,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'cartilha-def-fisica',
-    titulo: 'Cartilha de Educação Especial - Deficiência Fisica',
+    titulo: 'Cartilha de Educação Especial - Deficiência Física',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/CARTILHA.DEF_.FISICA-educare-1.pdf',
     wp_id: 26975,
     secao: 'documentos',
@@ -1135,7 +1135,7 @@ export const materiais: Material[] = [
   // ──────────────────────────────────────────────
   {
     id: 'agenda-visual-diaria',
-    titulo: 'Agenda Visual Diaria',
+    titulo: 'Agenda Visual Diária',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Agenda-Visual-Diaria-2.pdf',
     wp_id: 27001,
     secao: 'documentos',
@@ -1149,7 +1149,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'sim-ou-nao',
-    titulo: 'Prancha SIM ou NAO',
+    titulo: 'Prancha SIM ou NÃO',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/SIM-ou-NAO-2.pdf',
     wp_id: 27006,
     secao: 'documentos',
@@ -1191,7 +1191,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'comunicacao-banheiro',
-    titulo: 'Prancha de Comúnicação do Banheiro',
+    titulo: 'Prancha de Comunicação do Banheiro',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/COMUNICACAO-DO-BANHEIRO-2.pdf',
     wp_id: 27002,
     secao: 'documentos',
@@ -1209,7 +1209,7 @@ export const materiais: Material[] = [
   // ──────────────────────────────────────────────
   {
     id: 'tabuleiro-emocoes',
-    titulo: 'Tabuleiro das Emocoes',
+    titulo: 'Tabuleiro das Emoções',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Tabuleiro-das-Emocoes.pdf',
     wp_id: 26936,
     secao: 'documentos',
@@ -1223,7 +1223,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'exercitando-emocoes',
-    titulo: 'Exercitando Emocoes - Guia de Atividades Socioemocionais',
+    titulo: 'Exercitando Emoções - Guia de Atividades Socioemocionais',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Ebook-Exercitando-Emocoes-Guia-de-Atividades-para-o-Desenvolvimento-de-Competencias-Socioemocionais.pdf',
     wp_id: 26944,
     secao: 'documentos',
@@ -1237,7 +1237,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'promovendo-autoconfianca',
-    titulo: 'Promovendo Autoconfianca e Autonomia em Criancas',
+    titulo: 'Promovendo Autoconfiança e Autonomia em Crianças',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Promovendo-Autoconfianca-e-Autonomia-em-Criancas.pdf',
     wp_id: 26892,
     secao: 'documentos',
@@ -1251,7 +1251,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'comunicacao-conecta-cartas',
-    titulo: 'Comúnicação que Conecta - Modelos de Cartas para as Familias',
+    titulo: 'Comunicação que Conecta - Modelos de Cartas para as Famílias',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Comunicacao-que-Conecta-Modelos-de-Cartas-para-as-Familias.pdf',
     wp_id: 26937,
     secao: 'documentos',
@@ -1269,7 +1269,7 @@ export const materiais: Material[] = [
   // ──────────────────────────────────────────────
   {
     id: 'atividades-superdotacao',
-    titulo: 'Atividades Bonus - Superdotação e Altas Habilidades',
+    titulo: 'Atividades Bônus - Superdotação e Altas Habilidades',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Atividades-Bonus-Superdotacao-e-Altas-Habilidades.pdf',
     wp_id: 26935,
     secao: 'atividades',
@@ -1283,7 +1283,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'debate-relampago',
-    titulo: 'Debate Relampago - Fala Rapida, Ideia Forte',
+    titulo: 'Debate Relâmpago - Fala Rápida, Ideia Forte',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Debate-Relampago-Fala-Rapida-Ideia-Forte-.pdf',
     wp_id: 26919,
     secao: 'atividades',
@@ -1297,7 +1297,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'diario-ideias-malucas',
-    titulo: 'Diario de Ideias Malucas - Meu Caderno do Inusitado',
+    titulo: 'Diário de Ideias Malucas - Meu Caderno do Inusitado',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Diario-de-Ideias-Malucas-Meu-Caderno-do-Inusitado-.pdf',
     wp_id: 26920,
     secao: 'atividades',
@@ -1325,7 +1325,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'estudo-caso-invertido',
-    titulo: 'Estudo de Caso Invertido - E se fosse voce',
+    titulo: 'Estudo de Caso Invertido - E se fosse você',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Estudo-de-Caso-Invertido-E-se-fosse-voce-.pdf',
     wp_id: 26922,
     secao: 'atividades',
@@ -1367,7 +1367,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'mini-projeto-enriquecimento',
-    titulo: 'Mini-Projeto de Enriquecimento - Missao Curiosidade',
+    titulo: 'Mini-Projeto de Enriquecimento - Missão Curiosidade',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Mini-Projeto-de-Enriquecimento-Missao-Curiosidade-.pdf',
     wp_id: 26924,
     secao: 'atividades',
@@ -1427,7 +1427,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'tarefa-casa-portugues',
-    titulo: 'Tarefa para Casa - Portugues',
+    titulo: 'Tarefa para Casa - Português',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Tarefa-para-casa-Portugues.pdf',
     wp_id: 26930,
     secao: 'atividades',
@@ -1459,7 +1459,7 @@ export const materiais: Material[] = [
   // ──────────────────────────────────────────────
   {
     id: 'cartilha-pascoa',
-    titulo: 'Cartilha de Atividades - Pascoa',
+    titulo: 'Cartilha de Atividades - Páscoa',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Cartilha-de-Atividades-Edicao-de-Pascoa.pdf',
     wp_id: 26941,
     secao: 'atividades',
@@ -1487,7 +1487,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'cartilha-dia-das-maes',
-    titulo: 'Cartilha de Atividades - Dia das Maes',
+    titulo: 'Cartilha de Atividades - Dia das Mães',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Cartilha-de-Atividades-Dia-das-Maes.pdf',
     wp_id: 26939,
     secao: 'atividades',
@@ -1547,7 +1547,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'plano-acao-personalizado',
-    titulo: 'Plano de Acao Personalizado',
+    titulo: 'Plano de Ação Personalizado',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Plano-de-Acao-Personalizado.pdf',
     wp_id: 27009,
     secao: 'documentos',
@@ -1589,7 +1589,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'jogo-historias-fantasticas',
-    titulo: 'Jogo Histórias Fantasticas Educare',
+    titulo: 'Jogo Histórias Fantásticas Educare',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2026/06/Jogo-Historias-Fantasticas-Educare.pdf',
     wp_id: 26933,
     secao: 'atividades',
@@ -2398,7 +2398,7 @@ export const materiais: Material[] = [
   },
   {
     id: 'apostila-musica-arte-e-recreacao',
-    titulo: 'Musica, Arte e Recreação',
+    titulo: 'Música, Arte e Recreação',
     url: 'https://educarepedagogia.com.br/wp-content/uploads/2020/12/musica-Recreacao-e-Arte-1.pdf',
     wp_id: 786,
     secao: 'apostilas',

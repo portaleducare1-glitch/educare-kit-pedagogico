@@ -1,6 +1,9 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { AppFooter } from './AppFooter';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 export function PublicLayout({ children }: { children?: React.ReactNode }) {
+  useScrollToTop();
   return (
     <div className="relative flex min-h-dvh flex-col bg-background overflow-hidden">
       {/* Blobs decorativos de fundo com as cores da logo */}
@@ -33,23 +36,7 @@ export function PublicLayout({ children }: { children?: React.ReactNode }) {
         {children ?? <Outlet />}
       </main>
 
-      <footer className="relative border-t border-border py-8">
-        <div className="mx-auto w-full max-w-5xl px-4 text-center text-xs text-muted-foreground space-y-2">
-          <p className="font-medium text-foreground/70">
-            EDUCARE CURSOS E TREINAMENTOS LTDA · CNPJ 28.719.923/0001-17
-          </p>
-          <p>Portal de Materiais do Kit Pedagógico 5.0 · v1.1.3</p>
-          <nav className="flex justify-center gap-4" aria-label="Links legais">
-            <Link to="/privacidade" className="hover:text-foreground underline underline-offset-2">
-              Política de Privacidade
-            </Link>
-            <Link to="/termos" className="hover:text-foreground underline underline-offset-2">
-              Termos de Uso
-            </Link>
-          </nav>
-          <p>© 2020-2026 Educare. Todos os direitos reservados.</p>
-        </div>
-      </footer>
+      <AppFooter />
     </div>
   );
 }

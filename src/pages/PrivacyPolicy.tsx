@@ -28,7 +28,7 @@ export function PrivacyPolicy() {
               EDUCARE CURSOS E TREINAMENTOS LTDA<br />
               CNPJ: 28.719.923/0001-17<br />
               Site: https://app.educarepedagogia.com.br/portal<br />
-              Contato: contato@educarepedagogia.com.br
+              Contato: <a href="mailto:contato@educarepedagogia.com.br" className="underline underline-offset-2 hover:opacity-80">contato@educarepedagogia.com.br</a>
             </p>
           </section>
 

@@ -26,8 +26,16 @@ export default function App() {
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
       !!(navigator as unknown as { standalone?: boolean }).standalone;
-    // Browser: remove imediatamente para evitar flash de imagem que carrega tarde.
-    // Standalone iOS: 900ms deixa a splash respirar como app nativo.
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    // Desktop browser: splash não faz sentido (imagem retrato estica em landscape).
+    // Remove silenciosamente sem fade para não exibir artefato visual.
+    if (!isStandalone && !isMobile) {
+      splash.remove();
+      return;
+    }
+
+    // Browser mobile: remove imediatamente. Standalone iOS: 900ms de respiro.
     const holdMs = isStandalone ? 900 : 0;
 
     let removeTimer: number | undefined;

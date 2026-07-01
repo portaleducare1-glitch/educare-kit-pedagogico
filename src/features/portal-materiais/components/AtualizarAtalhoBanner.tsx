@@ -1,25 +1,13 @@
-import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import { useAtualizarAtalho } from '../lib/useAtualizarAtalho';
+import { useCopiarLink } from '../lib/useCopiarLink';
 import { FloatingBanner } from './FloatingBanner';
 
 export function AtualizarAtalhoBanner() {
   const { showBanner, dismiss } = useAtualizarAtalho();
-  const [copiado, setCopiado] = useState(false);
+  const { copiado, copiarLink } = useCopiarLink(`${window.location.origin}/portal`);
 
   if (!showBanner) return null;
-
-  const url = `${window.location.origin}/portal`;
-
-  async function copiarLink() {
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopiado(true);
-      setTimeout(() => setCopiado(false), 2000);
-    } catch {
-      /* clipboard indisponível — a orientação manual continua visível no texto */
-    }
-  }
 
   return (
     <FloatingBanner onDismiss={dismiss} position="bottom">

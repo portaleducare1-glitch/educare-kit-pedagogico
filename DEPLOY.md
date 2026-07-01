@@ -43,19 +43,17 @@ Este produto faz parte do ecossistema futuro da Educare:
 
 ### Estado desta entrega para o Giovanni
 
-- Commit de referencia: `696587d` (branch `main`, 01/07/2026).
-- Versao visivel do portal: `v1.1.3`.
-- Verificacao local mais recente: TypeScript OK, Vitest OK, build de producao OK (2.01s), E2E Playwright 46/46 passando.
-- Correcoes acumuladas desde o handoff anterior (`077b829`):
-  - Splash duplicada resolvida no Android standalone (Chrome)
-  - Toast de favorito com cor correta
-  - Travessao (em dash) removido de textos visiveis ao usuario
-  - Paginas /privacidade e /termos sem icone de tema orfao
-  - Politica de privacidade com data 01/07/2026 e sem mencao a "fase de testes"
-  - Versao v1.1.3 no rodape das paginas legais
-  - Instrucoes Android na pagina Instalar sempre visiveis (botao e passos manuais juntos)
-  - 29 titulos e 19 descricoes de materiais com acentuacao corrigida
-  - Bolha de avaliacao (Typebot): passiva (nao abre forcado), dispara so em ficha de material apos 9s
+- Commit de referencia: a confirmar (branch `main`, 01/07/2026).
+- Versao visivel do portal: `v1.1.4`.
+- Verificacao local mais recente: TypeScript OK, Vitest OK, build de producao OK (2.56s), E2E Playwright 46/46 passando.
+- Correcoes acumuladas desde o handoff anterior (`696587d`):
+  - Rodape unificado: `AppFooter` compartilhado entre Portal e paginas legais (/privacidade, /termos)
+  - Rodape nas paginas legais inclui link "Instalar como app" (mobile) e links sublinhados
+  - E-mail de contato virou link mailto clicavel em /privacidade e /termos
+  - Scroll ao topo automatico ao navegar entre paginas (dentro do Portal e entre paginas legais)
+  - Banner Android ("Melhorar sua experiencia") aparece sem depender do evento beforeinstallprompt
+  - Splash de abertura removida no desktop (imagem retrato estava estourada em landscape)
+  - Botao WhatsApp sumia erroneamente no desktop (data-portal-footer restaurado no AppFooter)
 
 
 **Não é deploy manual de site estático.** É Docker. O EasyPanel usa o

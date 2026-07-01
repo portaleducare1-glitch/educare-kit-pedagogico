@@ -19,6 +19,7 @@ interface InstallContextValue {
   isStandalone: boolean;
   isDismissed: boolean;
   showBanner: boolean;
+  promptReady: boolean;
   dismiss(): void;
   installAndroid(): Promise<void>;
 }
@@ -31,6 +32,7 @@ export function InstallProvider({ children }: { children: ReactNode }) {
 
   const [platform, setPlatform] = useState<InstallPlatform>(null);
   const [isStandalone, setIsStandalone] = useState(false);
+  const [promptReady, setPromptReady] = useState(false);
   const { isDismissed, dismiss } = useDismissible(DISMISSED_KEY, isPreview);
   const promptRef = useRef<BeforeInstallPromptEvent | null>(null);
 
@@ -60,10 +62,14 @@ export function InstallProvider({ children }: { children: ReactNode }) {
     }
 
     if (mobilePlatform === 'android') {
+      // Mostra o banner imediatamente via UA; o evento só habilita o botão nativo.
+      // Sem isso, o banner some quando o Chrome decide não disparar beforeinstallprompt
+      // (app já instalado no perfil, engajamento insuficiente, etc.).
+      setPlatform('android');
       const handler = (e: Event) => {
         e.preventDefault();
         promptRef.current = e as BeforeInstallPromptEvent;
-        setTimeout(() => setPlatform('android'), 3000);
+        setPromptReady(true);
       };
       window.addEventListener('beforeinstallprompt', handler);
       return () => window.removeEventListener('beforeinstallprompt', handler);
@@ -84,7 +90,7 @@ export function InstallProvider({ children }: { children: ReactNode }) {
 
   return (
     <InstallContext.Provider
-      value={{ platform, isStandalone, isDismissed, showBanner, dismiss, installAndroid }}
+      value={{ platform, isStandalone, isDismissed, showBanner, promptReady, dismiss, installAndroid }}
     >
       {children}
     </InstallContext.Provider>

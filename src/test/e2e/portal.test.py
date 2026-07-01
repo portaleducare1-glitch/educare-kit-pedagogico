@@ -62,7 +62,7 @@ with sync_playwright() as p:
     run('rodapé com CNPJ',
         lambda: expect(page.locator('text=28.719.923').first).to_be_visible())
     run('link Privacidade (LGPD) → /privacidade', lambda:
-        expect(page.get_by_role('link', name='Privacidade (LGPD)')).to_have_attribute('href', '/privacidade'))
+        expect(page.get_by_role('link', name='Política de Privacidade')).to_have_attribute('href', '/privacidade'))
     run('link Termos de Uso → /termos', lambda:
         expect(page.get_by_role('link', name='Termos de Uso')).to_have_attribute('href', '/termos'))
 

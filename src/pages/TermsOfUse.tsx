@@ -95,8 +95,8 @@ export function TermsOfUse() {
           <section className="space-y-3">
             <h2 className="font-display text-base font-bold">7. Contato</h2>
             <p>
-              Dúvidas, solicitações ou notificações devem ser enviadas para
-              contato@educarepedagogia.com.br.
+              Dúvidas, solicitações ou notificações devem ser enviadas para{' '}
+              <a href="mailto:contato@educarepedagogia.com.br" className="underline underline-offset-2 hover:opacity-80">contato@educarepedagogia.com.br</a>.
             </p>
           </section>
 

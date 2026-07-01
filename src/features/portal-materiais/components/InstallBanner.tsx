@@ -1,29 +1,19 @@
 import { useState } from 'react';
 import { Check, Copy, Share, Download } from 'lucide-react';
 import { useInstall } from '../lib/useInstall';
+import { useCopiarLink } from '../lib/useCopiarLink';
 import { getPreviewParam, isIOSSafari } from '../lib/platform';
 import { FloatingBanner } from './FloatingBanner';
 
 export function InstallBanner() {
-  const { platform, showBanner, dismiss, installAndroid } = useInstall();
+  const { platform, showBanner, dismiss, installAndroid, promptReady } = useInstall();
   const [mostrarVariacoes, setMostrarVariacoes] = useState(false);
-  const [copiado, setCopiado] = useState(false);
+  const { copiado, copiarLink } = useCopiarLink(`${window.location.origin}/portal`);
 
   if (!showBanner) return null;
 
   const previewParam = getPreviewParam();
   const iosForaDoSafari = platform === 'ios' && previewParam !== 'install-ios' && !isIOSSafari();
-  const url = `${window.location.origin}/portal`;
-
-  async function copiarLink() {
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopiado(true);
-      setTimeout(() => setCopiado(false), 2000);
-    } catch {
-      /* clipboard indisponivel - a orientacao manual continua visivel no texto */
-    }
-  }
 
   return (
     <FloatingBanner onDismiss={dismiss} position="bottom">
@@ -34,13 +24,26 @@ export function InstallBanner() {
           <p className="text-xs text-muted-foreground mt-0.5 mb-3">
             Instale o Kit Pedagógico como app e acesse direto da tela inicial.
           </p>
-          <button
-            onClick={installAndroid}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold w-full justify-center"
-          >
-            <Download className="size-3.5" />
-            Instalar como aplicativo
-          </button>
+          {promptReady ? (
+            <button
+              onClick={installAndroid}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold w-full justify-center"
+            >
+              <Download className="size-3.5" />
+              Instalar como aplicativo
+            </button>
+          ) : (
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2 text-xs text-foreground/80">
+                <span className="flex items-center justify-center size-5 rounded-full bg-primary/10 text-primary font-bold shrink-0 text-[10px]">1</span>
+                <span>Toque nos <strong>3 pontos ⋮</strong> no Chrome e selecione <strong>"Adicionar à tela inicial"</strong></span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-foreground/80">
+                <span className="flex items-center justify-center size-5 rounded-full bg-primary/10 text-primary font-bold shrink-0 text-[10px]">2</span>
+                <span>Confirme tocando em <strong>Instalar</strong></span>
+              </div>
+            </div>
+          )}
         </>
       ) : iosForaDoSafari ? (
         <>

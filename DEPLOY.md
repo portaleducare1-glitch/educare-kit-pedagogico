@@ -43,12 +43,19 @@ Este produto faz parte do ecossistema futuro da Educare:
 
 ### Estado desta entrega para o Giovanni
 
-- Antes do rebuild, o GitHub precisa estar depois de `48f385a` e conter o fix `ajusta instalacao ios fora do safari`.
-- Se o GitHub ainda estiver em `48f385a`, falta push do Eduardo/Codex antes de pedir o deploy.
-- Versao visivel do portal: `v1.1.2` (patch acumulado antes do deploy real, conforme protocolo de versionamento).
-- Correcoes principais desta entrega: PWA mobile sem aviso recorrente, sem splash HTML em app instalado, WhatsApp sem tampar rodape, Favoritos visivel no bottom nav, BNCC 2026 corrigida e instalacao iOS fora do Safari com orientacao de copiar link.
-- Verificacao local mais recente: TypeScript OK, Vitest OK sem specs unitarias, build de producao OK, logica mobile validada para iPhone Safari/Chrome/Instagram, Android Chrome e iOS standalone.
-- Limitacao conhecida da sessao local: Playwright visual nao abriu por bloqueio macOS/sandbox; na rodada anterior, E2E Chromium e WebKit passaram 46/46 antes do ajuste pequeno final.
+- Commit de referencia: `696587d` (branch `main`, 01/07/2026).
+- Versao visivel do portal: `v1.1.3`.
+- Verificacao local mais recente: TypeScript OK, Vitest OK, build de producao OK (2.01s), E2E Playwright 46/46 passando.
+- Correcoes acumuladas desde o handoff anterior (`077b829`):
+  - Splash duplicada resolvida no Android standalone (Chrome)
+  - Toast de favorito com cor correta
+  - Travessao (em dash) removido de textos visiveis ao usuario
+  - Paginas /privacidade e /termos sem icone de tema orfao
+  - Politica de privacidade com data 01/07/2026 e sem mencao a "fase de testes"
+  - Versao v1.1.3 no rodape das paginas legais
+  - Instrucoes Android na pagina Instalar sempre visiveis (botao e passos manuais juntos)
+  - 29 titulos e 19 descricoes de materiais com acentuacao corrigida
+  - Bolha de avaliacao (Typebot): passiva (nao abre forcado), dispara so em ficha de material apos 9s
 
 
 **Não é deploy manual de site estático.** É Docker. O EasyPanel usa o
